@@ -20,17 +20,56 @@ class OnboardingViewController: UIPageViewController {
         return $0
     }(UIView())
     
+    private let skipButton: UIButton = {
+        $0.setTitle("Skip", for: .normal)
+        $0.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .normal)
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UIButton())
+    
+    private let nextButton: UIButton = {
+        $0.setTitle("Next", for: .normal)
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UIButton())
+    
+    private var stackViewH: UIStackView = {
+        $0.axis = .horizontal
+        $0.distribution = .fillEqually
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UIStackView())
+    
+    private var mainTitle: UILabel = {
+        $0.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        $0.textColor = .white
+        $0.textAlignment = .center
+        $0.text = "Explore Upcoming and Nearby Events"
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 0
+        return $0
+    }(UILabel())
+    
+    private var subTitle: UILabel = {
+        $0.text = " In publishing and graphic design, Lorem is a placeholder text commonly"
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        $0.textColor = .white
+        $0.textAlignment = .center
+        $0.numberOfLines = 0
+        return $0
+    }(UILabel())
+    
+    private var stackViewV: UIStackView = {
+        $0.axis = .vertical
+        $0.distribution = .fillEqually
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UIStackView())
+    
     var pages = [UIViewController]()
     let pageControl = UIPageControl()
     let initialPage = 0
-    
-//    init() {
-//            super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-//        }
-//
-//        required init?(coder: NSCoder) {
-//            super.init(coder: coder)
-//        }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +82,13 @@ class OnboardingViewController: UIPageViewController {
     
     private func setupUI() {
         view.addSubview(bottomView)
-        bottomView.addSubview(pageControl)
+        bottomView.addSubview(stackViewV)
+        stackViewV.addArrangedSubview(mainTitle)
+        stackViewV.addArrangedSubview(subTitle)
+        stackViewV.addArrangedSubview(stackViewH)
+        stackViewH.addArrangedSubview(skipButton)
+        stackViewH.addArrangedSubview(pageControl)
+        stackViewH.addArrangedSubview(nextButton)
         SetupConstraints()
         setup()
         style()
@@ -52,14 +97,18 @@ class OnboardingViewController: UIPageViewController {
 //    MARK: - SetupConstraints
     
     private func SetupConstraints() {
+    
         NSLayoutConstraint.activate([
             bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             bottomView.widthAnchor.constraint(equalTo: view.widthAnchor),
             bottomView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4),
             
-            pageControl.widthAnchor.constraint(equalTo: bottomView.widthAnchor),
-            pageControl.heightAnchor.constraint(equalToConstant: 20),
-            pageControl.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor, constant: -20)
+            stackViewV.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 20),
+            stackViewV.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -20),
+            stackViewV.heightAnchor.constraint(equalTo: bottomView.heightAnchor, multiplier: 0.85),
+            stackViewV.centerYAnchor.constraint(equalTo: bottomView.centerYAnchor),
+                    
+            
         ])
     }
     
@@ -80,8 +129,8 @@ extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewCo
         pages.append(page2)
         
         setViewControllers([pages[initialPage]], direction: .forward, animated: true)
-        page1.view.backgroundColor = .blue
-        page2.view.backgroundColor = .green
+        page1.view.backgroundColor = UIColor(hexString: "#FFFFFF", alpha: 1)
+        page2.view.backgroundColor = UIColor(hexString: "#FFFFFF", alpha: 1)
     }
     
     func style() {
