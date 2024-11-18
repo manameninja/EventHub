@@ -8,10 +8,9 @@
 import UIKit
 
 class OnboardingViewController: UIPageViewController {
-  
     
     
-//    MARK: - UI Elements
+    //    MARK: - UI Elements
     private let bottomView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = UIColor(hexString: "#5669FF", alpha: 1)
@@ -70,7 +69,7 @@ class OnboardingViewController: UIPageViewController {
     var pages = [UIViewController]()
     let pageControl = UIPageControl()
     let initialPage = 0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -78,7 +77,7 @@ class OnboardingViewController: UIPageViewController {
         setupUI()
     }
     
-//    MARK: - Setup UI
+    //    MARK: - Setup UI
     
     private func setupUI() {
         view.addSubview(bottomView)
@@ -92,13 +91,16 @@ class OnboardingViewController: UIPageViewController {
         SetupConstraints()
         setup()
         style()
+        animateBottomViewAppearance()
     }
     
-//    MARK: - SetupConstraints
+    //    MARK: - SetupConstraints
     
     private func SetupConstraints() {
-    
+        
+        bottomView.transform = CGAffineTransform(translationX: 0, y: 200)
         NSLayoutConstraint.activate([
+            
             bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             bottomView.widthAnchor.constraint(equalTo: view.widthAnchor),
             bottomView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4),
@@ -107,9 +109,17 @@ class OnboardingViewController: UIPageViewController {
             stackViewV.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -20),
             stackViewV.heightAnchor.constraint(equalTo: bottomView.heightAnchor, multiplier: 0.85),
             stackViewV.centerYAnchor.constraint(equalTo: bottomView.centerYAnchor),
-                    
+            
             
         ])
+    }
+    
+//    MARK: - Methods
+    
+    private func animateBottomViewAppearance() {
+        UIView.animate(withDuration: 1) {
+            self.bottomView.transform = CGAffineTransform(translationX: 0, y: 0)
+        }
     }
     
 }
