@@ -14,7 +14,7 @@ class ExploreViewController: UIViewController {
     private let collectionView: UICollectionView = {
         let collectionViewLayout = UICollectionViewLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.backgroundColor = .systemGray
+        collectionView.backgroundColor = .BackgroundGray
         collectionView.bounces = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -26,7 +26,7 @@ class ExploreViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .BackgroundGray
         
         view.addSubview(collectionView)
         setDelegate()
@@ -89,7 +89,7 @@ extension ExploreViewController {
                                                                          heightDimension: .fractionalHeight(0.5)),
                                                        subitems: [item])
         let section = createLayoutSection(group: group,
-                                          behavior: .groupPaging, interGroupSpacing: 16, supplementaryItems: [supplementaryHeaderItem()], contentInsets: .init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                          behavior: .groupPaging, interGroupSpacing: 16, supplementaryItems: [supplementaryHeaderItem()], contentInsets: .init(top: 0, leading: 0, bottom: 10, trailing: 0))
         
         return section
     }
