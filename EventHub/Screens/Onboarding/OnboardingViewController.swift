@@ -26,9 +26,12 @@ class OnboardingViewController: UIPageViewController {
         return $0
     }(UIButton())
     
-    private let nextButton: UIButton = {
+    lazy var nextButton: UIButton = {
         $0.setTitle("Next", for: .normal)
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.addAction(UIAction { _ in
+            self.nextPage()
+        }   , for: .touchUpInside)
         return $0
     }(UIButton())
     
@@ -66,11 +69,15 @@ class OnboardingViewController: UIPageViewController {
         return $0
     }(UIStackView())
     
+    private let pageControl: UIPageControl = {
+        $0.isUserInteractionEnabled = false
+        return $0
+    }(UIPageControl())
+    
 //    MARK: - Variables
     
     var helperArray = [OnboardingHelper()]
     var pages = [UIViewController]()
-    let pageControl = UIPageControl()
     let initialPage = 0
     
     
@@ -128,6 +135,20 @@ class OnboardingViewController: UIPageViewController {
     private func animateBottomViewAppearance() {
         UIView.animate(withDuration: 1) {
             self.bottomView.transform = CGAffineTransform(translationX: 0, y: 0)
+        }
+    }
+    
+    private func nextPage() {
+        guard let currentVC = viewControllers?.first,
+              let currentIndex = pages.firstIndex(of: currentVC) else { return }
+        
+        let nextIndex = currentIndex + 1
+        
+        if nextIndex < pages.count {
+            setViewControllers([pages[nextIndex]], direction: .forward, animated: true)
+            pageControl.currentPage = nextIndex
+            mainTitle.text = helperArray[nextIndex].mainTitle
+            subTitle.text = helperArray[nextIndex].subTitle
         }
     }
     
