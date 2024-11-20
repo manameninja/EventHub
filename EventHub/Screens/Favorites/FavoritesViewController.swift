@@ -7,12 +7,13 @@
 
 import UIKit
 
-class FavoritesViewController: UIViewController {
+final class FavoritesViewController: UIViewController {
+    
+    private let favoritesView = FavoritesView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .gray
-        // Do any additional setup after loading the view.
+        
+        view = favoritesView
     }
-
 }
