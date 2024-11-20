@@ -22,6 +22,7 @@ class NearbyCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
+        imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -37,7 +38,7 @@ class NearbyCollectionViewCell: UICollectionViewCell {
 //    дата на imageView
     private let dateContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .AccentOrange
+        view.backgroundColor = .white
         view.layer.opacity = 0.7
         view.layer.cornerRadius = 10
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +48,7 @@ class NearbyCollectionViewCell: UICollectionViewCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.text = "12"
-        label.textColor = .black
+        label.textColor = .AccentOrange
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -55,7 +56,7 @@ class NearbyCollectionViewCell: UICollectionViewCell {
     private let mounthLabel: UILabel = {
         let label = UILabel()
         label.text = "June"
-        label.textColor = .black
+        label.textColor = .AccentOrange
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -64,12 +65,26 @@ class NearbyCollectionViewCell: UICollectionViewCell {
     
     private let favoriteView: UIView = {
         let view = UIView()
-        view.backgroundColor = .AccentOrange
+        view.backgroundColor = .white
         view.layer.opacity = 0.7
         view.layer.cornerRadius = 10
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    private let favoriteIcon: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "bookmark")
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private var isFavorite: Bool = false {
+        didSet {
+            favoriteIcon.image = UIImage(named: isFavorite ? "bookmark" : "bookmarkFill")
+        }
+    }
     
     // MARK: - Init
     
@@ -85,6 +100,12 @@ class NearbyCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Actions
+    
+    @objc private func toggleFavorite() {
+        isFavorite.toggle()
+    }
+    
     // MARK: - Methods
     
     override func layoutSubviews() {
@@ -97,20 +118,29 @@ class NearbyCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(mainView)
         mainView.addSubview(imageViewCell)
         mainView.addSubview(titleCell)
-        
         imageViewCell.addSubview(dateContainerView)
         imageViewCell.addSubview(favoriteView)
-        
         dateContainerView.addSubview(dateLabel)
         dateContainerView.addSubview(mounthLabel)
+        favoriteView.addSubview(favoriteIcon)
         
+        tapedFavorite()
+    }
+    
+    private func tapedFavorite() {
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleFavorite))
+        favoriteView.addGestureRecognizer(tapRecognizer)
+        favoriteView.isUserInteractionEnabled = true
     }
     
     func configureCell(imageName: String, title: String) {
         imageViewCell.image = UIImage(named: imageName)
         titleCell.text = title
     }
+   
 }
+
+// MARK: - Extensions Constraints
 
 extension NearbyCollectionViewCell {
     func setConstraint() {
@@ -142,7 +172,10 @@ extension NearbyCollectionViewCell {
             favoriteView.topAnchor.constraint(equalTo: imageViewCell.topAnchor, constant: 8),
             favoriteView.trailingAnchor.constraint(equalTo: imageViewCell.trailingAnchor, constant: -8),
             favoriteView.widthAnchor.constraint(equalToConstant: 30),
-            favoriteView.heightAnchor.constraint(equalToConstant: 30)
+            favoriteView.heightAnchor.constraint(equalToConstant: 30),
+            
+            favoriteIcon.centerYAnchor.constraint(equalTo: favoriteView.centerYAnchor),
+            favoriteIcon.centerXAnchor.constraint(equalTo: favoriteView.centerXAnchor),
         ])
     }
 }
