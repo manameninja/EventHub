@@ -168,15 +168,6 @@ extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewCo
             pages.append(ScreenViewController(with: helper))
         }
         
-//        let page1 = ScreenViewController(image: helperArray[0])
-//        let page2 = ScreenViewController(image: helperArray[1])
-//        let page3 = ScreenViewController(image: UIImage(resource: .onbordingThird))
-        
-        
-//        pages.append(page1)
-//        pages.append(page2)
-//        pages.append(page3)
-        
         setViewControllers([pages[initialPage]], direction: .forward, animated: true)
     }
     

@@ -33,12 +33,13 @@ class ScreenViewController: UIViewController {
     private func setupUI() {
         view.addSubview(screenImage)
         setupConstraints()
+        animateBottomViewAppearance()
     }
     
     //    MARK: - Setup Constraints
     
     private func setupConstraints() {
-        
+        screenImage.transform = CGAffineTransform(translationX: 0, y: -200)
         NSLayoutConstraint.activate([
             screenImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             screenImage.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -130),
@@ -46,6 +47,12 @@ class ScreenViewController: UIViewController {
             screenImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55),
             
         ])
+    }
+    
+    private func animateBottomViewAppearance() {
+        UIView.animate(withDuration: 1) {
+            self.screenImage.transform = CGAffineTransform(translationX: 0, y: 0)
+        }
     }
     
     
