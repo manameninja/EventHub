@@ -27,13 +27,16 @@ class OnboardingViewController: UIPageViewController {
     }(UIButton())
     
     lazy var nextButton: UIButton = {
-        $0.setTitle("Next", for: .normal)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.addAction(UIAction { _ in
+        let button = UIButton(type: .system)
+        button.setTitle("Next", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        button.addAction(UIAction { _ in
             self.nextPage()
         }   , for: .touchUpInside)
-        return $0
-    }(UIButton())
+        return button
+    }()
     
     private var stackViewH: UIStackView = {
         $0.axis = .horizontal
