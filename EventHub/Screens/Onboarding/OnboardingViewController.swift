@@ -50,7 +50,7 @@ class OnboardingViewController: UIPageViewController {
     }(UILabel())
     
     private var subTitle: UILabel = {
-        $0.text = " In publishing and graphic design, Lorem is a placeholder text commonly"
+        $0.text = "In publishing and graphic design, Lorem is a placeholder text commonly"
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = UIFont.systemFont(ofSize: 15, weight: .light)
         $0.textColor = .white
@@ -66,13 +66,22 @@ class OnboardingViewController: UIPageViewController {
         return $0
     }(UIStackView())
     
+//    MARK: - Variables
+    
+    var helperArray = [OnboardingHelper()]
     var pages = [UIViewController]()
     let pageControl = UIPageControl()
     let initialPage = 0
     
+    
+//    MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
+        dataSource = self
+        delegate = self
         
         setupUI()
     }
@@ -124,23 +133,51 @@ class OnboardingViewController: UIPageViewController {
     
 }
 
+//MARK: - UIPageViewControllerDataSource, UIPageViewControllerDelegate
+
 extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     
     
     func setup() {
-        dataSource = self
-        delegate = self
         
-        let page1 = UIViewController()
-        let page2 = UIViewController()
+        let firstScreen = OnboardingHelper(
+            image: UIImage(
+                resource: .onbordingFirst
+            ),
+            mainTitle: "Explore Upcoming and Nearby Events",
+            subTitle: "Use the search, categories and filters to clarify the events you need"
+        )
+        let secondScreen = OnboardingHelper(
+            image: UIImage(
+                resource: .onbordingSecond
+            ),
+            mainTitle: "Web Have Modern Events Calendar Feature",
+            subTitle: "Use the calendar to see upcoming or past events"
+        )
+        let thirdScreen = OnboardingHelper(
+            image: UIImage(
+                resource: .onbordingThird
+            ),
+            mainTitle: "To Look Up More Events or Activities Nearby By Map",
+            subTitle: "Use the map to find events in the location you need"
+        )
+        helperArray = [firstScreen, secondScreen, thirdScreen]
         
-        pages.append(page1)
-        pages.append(page2)
+        helperArray.forEach { helper in
+            pages.append(ScreenViewController(with: helper))
+        }
+        
+//        let page1 = ScreenViewController(image: helperArray[0])
+//        let page2 = ScreenViewController(image: helperArray[1])
+//        let page3 = ScreenViewController(image: UIImage(resource: .onbordingThird))
+        
+        
+//        pages.append(page1)
+//        pages.append(page2)
+//        pages.append(page3)
         
         setViewControllers([pages[initialPage]], direction: .forward, animated: true)
-        page1.view.backgroundColor = UIColor(hexString: "#FFFFFF", alpha: 1)
-        page2.view.backgroundColor = UIColor(hexString: "#FFFFFF", alpha: 1)
     }
     
     func style() {
@@ -171,6 +208,8 @@ extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewCo
         guard let viewsControllers = pageViewController.viewControllers else { return }
         guard let currentIndex = pages.firstIndex(of: viewsControllers[0]) else { return }
         pageControl.currentPage = currentIndex
+        mainTitle.text = helperArray[currentIndex].mainTitle
+        subTitle.text = helperArray[currentIndex].subTitle
     }
     
     
