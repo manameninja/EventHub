@@ -175,7 +175,7 @@ extension NearbyCollectionViewCell {
             favoriteView.heightAnchor.constraint(equalToConstant: 30),
             
             favoriteIcon.centerYAnchor.constraint(equalTo: favoriteView.centerYAnchor),
-            favoriteIcon.centerXAnchor.constraint(equalTo: favoriteView.centerXAnchor),
+            favoriteIcon.centerXAnchor.constraint(equalTo: favoriteView.centerXAnchor)
         ])
     }
 }
