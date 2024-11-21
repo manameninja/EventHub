@@ -43,6 +43,15 @@ final class FavoritesView: UIView {
         return view
     }()
     
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.register(TestCell.self, forCellWithReuseIdentifier: TestCell.description())
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
