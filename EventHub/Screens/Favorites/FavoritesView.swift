@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FavoritesViewProtocol: AnyObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+}
+
 final class FavoritesView: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -18,7 +22,7 @@ final class FavoritesView: UIView {
     private let searchButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.image = UIImage(systemName: "magnifyingglass")
-        config.baseBackgroundColor = .systemBackground
+        config.baseBackgroundColor = .clear
         config.baseForegroundColor = .label
         let button = UIButton(configuration: config)
         return button
@@ -48,7 +52,8 @@ final class FavoritesView: UIView {
         layout.scrollDirection = .vertical
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.register(TestCell.self, forCellWithReuseIdentifier: TestCell.description())
+        view.register(EventCell.self, forCellWithReuseIdentifier: EventCell.description())
+        view.backgroundColor = .clear
         return view
     }()
     
@@ -64,16 +69,29 @@ final class FavoritesView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func setupDelegates(_ vc: FavoritesViewProtocol) {
+        collectionView.delegate = vc
+        collectionView.dataSource = vc
+    }
+    
+    func hideNoData(_ state: Bool) {
+        noFavoritesLabel.isHidden = state
+        noFavoritesImage.isHidden = state
+    }
 }
 
 //MARK: - Setup UI
 private extension FavoritesView {
     func setupUI() {
+        backgroundColor = .backgroundGray
+        
         [
             titleLabel,
             searchButton,
             noFavoritesLabel,
-            noFavoritesImage
+            noFavoritesImage,
+            collectionView
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
@@ -82,7 +100,7 @@ private extension FavoritesView {
     
     func setupConstrainst() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
+            titleLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 28),
             
@@ -98,7 +116,12 @@ private extension FavoritesView {
             noFavoritesImage.centerXAnchor.constraint(equalTo: centerXAnchor),
             noFavoritesImage.topAnchor.constraint(equalTo: centerYAnchor, constant: 8),
             noFavoritesImage.heightAnchor.constraint(equalToConstant: 150),
-            noFavoritesImage.widthAnchor.constraint(equalToConstant: 150)
+            noFavoritesImage.widthAnchor.constraint(equalToConstant: 150),
+            
+            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
