@@ -8,6 +8,8 @@
 import UIKit
 
 class InfoTableViewCell: UITableViewCell {
+    static let identifier = "InfoTableViewCell"
+    
     //    MARK: - UI Elements
     
     private let iconView: UIView = {
@@ -29,9 +31,6 @@ class InfoTableViewCell: UITableViewCell {
             $0.backgroundColor = .orange
             return $0
         }(UILabel())
-    
-    //    MARK: - Properies
-    static let identifier = "InfoTableViewCell"
     
     //    MARK: - Initializations
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

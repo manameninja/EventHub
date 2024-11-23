@@ -28,6 +28,7 @@ class DetailsViewController: UIViewController {
     
     private func setupTableView() {
         customView.infoTableView.register(InfoTableViewCell.self, forCellReuseIdentifier: InfoTableViewCell.identifier)
+        customView.infoTableView.register(HeaderInfoTableView.self, forHeaderFooterViewReuseIdentifier: HeaderInfoTableView.identifier)
         customView.infoTableView.delegate = self
         customView.infoTableView.dataSource = self
         customView.infoTableView.separatorStyle = .none
@@ -48,6 +49,15 @@ class DetailsViewController: UIViewController {
 
 extension DetailsViewController: UITableViewDelegate {
     
+//    MARK: - Header Delegate
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderInfoTableView.identifier) as? HeaderInfoTableView else { return nil }
+        return header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        100
+    }
 }
 
 //MARK: - UITableViewDataSource
@@ -61,7 +71,6 @@ extension DetailsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: InfoTableViewCell.identifier, for: indexPath)
         return cell
     }
-    
     
 }
 
