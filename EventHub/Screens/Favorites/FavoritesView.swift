@@ -8,10 +8,12 @@
 import UIKit
 
 protocol FavoritesViewProtocol: AnyObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+    func didTappedSearchButton()
 }
 
 final class FavoritesView: UIView {
+    weak var delegate: FavoritesViewProtocol?
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Favorites"
@@ -60,10 +62,11 @@ final class FavoritesView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .backgroundLightGray
         
         setupUI()
         setupConstrainst()
+        setupTargets()
     }
     
     required init?(coder: NSCoder) {
@@ -73,18 +76,24 @@ final class FavoritesView: UIView {
     func setupDelegates(_ vc: FavoritesViewProtocol) {
         collectionView.delegate = vc
         collectionView.dataSource = vc
+        delegate = vc
     }
     
     func hideNoData(_ state: Bool) {
         noFavoritesLabel.isHidden = state
         noFavoritesImage.isHidden = state
     }
+    
+    @objc func buttonTapped() {
+        print("test1")
+        delegate?.didTappedSearchButton()
+    }
 }
 
 //MARK: - Setup UI
 private extension FavoritesView {
     func setupUI() {
-        backgroundColor = .backgroundGray
+        backgroundColor = .backgroundLightGray
         
         [
             titleLabel,
@@ -118,10 +127,14 @@ private extension FavoritesView {
             noFavoritesImage.heightAnchor.constraint(equalToConstant: 150),
             noFavoritesImage.widthAnchor.constraint(equalToConstant: 150),
             
-            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 24),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+    
+    func setupTargets() {
+        searchButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
 }

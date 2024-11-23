@@ -10,7 +10,13 @@ import UIKit
 import UIKit
 import Kingfisher
 
+protocol EventCellDelegate: AnyObject {
+    func didTapButton(in cell: EventCell)
+}
+
 final class EventCell: UICollectionViewCell {
+    weak var delegate: EventCellDelegate?
+        
     private let eventImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
@@ -22,15 +28,13 @@ final class EventCell: UICollectionViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "date Label"
         label.font = .systemFont(ofSize: 13)
         label.textColor = .primaryBlue
         return label
     }()
     
-    private let nameLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "name Label strole1 \n stroke2"
         label.font = .systemFont(ofSize: 15)
         label.textColor = .typographyBlack
         label.numberOfLines = 2
@@ -40,71 +44,60 @@ final class EventCell: UICollectionViewCell {
     private let addressImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
-        view.image = UIImage(systemName: "mappin.and.ellipse")
+        view.image = .mapPin
         return view
     }()
     
     private let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = "address Label"
         label.font = .systemFont(ofSize: 13)
         label.textColor = .typographyGray
         return label
     }()
     
     private let favoriteButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.image = UIImage(systemName: "bookmark")
-        config.baseBackgroundColor = .systemBackground
-        config.baseForegroundColor = .accentRed
-        let button = UIButton(configuration: config)
+        let button = UIButton()
+        button.imageView?.image = UIImage(systemName: "bookmark")
+        button.imageView?.contentMode = .scaleToFill
+        button.tintColor = .accentRed
         return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-                
+        
         setupViews()
         setupConstraints()
+        setupTargets()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with event: Event) {
-        //MARK: - setup event photo
-        eventImageView.kf.setImage(
-            with: URL(string: event.images?.first?.imageUrl ?? ""),
-            placeholder: UIImage(systemName: "photo")
+    func configure(
+        imageURL: URL?,
+        isFavorite: Bool,
+        date: String,
+        title: String,
+        address: String
+    ) {
+        eventImageView.kf.setImage(with: imageURL)
+        dateLabel.text = date
+        titleLabel.text = title
+        addressLabel.text = address
+        makeFavorite(isFavorite)
+    }
+    
+    func makeFavorite(_ state: Bool) {
+        favoriteButton.setImage(
+            UIImage(systemName: state ? "bookmark.fill" : "bookmark"),
+            for: .normal
         )
-        
-        //MARK: - setup event date
-        var nextDate: Int? = event.eventDate?.last?.start
-        
-        for date in event.eventDate ?? [] {
-            if date.start ?? 0 > Int(Date().timeIntervalSince1970) {
-                nextDate = date.start
-                break
-            }
-        }
-        
-        if let unixTime = nextDate {
-            let date = Date(timeIntervalSince1970: TimeInterval(unixTime))
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E, MMM d • h:mm a"
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            let formattedDate = dateFormatter.string(from: date)
-            dateLabel.text = formattedDate
-        } else {
-            dateLabel.text = "Date and time unknown"
-        }
-        
-        //MARK: - setup event name
-        nameLabel.text = event.title
-        
-        //MARK: - setup event address
-        addressLabel.text = event.place?.address
+    }
+    
+    @objc func favoriteTapped() {
+        delegate?.didTapButton(in: self)
     }
 }
 
@@ -113,16 +106,18 @@ private extension EventCell {
         backgroundColor = .systemBackground
         
         [
-            eventImageView
+            eventImageView,
+            favoriteButton,
+            dateLabel,
+            titleLabel,
+            addressImageView,
+            addressLabel
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
         
         layer.cornerRadius = 16
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.red.cgColor
-        
     }
     
     func setupConstraints() {
@@ -132,7 +127,34 @@ private extension EventCell {
             eventImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             eventImageView.widthAnchor.constraint(equalToConstant: 79),
             
+            favoriteButton.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            favoriteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 17),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 17),
             
+            dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            dateLabel.leadingAnchor.constraint(equalTo: eventImageView.trailingAnchor, constant: 18),
+            dateLabel.trailingAnchor.constraint(equalTo: favoriteButton.leadingAnchor, constant: -8),
+            dateLabel.heightAnchor.constraint(equalToConstant: 17),
+            
+            titleLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 4),
+            titleLabel.leadingAnchor.constraint(equalTo: dateLabel.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: dateLabel.trailingAnchor),
+            titleLabel.heightAnchor.constraint(equalToConstant: 36),
+            
+            addressImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 11),
+            addressImageView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            addressImageView.heightAnchor.constraint(equalToConstant: 17),
+            addressImageView.widthAnchor.constraint(equalToConstant: 17),
+            
+            addressLabel.topAnchor.constraint(equalTo: addressImageView.topAnchor),
+            addressLabel.leadingAnchor.constraint(equalTo: addressImageView.trailingAnchor, constant: 6),
+            addressLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            addressLabel.bottomAnchor.constraint(equalTo: addressLabel.bottomAnchor)
         ])
+    }
+    
+    func setupTargets() {
+        favoriteButton.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
     }
 }
