@@ -11,42 +11,40 @@ class DetailsView: UIView {
     
 //    MARK: UI Elements
     
-    private let customNavBar: UIView = {
+    private let customNavBar: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = .red
+        $0.image = UIImage(resource: .customNav)
         return $0
-    }(UIView())
+    }(UIImageView())
     
     private let backButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = .yellow
+        $0.setImage(UIImage(resource: .back), for: .normal)
         return $0
     }(UIButton())
     
     private let navBarLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = .black
-        $0.text = "sdfsdfadfdsaf"
+        $0.text = "Event Details"
         $0.textColor = .white
-        $0.font = UIFont.systemFont(ofSize: 30)
+        $0.font = UIFont.systemFont(ofSize: 24)
         return $0
     }(UILabel())
     
     private let bookmarkButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = .yellow
+        $0.setImage(UIImage(resource: .bookmark), for: .normal)
         return $0
     }(UIButton())
     
     private let shareButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = .yellow
+        $0.setImage(UIImage(resource: .share), for: .normal)
         return $0
     }(UIButton())
     
     let infoTableView: UITableView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = .accentPurple
         return $0
     }(UITableView())
     
@@ -63,6 +61,7 @@ class DetailsView: UIView {
     
 //MARK: - SetupUI
     private func setupUI() {
+        self.backgroundColor = .white
         addSubviews(
             customNavBar,
             backButton,
@@ -88,7 +87,7 @@ class DetailsView: UIView {
             backButton.widthAnchor.constraint(equalToConstant: 50),
             
             navBarLabel.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 5),
-            navBarLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 5),
+            navBarLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 15),
             
             bookmarkButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             bookmarkButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 5),

@@ -17,10 +17,9 @@ class HeaderViewCell: UITableViewCell {
         $0.text = "International Band Music Concert"
         $0.numberOfLines = 0
         $0.textAlignment = .left
-        $0.textColor = .white
-        $0.backgroundColor = .red
+        $0.textColor = .black
         $0.lineBreakMode = .byWordWrapping
-        $0.font = UIFont.systemFont(ofSize: 35, weight: .bold)
+        $0.font = UIFont.systemFont(ofSize: 35, weight: .light)
         return $0
     }(UILabel())
     
@@ -28,7 +27,6 @@ class HeaderViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .blue
         setupUI()
     }
     
@@ -47,7 +45,7 @@ class HeaderViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             eventsName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             eventsName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            eventsName.topAnchor.constraint(equalTo: contentView.topAnchor),
+            eventsName.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 30),
             eventsName.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }

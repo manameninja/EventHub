@@ -12,23 +12,23 @@ class InfoTableViewCell: UITableViewCell {
     
     //    MARK: - UI Elements
     
-    private let iconView: UIView = {
+    let iconView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = .yellow
         return $0
-    }(UIView())
+    }(UIImageView())
     
         private let infoTitle: UILabel = {
-            $0.text = "dsfdsfs"
-            $0.backgroundColor = .orange
+            $0.text = "14 December, 2021"
             $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.font = UIFont.systemFont(ofSize: 16)
             return $0
         }(UILabel())
     
         private let infoSubTitle: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.text = "fvdvxdvxd"
-            $0.backgroundColor = .orange
+            $0.text = "Tuesday, 4:00PM - 9:00PM"
+            $0.font = UIFont.systemFont(ofSize: 12)
+            $0.textColor = .gray
             return $0
         }(UILabel())
     
@@ -45,7 +45,6 @@ class InfoTableViewCell: UITableViewCell {
     //    MARK: - SetupUI
     private func setupUI() {
         contentView.addSubviews(iconView, infoTitle, infoSubTitle)
-        contentView.backgroundColor = .accentGreen
         setupConstraints()
     }
     
@@ -53,16 +52,17 @@ class InfoTableViewCell: UITableViewCell {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             iconView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            iconView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            iconView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
             iconView.heightAnchor.constraint(equalToConstant: 48),
             iconView.widthAnchor.constraint(equalToConstant: 48),
             iconView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             
-            infoTitle.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 5),
+            infoTitle.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 15),
             infoTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+            infoTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             
             infoSubTitle.topAnchor.constraint(equalTo: infoTitle.bottomAnchor, constant: 5),
-            infoSubTitle.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 5),
+            infoSubTitle.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 10),
             infoSubTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
             
         ])

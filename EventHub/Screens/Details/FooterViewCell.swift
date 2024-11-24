@@ -15,7 +15,7 @@ class FooterViewCell: UITableViewCell {
     private let titleEvent: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "About Event"
-        $0.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        $0.font = UIFont.systemFont(ofSize: 18)
         $0.textAlignment = .left
         return $0
     }(UILabel())
@@ -23,6 +23,7 @@ class FooterViewCell: UITableViewCell {
     private let descriptionEvent: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.numberOfLines = 0
+        $0.font = UIFont.systemFont(ofSize: 14, weight: .light)
         $0.text = "fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd"
         $0.textAlignment = .left
         return $0
@@ -32,7 +33,6 @@ class FooterViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .blue
         setupUI()
     }
     
@@ -53,7 +53,7 @@ class FooterViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             titleEvent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             titleEvent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleEvent.topAnchor.constraint(equalTo: contentView.topAnchor),
+            titleEvent.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 15),
             
             descriptionEvent.topAnchor.constraint(equalTo: titleEvent.bottomAnchor, constant: 20),
             descriptionEvent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

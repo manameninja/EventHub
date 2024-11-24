@@ -36,6 +36,7 @@ class DetailsViewController: UIViewController {
         customView.infoTableView.dataSource = self
         customView.infoTableView.separatorStyle = .none
         customView.infoTableView.showsVerticalScrollIndicator = false
+        customView.infoTableView.allowsSelection = false
     }
     
     //    MARK: - Setup Constraints
@@ -51,25 +52,8 @@ class DetailsViewController: UIViewController {
 //MARK: - UITableViewDelegate
 
 extension DetailsViewController: UITableViewDelegate {
-    
-//    MARK: - Header Delegate
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderInfoTableView.identifier) as? HeaderInfoTableView else { return nil }
-//        return header
-//    }
-//    
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        200
-//    }
-//    
-//    MARK: - Footer
-//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        guard let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: FooterInfoTableView.identifier) as? FooterInfoTableView else { return nil }
-//        return footer
-//    }
-//    
-//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        100
+//    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+//        nil
 //    }
 }
 
@@ -77,7 +61,7 @@ extension DetailsViewController: UITableViewDelegate {
 
 extension DetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        7
+        5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -88,7 +72,14 @@ extension DetailsViewController: UITableViewDataSource {
             let footerCell = tableView.dequeueReusableCell(withIdentifier: FooterViewCell.identifier, for: indexPath)
             return footerCell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: InfoTableViewCell.identifier, for: indexPath)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: InfoTableViewCell.identifier, for: indexPath) as? InfoTableViewCell else { return UITableViewCell() }
+            if indexPath.row == 1 {
+                cell.iconView.image = UIImage(resource: .date)
+            } else if indexPath.row == 2 {
+                cell.iconView.image = UIImage(resource: .location)
+            } else {
+                cell.iconView.image = UIImage(resource: .owner)
+            }
             return cell
         }
     }
