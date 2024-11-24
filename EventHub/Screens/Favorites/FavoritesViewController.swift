@@ -18,6 +18,10 @@ final class FavoritesViewController: UIViewController {
         favoritesView.setupDelegates(self)
         if !eventList.isEmpty { favoritesView.hideNoData(true) }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        eventList = StorageManager.shared.loadFavorite()
+    }
 }
 
 //MARK: - FavoritesViewProtocol
