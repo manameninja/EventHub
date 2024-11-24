@@ -10,8 +10,10 @@ import UIKit
 class ExploreViewController: UIViewController {
     
     // MARK: - Properties
-    private let exploreView = ExploreView()
+     let exploreView = ExploreView()
     private let sections = ListData.shared.pageData
+    
+    let dataSource = ["Sport", "Music", "Food", "Party", "Kids"]
     
     // MARK: - LifeCycle
     override func loadView() {
@@ -22,9 +24,15 @@ class ExploreViewController: UIViewController {
         super.viewDidLoad()
         exploreView.setDelegates(self)
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
 }
 
-// MARK: - Extensions CreateLayoutDelegate
+// MARK: - CreateLayoutDelegate
 extension ExploreViewController: CreateLayoutDelegate {
     func createLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout {[weak self] sectionIndex, _ in
@@ -105,7 +113,7 @@ extension ExploreViewController: CreateLayoutDelegate {
     }
 }
 
-// MARK: - Extensions CollectionView Delegate
+// MARK: - CollectionView Delegate
 extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -148,5 +156,29 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
         default:
             return UICollectionReusableView()
         }
+    }
+}
+
+// MARK: - UITableViewDataSource, UITableViewDelegate
+extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataSource.count
+    }
+      
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.textLabel?.text = dataSource[indexPath.row]
+        cell.backgroundColor = .blue
+        cell.selectionStyle = .none
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
+    }
+          
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        exploreView.currentLocationButton.setTitle(dataSource[indexPath.row], for: .normal)
+        exploreView.hideTableView()
     }
 }
