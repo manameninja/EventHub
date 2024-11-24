@@ -6,6 +6,11 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseCore
+import GoogleSignIn
+
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,9 +18,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        FirebaseApp.configure()
+        
+        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                    if let error = error {
+                        print("Error restoring previous sign-in: \(error.localizedDescription)")
+                    } else {
+                        print("Successfully restored previous sign-in for user: \(String(describing: user))")
+                    }
+                }
+
+        
         // Override point for customization after application launch.
         return true
     }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+           // Обработка URL от Google Sign-In
+           return GIDSignIn.sharedInstance.handle(url)
+       }
 
     // MARK: UISceneSession Lifecycle
 

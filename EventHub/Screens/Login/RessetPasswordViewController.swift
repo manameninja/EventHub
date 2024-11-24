@@ -9,27 +9,61 @@ import UIKit
 
 final class RessetPasswordViewController: UIViewController {
     
+    //MARK: - Private Property
     private let emailField = CustomTextField(authFieldType: .email)
-    private let sendButton = CustomButton(title: "SEND", hasBackground: true, fontSize: .big)
+    private let sendButton = CustomButton(title: "SEND", hasBackground: true, fontSize: .big, hasImage: true)
     private let labelTitle = UILabel.makeLabel(text: "Please enter your address to request a password reset", font: .systemFont(ofSize: 16), textColor: .black)
     
+    
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setupLayout()
+        
+        
+        let imageBack = UIImage(named: "Back")?.withRenderingMode(.alwaysTemplate)
+        let backButton = UIBarButtonItem(image: imageBack, style: .plain, target: self, action: #selector(didTapBackButton))
+        backButton.tintColor = .black
+        navigationItem.leftBarButtonItem = backButton
+        navigationItem.title = "Resset Password"
+        
+        sendButton.addTarget(self, action: #selector(didTapButtonSend), for: .touchUpInside)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
+   //MARK: - Methods
+    @objc private func didTapButtonSend() {
+        print("Send button")
+        let email = self.emailField.text ?? ""
+        
+        if !ValidatorManager.isValidEmail(for: email) {
+            AlertManager.showInvalidEmailAlert(on: self)
+            return
+        }
+        
+        AuthService.shared.forgotPassword(with: email) { [weak self] error in
+            guard let self = self else {return}
+            if let error = error {
+                AlertManager.showForgotPasswordAlert(on: self, with: error)
+                return
+            }
+            
+            AlertManager.showPasswordResetSend(on: self)
+        }
+        
     }
     
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
+//MARK: - Settings
 extension RessetPasswordViewController {
     func setupView() {
         view.backgroundColor = .white
         addSubviews()
+        setupTextFields()
     }
     
     func addSubviews() {
@@ -39,9 +73,14 @@ extension RessetPasswordViewController {
             labelTitle
         )
     }
+    
+    func setupTextFields() {
+       
+        emailField.setUpImage(imageName: "Mail", on: .left)
+    }
 }
 
-
+//MARK: - Setup layout
 extension RessetPasswordViewController {
     func setupLayout() {
         [
@@ -65,8 +104,7 @@ extension RessetPasswordViewController {
             sendButton.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 40),
             sendButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             sendButton.heightAnchor.constraint(equalToConstant: 58),
-            sendButton.widthAnchor.constraint(equalToConstant: 271)
-            
+            sendButton.widthAnchor.constraint(equalToConstant: 271),
             
         ])
     }

@@ -18,7 +18,7 @@ final class AlertManager {
     }
 }
 
-//MARK: - Login Errors
+//MARK: - Validation Alerts
 extension AlertManager {
     public static func showInvalidEmailAlert(on vc: UIViewController) {
         showBasicAlert(on: vc, title: "Invalid Email", massage: "Please enter valid email")
@@ -26,6 +26,10 @@ extension AlertManager {
     
     public static func showInvalidPasswordAlert(on vc: UIViewController) {
         showBasicAlert(on: vc, title: "Invalid Password", massage: "Please enter valid password")
+    }
+    
+    public static func showInvalidUsernameAlert(on vc: UIViewController) {
+        showBasicAlert(on: vc, title: "Invalid UserName", massage: "Please enter valid username")
     }
 }
 
@@ -44,7 +48,7 @@ extension AlertManager {
 //MARK: - Log In Error
 extension AlertManager {
     public static func showSignInErrorAlert(on vc: UIViewController) {
-        showBasicAlert(on: vc, title: "Unknown Sign In  Error", massage: nil)
+        showBasicAlert(on: vc, title: "Unknown Sign In Error", massage: nil)
     }
     
     public static func showSignInAlert(on vc: UIViewController, with error: Error) {
@@ -52,9 +56,21 @@ extension AlertManager {
     }
 }
 
+//MARK: - LogOut Error
+extension AlertManager {
+    
+    public static func showLogOutError(on vc: UIViewController, with error: Error) {
+        showBasicAlert(on: vc, title: "Log Out Error", massage: "\(error.localizedDescription)")
+    }
+}
+
 //MARK: - Forgot Password
 extension AlertManager {
     public static func showForgotPasswordAlert(on vc: UIViewController, with error: Error) {
         showBasicAlert(on: vc, title: "Unknown Forgot Password Error", massage: "\(error.localizedDescription)")
+    }
+    
+    public static func showPasswordResetSend(on vc: UIViewController) {
+        showBasicAlert(on: vc, title: "Password sent", massage: "Check your mail")
     }
 }
