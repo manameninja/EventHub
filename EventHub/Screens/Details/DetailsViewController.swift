@@ -23,15 +23,13 @@ class DetailsViewController: UIViewController {
     private func setupUI() {
         view = customView
         setupTableView()
-        setupConstraints()
+        customView.shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
     }
     
     private func setupTableView() {
         customView.infoTableView.register(InfoTableViewCell.self, forCellReuseIdentifier: InfoTableViewCell.identifier)
         customView.infoTableView.register(HeaderViewCell.self, forCellReuseIdentifier: HeaderViewCell.identifier)
         customView.infoTableView.register(FooterViewCell.self, forCellReuseIdentifier: FooterViewCell.identifier)
-//        customView.infoTableView.register(HeaderInfoTableView.self, forHeaderFooterViewReuseIdentifier: HeaderInfoTableView.identifier)
-//        customView.infoTableView.register(FooterInfoTableView.self, forHeaderFooterViewReuseIdentifier: FooterInfoTableView.identifier)
         customView.infoTableView.delegate = self
         customView.infoTableView.dataSource = self
         customView.infoTableView.separatorStyle = .none
@@ -39,22 +37,12 @@ class DetailsViewController: UIViewController {
         customView.infoTableView.allowsSelection = false
     }
     
-    //    MARK: - Setup Constraints
-    
-    private func setupConstraints() {
-        
-    }
-    
-    
     
 }
 
 //MARK: - UITableViewDelegate
 
 extension DetailsViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-//        nil
-//    }
 }
 
 //MARK: - UITableViewDataSource
@@ -84,6 +72,18 @@ extension DetailsViewController: UITableViewDataSource {
         }
     }
     
+}
+
+//MARK: - Actions
+
+extension DetailsViewController {
+    
+    @objc func shareTapped() {
+        let activityVC = UIActivityViewController(activityItems: [], applicationActivities: nil)
+        activityVC.popoverPresentationController?.sourceView = self.view
+        
+        self.present(activityVC, animated: true)
+    }
 }
 
 #Preview {

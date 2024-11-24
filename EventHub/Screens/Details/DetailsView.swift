@@ -37,7 +37,7 @@ class DetailsView: UIView {
         return $0
     }(UIButton())
     
-    private let shareButton: UIButton = {
+    let shareButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setImage(UIImage(resource: .share), for: .normal)
         return $0
