@@ -11,26 +11,50 @@ final class SearchViewController: UIViewController {
     private let searchView = SearchView()
     
     private var inputEventList: [Event]
-    private var filteredEventList: [Event] = []
+    private var filteredEventList: [Event]
+    
+    init(eventList: [Event]) {
+        inputEventList = eventList
+        filteredEventList = eventList
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view = searchView
         searchView.setupDelegates(self)
         if !inputEventList.isEmpty { searchView.hideNoData(true) }
+        hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        eventList = StorageManager.shared.loadFavorite()
+        navigationController?.navigationBar.isHidden = true
     }
 }
 
 //MARK: - SearchViewProtocol
 extension SearchViewController: SearchViewProtocol {
+    //MARK: - buttons delegates
+    func didTappedBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     func didTappedFilterButton() {
         print(#function)
     }
     
+    //MARK: - Search text field delegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return false
+    }
+    
+    //MARK: - Collection View delegate
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         filteredEventList.count
     }
@@ -58,19 +82,29 @@ extension SearchViewController: SearchViewProtocol {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 106)
+        CGSize(width: collectionView.frame.width - 24 * 2, height: 106)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("\nбыла нажата ячейка:", indexPath, "\n")
-        #warning("TO DO: вставить переход на детеил")
+#warning("TO DO: вставить переход на детеил")
     }
 }
 
 //MARK: - EventCellDelegate
 extension SearchViewController: EventCellDelegate {
     func didTapButton(in cell: EventCell) {
-        
+        if let indexPath = searchView.collectionView.indexPath(for: cell) {
+            if StorageManager.shared.loadFavorite().contains(where: {
+                $0.id == filteredEventList[indexPath.item].id
+            }) {
+                StorageManager.shared.deleteFavorite(filteredEventList[indexPath.item])
+                cell.makeFavorite(false)
+            } else {
+                StorageManager.shared.addFavorite(filteredEventList[indexPath.item])
+                cell.makeFavorite(true)
+            }
+        }
     }
 }
 

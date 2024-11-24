@@ -85,7 +85,6 @@ final class FavoritesView: UIView {
     }
     
     @objc func buttonTapped() {
-        print("test1")
         delegate?.didTappedSearchButton()
     }
 }
@@ -109,7 +108,7 @@ private extension FavoritesView {
     
     func setupConstrainst() {
         NSLayoutConstraint.activate([
-            titleLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 28),
             
@@ -127,7 +126,7 @@ private extension FavoritesView {
             noFavoritesImage.heightAnchor.constraint(equalToConstant: 150),
             noFavoritesImage.widthAnchor.constraint(equalToConstant: 150),
             
-            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 24),
+            collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)

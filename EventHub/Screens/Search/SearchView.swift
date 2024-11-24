@@ -7,15 +7,49 @@
 
 import UIKit
 
-protocol SearchViewProtocol: AnyObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+protocol SearchViewProtocol: AnyObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchTextFieldDelegate {
     func didTappedFilterButton()
+    func didTappedBackButton()
 }
 
 final class SearchView: UIView {
     weak var delegate: SearchViewProtocol?
     
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Search"
+        label.font = .systemFont(ofSize: 24)
+        return label
+    }()
+    
+    private let backButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(systemName: "arrow.backward")
+        config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .label
+        let button = UIButton(configuration: config)
+        return button
+    }()
+    
     private let searchField: UISearchTextField = {
         let field = UISearchTextField()
+        field.leftView?.tintColor = .primaryBlue
+        field.textColor = .primaryBlue
+        field.placeholder = "Search..."
+        
+        let rightImageView = UIImageView(image: UIImage(systemName: "xmark.circle.fill"))
+        rightImageView.tintColor = .primaryBlue
+        field.rightView = rightImageView
+        field.rightViewMode = .whileEditing
+        
+        field.layer.borderColor = UIColor.red.cgColor
+        field.layer.borderWidth = 1.0
+        field.layer.cornerRadius = 1.0
+        
+        let apperance = UISearchTextField.appearance().backgroundColor = .clear
+        
+        field.
+        
         return field
     }()
     
@@ -63,6 +97,7 @@ final class SearchView: UIView {
     func setupDelegates(_ vc: SearchViewProtocol) {
         collectionView.delegate = vc
         collectionView.dataSource = vc
+        searchField.delegate = vc
         delegate = vc
     }
     
@@ -70,7 +105,11 @@ final class SearchView: UIView {
         noFavoritesLabel.isHidden = state
     }
     
-    @objc func buttonTapped() {
+    @objc func didTappedBackButton() {
+        delegate?.didTappedBackButton()
+    }
+    
+    @objc func didTappedFilterButton() {
         delegate?.didTappedFilterButton()
     }
 }
@@ -80,6 +119,8 @@ private extension SearchView {
     func setupUI() {
         backgroundColor = .backgroundLightGray
         [
+            titleLabel,
+            backButton,
             searchField,
             filterhButton,
             noFavoritesLabel,
@@ -92,7 +133,16 @@ private extension SearchView {
     
     func setupConstrainst() {
         NSLayoutConstraint.activate([
-            filterhButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32),
+            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            titleLabel.heightAnchor.constraint(equalToConstant: 28),
+            
+            backButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            backButton.heightAnchor.constraint(equalToConstant: 24),
+            backButton.widthAnchor.constraint(equalToConstant: 24),
+            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            
+            filterhButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             filterhButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
             filterhButton.heightAnchor.constraint(equalToConstant: 32),
             filterhButton.widthAnchor.constraint(equalToConstant: 75),
@@ -106,13 +156,14 @@ private extension SearchView {
             noFavoritesLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             
             collectionView.topAnchor.constraint(equalTo: filterhButton.bottomAnchor, constant: 32),
-            collectionView.leadingAnchor.constraint(equalTo: filterhButton.leftAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: filterhButton.trailingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     
     func setupTargets() {
-        filterhButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        filterhButton.addTarget(self, action: #selector(didTappedFilterButton), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(didTappedBackButton), for: .touchUpInside)
     }
 }
