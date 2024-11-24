@@ -5,11 +5,13 @@
 //  Created by nikita on 19.11.24.
 //
 
+import Foundation
+
 struct ApiResponseEvent: Decodable {
     let results: [Event]
 }
 
-struct Event: Decodable {
+struct Event: Codable {
     let id: Int?
     let title: String?
     let images: [EventImage]?
@@ -42,9 +44,30 @@ struct Event: Decodable {
             .map{ Int($0) ?? 0}
             .min() ?? 0
     }
+    
+    var nextDate: String {
+        var nextDate: Int? = eventDate?.last?.start
+        
+        for date in eventDate ?? [] {
+            if date.start ?? 0 > Int(Date().timeIntervalSince1970) {
+                nextDate = date.start
+                break
+            }
+        }
+        
+        if let unixTime = nextDate {
+            let date = Date(timeIntervalSince1970: TimeInterval(unixTime))
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "E, MMM d • h:mm a"
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            return dateFormatter.string(from: date)
+        } else {
+            return "Date and time unknown"
+        }
+    }
 }
 
-struct EventImage: Decodable {
+struct EventImage: Codable {
     let imageUrl: String?
     
     enum CodingKeys: String, CodingKey {
@@ -52,42 +75,42 @@ struct EventImage: Decodable {
     }
 }
 
-struct EventDate: Decodable {
+struct EventDate: Codable {
     let start: Int?
     let end: Int?
 }
 
-struct Place: Decodable {
+struct Place: Codable {
     let title: String?
     let address: String?
     let coords: Coords?
 }
 
-struct Coords: Decodable {
+struct Coords: Codable {
     let lat: Double?
     let lon: Double?
 }
 
-struct Participants: Decodable {
+struct Participants: Codable {
     let role: Role?
     let agent: Agent?
 }
 
-struct Role: Decodable {
+struct Role: Codable {
     let name: String?
 }
 
-struct Agent: Decodable {
+struct Agent: Codable {
     let title: String?
     let image: [EventImage]?
 }
 
-struct Category: Decodable {
+struct Category: Codable {
     let slug: String?
     let name: String?
 }
 
-struct Location: Decodable {
+struct Location: Codable {
     let slug: String?
     let name: String?
     let timezone: String?
