@@ -10,7 +10,7 @@ import UIKit
 class ExploreViewController: UIViewController {
     
     // MARK: - Properties
-     let exploreView = ExploreView()
+    let exploreView = ExploreView()
     private let sections = ListData.shared.pageData
     private let category = ListData.shared.categories
     
@@ -23,12 +23,7 @@ class ExploreViewController: UIViewController {
         super.viewDidLoad()
         exploreView.setDelegates(self)
     }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
+
 }
 
 // MARK: - CreateLayoutDelegate
@@ -116,39 +111,57 @@ extension ExploreViewController: CreateLayoutDelegate {
 extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        sections.count
+        if collectionView == exploreView.categoryCollectionView {
+            return 1
+        } else if collectionView == exploreView.collectionView {
+            return sections.count
+        }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        sections[section].count
-        
+        if collectionView == exploreView.categoryCollectionView {
+            return category.count
+        } else if collectionView == exploreView.collectionView {
+            return sections[section].count
+        }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch sections[indexPath.section] {
-        case .event(let event):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "eventCell", for: indexPath) as? EventCollectionViewCell
-            else {
-                return UICollectionViewCell()
-            }
-            cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title, location: event[indexPath.row].place)
+        if collectionView == exploreView.categoryCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
+                return UICollectionViewCell() }
+            cell.configureCell(category: category[indexPath.row].name)
             
             return cell
-        case .nearby(let event):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nearbyCell", for: indexPath) as? NearbyCollectionViewCell
-            else {
-                return UICollectionViewCell()
+        } else if collectionView == exploreView.collectionView {
+            switch sections[indexPath.section] {
+            case .event(let event):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventCell", for: indexPath) as? EventCollectionViewCell
+                else {
+                    return UICollectionViewCell()
+                }
+                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title, location: event[indexPath.row].place)
+                
+                return cell
+            case .nearby(let event):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NearbyCell", for: indexPath) as? NearbyCollectionViewCell
+                else {
+                    return UICollectionViewCell()
+                }
+                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title)
+                
+                return cell
             }
-            cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title)
-            
-            return cell
         }
+        return UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "headerCell", for: indexPath) as! HeaderCell
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderCell", for: indexPath) as! HeaderCell
             header.configureHeader(categoryName: sections[indexPath.section].title)
             
             return header
@@ -163,7 +176,7 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return category.count
     }
-      
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = category[indexPath.row].name
@@ -171,11 +184,11 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .none
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
     }
-          
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         exploreView.currentLocationButton.setTitle(category[indexPath.row].name, for: .normal)
         exploreView.hideTableView()

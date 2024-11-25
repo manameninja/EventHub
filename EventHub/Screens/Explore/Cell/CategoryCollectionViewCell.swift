@@ -12,6 +12,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     private let mainView: UIView = {
        let view = UIView()
         view.backgroundColor = .orange
+        view.layer.cornerRadius = 25
         view.isUserInteractionEnabled = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -64,11 +65,12 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
             mainView.topAnchor.constraint(equalTo: topAnchor),
             mainView.bottomAnchor.constraint(equalTo: bottomAnchor),
             mainView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            mainView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainView.widthAnchor.constraint(equalToConstant: 106),
             
             logoImageView.heightAnchor.constraint(equalToConstant: 17),
             logoImageView.widthAnchor.constraint(equalToConstant: 17),
             logoImageView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 16),
+            logoImageView.centerYAnchor.constraint(equalTo: mainView.centerYAnchor),
             
             categoryLabel.leadingAnchor.constraint(equalTo: logoImageView.trailingAnchor, constant: 8),
             categoryLabel.centerYAnchor.constraint(equalTo: mainView.centerYAnchor)

@@ -25,7 +25,7 @@ final class ExploreView: UIView {
         return view
     }()
     
-     let currentLocationButton: UIButton = {
+    let currentLocationButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Current Location", for: .normal)
         button.setTitleColor(.TypographyGray, for: .normal)
@@ -84,17 +84,28 @@ final class ExploreView: UIView {
         print((action.title))
     }
     
-    private let collectionView: UICollectionView = {
+    let collectionView: UICollectionView = {
         let collectionViewLayout = UICollectionViewLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.backgroundColor = .BackgroundGray
         collectionView.bounces = false
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
+    let categoryCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 65
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 100)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
     
-
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -127,7 +138,7 @@ final class ExploreView: UIView {
     }
     
     private func tapedButtons() {
-        bellButton.addTarget(self, action: #selector(tapedButton), for: .touchUpInside)
+        //        bellButton.addTarget(self, action: #selector(tapedButton), for: .touchUpInside)
         currentLocationButton.addTarget(self, action: #selector(tapedButton), for: .touchUpInside)
     }
     
@@ -154,9 +165,9 @@ final class ExploreView: UIView {
     }
     
     func showTableView(frames: CGRect) {
-       tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: 100, height: tableView.frame.height)
-       tableView.isHidden = false
-   }
+        tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: 100, height: tableView.frame.height)
+        tableView.isHidden = false
+    }
     
     private func setViews() {
         backgroundColor = .BackgroundGray
@@ -164,8 +175,10 @@ final class ExploreView: UIView {
         backgroundView.backgroundColor = backgroundColor
         [
             mainView,
-            collectionView
+            collectionView,
+            categoryCollectionView
         ].forEach {addSubview($0)}
+        
         [
             searchBar,
             filterButton,
@@ -173,9 +186,11 @@ final class ExploreView: UIView {
             bellButton
         ].forEach {mainView.addSubview($0)}
         
-        collectionView.register(EventCollectionViewCell.self, forCellWithReuseIdentifier: "eventCell")
-        collectionView.register(NearbyCollectionViewCell.self, forCellWithReuseIdentifier: "nearbyCell")
-        collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerCell")
+        collectionView.register(EventCollectionViewCell.self, forCellWithReuseIdentifier: "EventCell")
+        collectionView.register(NearbyCollectionViewCell.self, forCellWithReuseIdentifier: "NearbyCell")
+        categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CategoryCell")
+        collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderCell")
+        
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
@@ -186,6 +201,8 @@ final class ExploreView: UIView {
         delegate = value
         collectionView.delegate = value
         collectionView.dataSource = value
+        categoryCollectionView.delegate = value
+        categoryCollectionView.dataSource = value
         tableView.delegate = value
         tableView.dataSource = value
         //        после делегата!!! а то будет nil
@@ -223,7 +240,12 @@ extension ExploreView {
             bellButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),
             bellButton.centerYAnchor.constraint(equalTo: currentLocationButton.centerYAnchor),
             bellButton.heightAnchor.constraint(equalToConstant: 36),
-            bellButton.widthAnchor.constraint(equalToConstant: 36)
+            bellButton.widthAnchor.constraint(equalToConstant: 36),
+            
+            categoryCollectionView.topAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -30),
+            categoryCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
+            categoryCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
+            categoryCollectionView.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
 }

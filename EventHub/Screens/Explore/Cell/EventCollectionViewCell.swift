@@ -111,7 +111,6 @@ class EventCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-       backgroundColor = .red
         setupUI()
         setConstraint()
         layoutIfNeeded()
@@ -128,6 +127,12 @@ class EventCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        mainView.layer.cornerRadius = mainView.bounds.width / 10
+        imageViewCell.layer.cornerRadius = 20
+    }
     
     private func setupUI() {
         contentView.addSubview(mainView)
