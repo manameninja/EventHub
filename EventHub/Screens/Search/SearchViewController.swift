@@ -85,8 +85,7 @@ extension SearchViewController: SearchViewProtocol {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("\nбыла нажата ячейка:", indexPath, "\n")
-#warning("TO DO: вставить переход на детеил")
+        navigationController?.pushViewController(DetailsViewController(model: filteredEventList[indexPath.item]), animated: true)
     }
 }
 

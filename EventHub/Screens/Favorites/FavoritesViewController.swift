@@ -64,8 +64,7 @@ extension FavoritesViewController: FavoritesViewProtocol {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("\nбыла нажата ячейка:", indexPath, "\n")
-        #warning("TO DO: вставить переход на детеил")
+        navigationController?.pushViewController(DetailsViewController(model: eventList[indexPath.item]), animated: true)
     }
 }
 
