@@ -12,8 +12,7 @@ class ExploreViewController: UIViewController {
     // MARK: - Properties
      let exploreView = ExploreView()
     private let sections = ListData.shared.pageData
-    
-    let dataSource = ["Sport", "Music", "Food", "Party", "Kids"]
+    private let category = ListData.shared.categories
     
     // MARK: - LifeCycle
     override func loadView() {
@@ -162,12 +161,12 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.count
+        return category.count
     }
       
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = dataSource[indexPath.row]
+        cell.textLabel?.text = category[indexPath.row].name
         cell.backgroundColor = .blue
         cell.selectionStyle = .none
         return cell
@@ -178,7 +177,7 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
     }
           
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        exploreView.currentLocationButton.setTitle(dataSource[indexPath.row], for: .normal)
+        exploreView.currentLocationButton.setTitle(category[indexPath.row].name, for: .normal)
         exploreView.hideTableView()
     }
 }

@@ -12,3 +12,10 @@ struct ListItem {
     let image: String
     let place: String
 }
+
+struct CategoryItem {
+    let id: Int
+    let name: String
+}
+
+typealias CategoryItems = [CategoryItem]

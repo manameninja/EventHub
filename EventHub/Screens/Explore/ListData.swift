@@ -26,25 +26,14 @@ struct ListData {
     var pageData: [ListSection] {
         [event, nearby]
     }
+    
+    var categories: [CategoryItem] {
+            [
+                .init(id: 1, name: "Sport"),
+                .init(id: 2, name: "Music"),
+                .init(id: 3, name: "Food"),
+                .init(id: 4, name: "Party"),
+                .init(id: 5, name: "Kids")
+            ]
+        }
 }
-
-/*
-import Foundation
- 
-// MARK: - ListData
-struct ListData: Codable {
-    let results: [Result]
-}
-
-// MARK: - Result
-struct Result: Codable {
-    let id: Int
-    let title, slug: String
-    let images: [Image]
-}
-
-// MARK: - Image
-struct Image: Codable {
-    let image: String
-}
-*/
