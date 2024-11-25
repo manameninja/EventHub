@@ -12,7 +12,7 @@ class HeaderViewCell: UITableViewCell {
     
     //    MARK: - UI Elements
     
-    private let eventsName: UILabel = {
+     let eventsName: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "International Band Music Concert"
         $0.numberOfLines = 0

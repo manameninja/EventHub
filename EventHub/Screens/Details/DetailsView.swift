@@ -11,7 +11,7 @@ class DetailsView: UIView {
     
 //    MARK: UI Elements
     
-    private let customNavBar: UIImageView = {
+     let customNavBar: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = UIImage(resource: .customNav)
         return $0
@@ -23,7 +23,7 @@ class DetailsView: UIView {
         return $0
     }(UIButton())
     
-    private let navBarLabel: UILabel = {
+      let navBarLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Event Details"
         $0.textColor = .white

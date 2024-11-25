@@ -12,7 +12,7 @@ class FooterViewCell: UITableViewCell {
     
 //    MARK: - UI Elements
     
-    private let titleEvent: UILabel = {
+     let titleEvent: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "About Event"
         $0.font = UIFont.systemFont(ofSize: 18)
@@ -20,7 +20,7 @@ class FooterViewCell: UITableViewCell {
         return $0
     }(UILabel())
     
-    private let descriptionEvent: UILabel = {
+     let descriptionEvent: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.numberOfLines = 0
         $0.font = UIFont.systemFont(ofSize: 14, weight: .light)

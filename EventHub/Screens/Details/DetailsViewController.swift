@@ -6,11 +6,24 @@
 //
 
 import UIKit
+import Kingfisher
 
 class DetailsViewController: UIViewController {
-    
     //    MARK: - UI Elements
     private let customView = DetailsView()
+    
+//    MARK: - Properties
+    private var model: Event?
+    
+//    MARK: - Initializations
+//    init(model: Event) {
+//        self.model = model
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     //    MARK: - Life Cycle
     override func viewDidLoad() {
@@ -37,6 +50,22 @@ class DetailsViewController: UIViewController {
         customView.infoTableView.allowsSelection = false
     }
     
+    private func setupDataToNavBar() {
+        customView.customNavBar.kf.setImage(
+            with: URL(string: model?.images?.first?.imageUrl ?? ""),
+            placeholder: UIImage(named: "CustomNav")
+        )
+    }
+    
+//    private func setupDataToCell(to cell: UITableViewCell, from data: Event, _ row: Int? = nil) {
+//        if let headerCell = cell as? HeaderViewCell {
+//            headerCell.eventsName.text = model?.title
+//        } else if let infoCell = cell as? InfoTableViewCell {
+//            switch row {
+//            case 1: infoCell.infoSubTitle.text = model.eventDate
+//            }
+//        }
+//    }
     
 }
 
@@ -79,13 +108,13 @@ extension DetailsViewController: UITableViewDataSource {
 extension DetailsViewController {
     
     @objc func shareTapped() {
-        let activityVC = UIActivityViewController(activityItems: [], applicationActivities: nil)
+        let activityVC = UIActivityViewController(activityItems: [model?.url ?? ""], applicationActivities: nil)
         activityVC.popoverPresentationController?.sourceView = self.view
         
         self.present(activityVC, animated: true)
     }
 }
 
-#Preview {
-    DetailsViewController()
-}
+//#Preview {
+//    DetailsViewController()
+//}
