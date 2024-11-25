@@ -50,7 +50,6 @@ extension SearchViewController: SearchViewProtocol {
     //MARK: - Search text field delegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
         return false
     }
     

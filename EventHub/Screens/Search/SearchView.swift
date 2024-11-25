@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol SearchViewProtocol: AnyObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchTextFieldDelegate {
+protocol SearchViewProtocol: AnyObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     func didTappedFilterButton()
     func didTappedBackButton()
 }
@@ -31,26 +31,34 @@ final class SearchView: UIView {
         return button
     }()
     
-    private let searchField: UISearchTextField = {
-        let field = UISearchTextField()
-        field.leftView?.tintColor = .primaryBlue
+    private let searchImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage.searchPurple
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private let searchField: UITextField = {
+        let field = UITextField()
+        field.font = .systemFont(ofSize: 24)
+        field.tintColor = .primaryBlue
         field.textColor = .primaryBlue
-        field.placeholder = "Search..."
-        
-        let rightImageView = UIImageView(image: UIImage(systemName: "xmark.circle.fill"))
-        rightImageView.tintColor = .primaryBlue
-        field.rightView = rightImageView
-        field.rightViewMode = .whileEditing
-        
-        field.layer.borderColor = UIColor.red.cgColor
-        field.layer.borderWidth = 1.0
-        field.layer.cornerRadius = 1.0
-        
-        let apperance = UISearchTextField.appearance().backgroundColor = .clear
-        
-        field.
-        
+        field.placeholder = " Search..."
         return field
+    }()
+    
+    private let filterButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .primaryBlue
+        button.setImage(
+            UIImage(systemName: "line.3.horizontal.decrease.circle.fill"),
+            for: .normal
+        )
+        button.setTitle(" Filters", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12)
+        button.tintColor = .white
+        button.layer.cornerRadius = 16
+        return button
     }()
     
     private let filterhButton: UIButton = {
@@ -121,8 +129,9 @@ private extension SearchView {
         [
             titleLabel,
             backButton,
+            searchImageView,
             searchField,
-            filterhButton,
+            filterButton,
             noFavoritesLabel,
             collectionView
         ].forEach {
@@ -142,20 +151,25 @@ private extension SearchView {
             backButton.widthAnchor.constraint(equalToConstant: 24),
             backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             
-            filterhButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
-            filterhButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            filterhButton.heightAnchor.constraint(equalToConstant: 32),
-            filterhButton.widthAnchor.constraint(equalToConstant: 75),
+            searchImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
+            searchImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            searchImageView.heightAnchor.constraint(equalToConstant: 24),
+            searchImageView.widthAnchor.constraint(equalToConstant: 24),
             
-            searchField.topAnchor.constraint(equalTo: filterhButton.topAnchor),
-            searchField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            searchField.trailingAnchor.constraint(equalTo: filterhButton.leadingAnchor, constant: -8),
-            searchField.bottomAnchor.constraint(equalTo: filterhButton.bottomAnchor),
+            filterButton.centerYAnchor.constraint(equalTo: searchImageView.centerYAnchor),
+            filterButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            filterButton.heightAnchor.constraint(equalToConstant: 32),
+            filterButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            searchField.centerYAnchor.constraint(equalTo: searchImageView.centerYAnchor),
+            searchField.leadingAnchor.constraint(equalTo: searchImageView.trailingAnchor, constant: 10),
+            searchField.trailingAnchor.constraint(equalTo: filterButton.leadingAnchor, constant: 10),
+            searchField.heightAnchor.constraint(equalToConstant: 32),
             
             noFavoritesLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             noFavoritesLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             
-            collectionView.topAnchor.constraint(equalTo: filterhButton.bottomAnchor, constant: 32),
+            collectionView.topAnchor.constraint(equalTo: filterButton.bottomAnchor, constant: 32),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
