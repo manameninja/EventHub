@@ -14,8 +14,13 @@ struct ListItem {
 }
 
 struct CategoryItem {
-    let id: Int
+//    let id: Int
     let name: String
+    
+    init(from category: Category) {
+        self.name = category.name ?? ""
+    }
 }
 
 typealias CategoryItems = [CategoryItem]
+

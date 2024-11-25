@@ -12,7 +12,7 @@ class ExploreViewController: UIViewController {
     // MARK: - Properties
     let exploreView = ExploreView()
     private let sections = ListData.shared.pageData
-    private let category = ListData.shared.categories
+    private var category: [CategoryItem] = []
     
     // MARK: - LifeCycle
     override func loadView() {
@@ -22,6 +22,12 @@ class ExploreViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         exploreView.setDelegates(self)
+        DataManager.shared.getCategories { categories in
+            DispatchQueue.main.async {
+                self.category = categories.map {CategoryItem(from: $0)}
+                self.exploreView.categoryCollectionView.reloadData()
+            }
+        }
     }
 
 }
@@ -132,6 +138,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
         if collectionView == exploreView.categoryCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
                 return UICollectionViewCell() }
+            
             cell.configureCell(category: category[indexPath.row].name)
             
             return cell

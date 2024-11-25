@@ -65,7 +65,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
             mainView.topAnchor.constraint(equalTo: topAnchor),
             mainView.bottomAnchor.constraint(equalTo: bottomAnchor),
             mainView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            mainView.widthAnchor.constraint(equalToConstant: 106),
+//            mainView.widthAnchor.constraint(equalToConstant: 106),
             
             logoImageView.heightAnchor.constraint(equalToConstant: 17),
             logoImageView.widthAnchor.constraint(equalToConstant: 17),
@@ -73,6 +73,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
             logoImageView.centerYAnchor.constraint(equalTo: mainView.centerYAnchor),
             
             categoryLabel.leadingAnchor.constraint(equalTo: logoImageView.trailingAnchor, constant: 8),
+            categoryLabel.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -15),
             categoryLabel.centerYAnchor.constraint(equalTo: mainView.centerYAnchor)
         ])
     }
