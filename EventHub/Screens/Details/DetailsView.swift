@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class DetailsView: UIView {
     
@@ -27,7 +28,7 @@ class DetailsView: UIView {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Event Details"
         $0.textColor = .white
-        $0.font = UIFont.systemFont(ofSize: 24)
+          $0.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         return $0
     }(UILabel())
     
@@ -73,24 +74,31 @@ class DetailsView: UIView {
         setupConstraints()
     }
     
+    func setNavBar(model: Event) {
+        customNavBar.kf.setImage(
+            with: URL(string: model.images?.first?.imageUrl ?? ""),
+            placeholder: UIImage(named: "CustomNav")
+        )
+    }
+    
     //MARK: - Setup Constraints
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             customNavBar.topAnchor.constraint(equalTo: topAnchor),
             customNavBar.leadingAnchor.constraint(equalTo: leadingAnchor),
             customNavBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            customNavBar.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),
+            customNavBar.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.27),
             
-            backButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 5),
+            backButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: -5),
             backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
             backButton.heightAnchor.constraint(equalToConstant: 50),
             backButton.widthAnchor.constraint(equalToConstant: 50),
             
             navBarLabel.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 5),
-            navBarLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 15),
+            navBarLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 5),
             
             bookmarkButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
-            bookmarkButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 5),
+            bookmarkButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: -5),
             bookmarkButton.heightAnchor.constraint(equalToConstant: 50),
             bookmarkButton.widthAnchor.constraint(equalToConstant: 50),
             

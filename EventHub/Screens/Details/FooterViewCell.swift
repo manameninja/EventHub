@@ -10,26 +10,37 @@ import UIKit
 class FooterViewCell: UITableViewCell {
     static let identifier = "FooterInfoTableView"
     
-//    MARK: - UI Elements
+    //    MARK: - UI Elements
     
-     let titleEvent: UILabel = {
+    private let titleEvent: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "About Event"
-        $0.font = UIFont.systemFont(ofSize: 18)
+        $0.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         $0.textAlignment = .left
         return $0
     }(UILabel())
     
-     let descriptionEvent: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.numberOfLines = 0
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        $0.text = "fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd fgfdgdf fdgdfgfd dfgdfgd dfgdfgdfg dfgdfgd dfgdfgd fdgdfgd"
-        $0.textAlignment = .left
-        return $0
-    }(UILabel())
+    let descriptionEvent: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 16
+        let text = "dsfdsf sdfsd sdfdsfsd dsfsdf sdfsdf sdfsdfsd fsfds fdsf sdfsd sdfdsfsd dsfsdf sdfsdf sdfsdfsd fsfds fdsf sdfsd sdfdsfsd dsfsdf sdfsdf sdfsdfsd fsfds fdsf sdfsd sdfdsfsd dsfsdf sdfsdf sdfsdfsd fsfds "
+        let attributedString = NSAttributedString(
+            string: text,
+            attributes: [
+                .paragraphStyle: paragraphStyle,
+                .font: UIFont.systemFont(ofSize: 16, weight: .light)
+            ]
+        )
+        
+        label.attributedText = attributedString
+        return label
+    }()
     
-//    MARK: - Initializations
+    //    MARK: - Initializations
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,20 +51,26 @@ class FooterViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    MARK: - Setup UI
+    //    MARK: - Setup UI
     
     private func setupUI() {
         contentView.addSubviews(titleEvent, descriptionEvent)
         setupConstraints()
     }
     
-//    MARK: - Setup Constraints
+    func setCell(model: Event?) {
+        if let model {
+            descriptionEvent.text = model.text
+        }
+    }
+    
+    //    MARK: - Setup Constraints
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             titleEvent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             titleEvent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleEvent.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 15),
+            titleEvent.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 20),
             
             descriptionEvent.topAnchor.constraint(equalTo: titleEvent.bottomAnchor, constant: 20),
             descriptionEvent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

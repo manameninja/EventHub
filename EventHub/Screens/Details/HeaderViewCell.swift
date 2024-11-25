@@ -19,7 +19,7 @@ class HeaderViewCell: UITableViewCell {
         $0.textAlignment = .left
         $0.textColor = .black
         $0.lineBreakMode = .byWordWrapping
-        $0.font = UIFont.systemFont(ofSize: 35, weight: .light)
+         $0.font = UIFont(name: "AvenirNext-Regular", size: 35)
         return $0
     }(UILabel())
     
@@ -41,12 +41,20 @@ class HeaderViewCell: UITableViewCell {
         setupConstraints()
     }
     
+    func setCell(model: Event?) {
+        if let model {
+            eventsName.text = model.title
+        }
+    }
+    
+//    MARK: - Setup Constraints
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             eventsName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             eventsName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            eventsName.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 30),
-            eventsName.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            eventsName.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 40),
+            eventsName.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
     }
     
