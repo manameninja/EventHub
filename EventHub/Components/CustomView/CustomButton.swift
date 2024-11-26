@@ -36,7 +36,7 @@ extension CustomButton {
         layer.masksToBounds = false
         
         
-        layer.shadowColor = UIColor.addShadowDark.cgColor
+        layer.shadowColor = UIColor.shadowDark.cgColor
         layer.shadowOpacity = 0.7
         layer.shadowOffset = CGSize(width: 5, height: 5)
         layer.shadowRadius = 10
