@@ -81,6 +81,7 @@ final class SearchView: UIView {
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 12
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.register(EventCell.self, forCellWithReuseIdentifier: EventCell.description())
@@ -91,7 +92,7 @@ final class SearchView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .backgroundLightGray
+        backgroundColor = .systemBackground
         
         setupUI()
         setupConstrainst()
@@ -125,7 +126,7 @@ final class SearchView: UIView {
 //MARK: - Setup UI
 private extension SearchView {
     func setupUI() {
-        backgroundColor = .backgroundLightGray
+        backgroundColor = .systemBackground
         [
             titleLabel,
             backButton,
