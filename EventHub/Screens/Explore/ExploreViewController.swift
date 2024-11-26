@@ -186,8 +186,12 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = category[indexPath.row].name
-        cell.backgroundColor = .blue
+        var content = cell.defaultContentConfiguration()
+        content.text = category[indexPath.row].name
+        content.textProperties.color = .white
+        content.textProperties.font = .systemFont(ofSize: 12)
+        cell.contentConfiguration = content
+        cell.backgroundColor = .PrimaryBlue
         cell.selectionStyle = .none
         return cell
     }

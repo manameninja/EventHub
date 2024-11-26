@@ -27,8 +27,19 @@ final class ExploreView: UIView {
     
     let currentLocationButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Current Location", for: .normal)
-        button.setTitleColor(.TypographyGray, for: .normal)
+        let title = "Current Location"
+        let icon = UIImage(named: "arrowtriangle")?.withRenderingMode(.alwaysTemplate)
+        var configuration = UIButton.Configuration.plain()
+        configuration.title = title
+        configuration.image = icon
+        configuration.imagePlacement = .trailing
+        configuration.imagePadding = 8
+        configuration.baseForegroundColor = .ShadowBlue
+        configuration.baseBackgroundColor = .clear
+        configuration.imageColorTransformer = UIConfigurationColorTransformer { _ in
+                .white
+        }
+        button.configuration = configuration
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -41,7 +52,7 @@ final class ExploreView: UIView {
         let image = UIImage(systemName: "bell.badge")?.withRenderingMode(.alwaysOriginal)
         button.setImage(image, for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .blue
+        button.backgroundColor = .LightBlue
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -49,7 +60,7 @@ final class ExploreView: UIView {
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "Search..."
-        searchBar.barTintColor = .PrimaryBlue
+        searchBar.barTintColor = .ShadowBlue
         searchBar.barStyle = .default
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
@@ -73,8 +84,8 @@ final class ExploreView: UIView {
         configuration.imagePlacement = .leading
         configuration.contentInsets.leading = 5
         configuration.imagePadding = 5
-        button.tintColor = .BackgroundGray
-        button.backgroundColor = .blue
+        button.tintColor = .white
+        button.backgroundColor = .LightBlue
         button.configuration = configuration
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -97,8 +108,8 @@ final class ExploreView: UIView {
     let categoryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 65
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 100)
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        layout.minimumLineSpacing = 5
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false

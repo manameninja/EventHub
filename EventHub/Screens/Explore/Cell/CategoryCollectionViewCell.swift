@@ -11,7 +11,6 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     private let mainView: UIView = {
        let view = UIView()
-        view.backgroundColor = .orange
         view.layer.cornerRadius = 25
         view.isUserInteractionEnabled = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -28,8 +27,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     
     private let categoryLabel: UILabel = {
         let label = UILabel()
-        label.text = "Food"
-        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.font = .systemFont(ofSize: 15, weight: .medium)
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -56,16 +54,24 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         ].forEach {mainView.addSubview($0)}
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        mainView.backgroundColor = .blue
+        categoryLabel.text = ""
+    }
+    
     func configureCell(category: String) {
         categoryLabel.text = category
+        mainView.backgroundColor = .accentOrange
     }
     
     private func setContstraints() {
         NSLayoutConstraint.activate([
             mainView.topAnchor.constraint(equalTo: topAnchor),
             mainView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            mainView.leadingAnchor.constraint(equalTo: leadingAnchor),
-//            mainView.widthAnchor.constraint(equalToConstant: 106),
+            mainView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            mainView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            
             
             logoImageView.heightAnchor.constraint(equalToConstant: 17),
             logoImageView.widthAnchor.constraint(equalToConstant: 17),
