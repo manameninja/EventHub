@@ -115,10 +115,6 @@ private extension EventCell {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
-        
-        contentView.layer.cornerRadius = 10
-                contentView.layer.masksToBounds = true
-        
         layer.cornerRadius = 16
         
         layer.shadowColor = UIColor.backgroundShadow.cgColor
