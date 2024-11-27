@@ -9,14 +9,6 @@ import UIKit
 
 final class CategoryCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
-    private let mainView: UIView = {
-       let view = UIView()
-        view.layer.cornerRadius = 25
-        view.isUserInteractionEnabled = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "food")
@@ -47,40 +39,32 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     
     private func setupUI() {
-        contentView.addSubview(mainView)
-        [
-            logoImageView,
-            categoryLabel
-        ].forEach {mainView.addSubview($0)}
+        contentView.addSubview(logoImageView)
+        contentView.addSubview(categoryLabel)
+
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        mainView.backgroundColor = .blue
         categoryLabel.text = ""
     }
     
     func configureCell(category: String) {
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = 25
         categoryLabel.text = category
-        mainView.backgroundColor = .accentOrange
     }
     
     private func setContstraints() {
         NSLayoutConstraint.activate([
-            mainView.topAnchor.constraint(equalTo: topAnchor),
-            mainView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            mainView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            mainView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            
-            
             logoImageView.heightAnchor.constraint(equalToConstant: 17),
             logoImageView.widthAnchor.constraint(equalToConstant: 17),
-            logoImageView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 16),
-            logoImageView.centerYAnchor.constraint(equalTo: mainView.centerYAnchor),
+            logoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            logoImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             categoryLabel.leadingAnchor.constraint(equalTo: logoImageView.trailingAnchor, constant: 8),
-            categoryLabel.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -15),
-            categoryLabel.centerYAnchor.constraint(equalTo: mainView.centerYAnchor)
+            categoryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            categoryLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
 }

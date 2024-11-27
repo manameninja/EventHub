@@ -159,7 +159,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
         if collectionView == exploreView.categoryCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
                 return UICollectionViewCell() }
-            
+            cell.contentView.backgroundColor = indexPath.alternatingColor()
             cell.configureCell(category: category[indexPath.row].name)
             
             return cell
@@ -224,5 +224,21 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         exploreView.currentLocationButton.setTitle(category[indexPath.row].name, for: .normal)
         exploreView.hideTableView()
+    }
+}
+
+// MARK: - Extension IndexPath
+extension IndexPath {
+    func alternatingColor() -> UIColor {
+        switch self.item % 3 {
+        case 0:
+            return .accentGreen
+        case 1:
+            return .accentOrange
+        case 2:
+            return .accentDarkCyan
+        default:
+            return .accentPurple
+        }
     }
 }
