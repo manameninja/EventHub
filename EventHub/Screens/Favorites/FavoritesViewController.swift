@@ -21,14 +21,15 @@ final class FavoritesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         eventList = StorageManager.shared.loadFavorite()
+        favoritesView.collectionView.reloadData()
+        navigationController?.navigationBar.isHidden = true
     }
 }
 
 //MARK: - FavoritesViewProtocol
 extension FavoritesViewController: FavoritesViewProtocol {
     func didTappedSearchButton() {
-        #warning("переход на Search Screen")
-        print("go to Search")
+        navigationController?.pushViewController(SearchViewController(eventList: eventList), animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -63,8 +64,7 @@ extension FavoritesViewController: FavoritesViewProtocol {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("\nбыла нажата ячейка:", indexPath, "\n")
-        #warning("TO DO: вставить переход на детеил")
+        navigationController?.pushViewController(DetailsViewController(model: eventList[indexPath.item]), animated: true)
     }
 }
 

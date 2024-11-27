@@ -104,7 +104,6 @@ final class EventCell: UICollectionViewCell {
 private extension EventCell {
     func setupViews() {
         backgroundColor = .systemBackground
-        
         [
             eventImageView,
             favoriteButton,
@@ -116,8 +115,13 @@ private extension EventCell {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
-        
         layer.cornerRadius = 16
+        
+        layer.shadowColor = UIColor.backgroundShadow.cgColor
+        layer.shadowOpacity = 0.06
+        layer.shadowOffset = CGSize(width: 0, height: 10)
+        layer.shadowRadius = 10
+        layer.masksToBounds = false
     }
     
     func setupConstraints() {
