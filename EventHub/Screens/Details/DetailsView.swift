@@ -8,7 +8,12 @@
 import UIKit
 import Kingfisher
 
-class DetailsView: UIView {
+protocol DetailsViewProtocol: AnyObject {
+    func backButtonTapped()
+}
+
+final class DetailsView: UIView {
+    weak var delegate: DetailsViewProtocol?
     
 //    MARK: UI Elements
     
@@ -60,6 +65,10 @@ class DetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func backButtonTapped() {
+        delegate?.backButtonTapped()
+    }
+    
 //MARK: - SetupUI
     private func setupUI() {
         self.backgroundColor = .white
@@ -72,6 +81,7 @@ class DetailsView: UIView {
             infoTableView
         )
         setupConstraints()
+        setupTargets()
     }
     
     func setNavBar(model: Event) {
@@ -113,5 +123,9 @@ class DetailsView: UIView {
             infoTableView.bottomAnchor.constraint(equalTo: bottomAnchor)
             
         ])
+    }
+    
+    func setupTargets() {
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
     }
 }

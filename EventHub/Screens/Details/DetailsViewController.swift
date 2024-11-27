@@ -31,6 +31,8 @@ class DetailsViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        
+        customView.delegate = self
     }
     
     //    MARK: - SetupUI
@@ -99,6 +101,12 @@ extension DetailsViewController {
         activityVC.popoverPresentationController?.sourceView = self.view
         
         self.present(activityVC, animated: true)
+    }
+}
+
+extension DetailsViewController: DetailsViewProtocol {
+    func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
