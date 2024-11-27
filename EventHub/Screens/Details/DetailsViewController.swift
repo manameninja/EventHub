@@ -35,9 +35,11 @@ class DetailsViewController: UIViewController {
     
     //    MARK: - SetupUI
     private func setupUI() {
+        navigationController?.setNavigationBarHidden(true, animated: false)
         view = customView
         setupTableView()
         customView.shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
+        customView.backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
         customView.setNavBar(model: model)
     }
     
@@ -99,6 +101,10 @@ extension DetailsViewController {
         activityVC.popoverPresentationController?.sourceView = self.view
         
         self.present(activityVC, animated: true)
+    }
+    
+    @objc func backTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

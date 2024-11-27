@@ -18,7 +18,7 @@ class DetailsView: UIView {
         return $0
     }(UIImageView())
     
-    private let backButton: UIButton = {
+    let backButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setImage(UIImage(resource: .back), for: .normal)
         return $0
