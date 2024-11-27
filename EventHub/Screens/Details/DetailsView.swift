@@ -107,9 +107,9 @@ class DetailsView: UIView {
             shareButton.heightAnchor.constraint(equalToConstant: 50),
             shareButton.widthAnchor.constraint(equalToConstant: 50),
             
-            infoTableView.topAnchor.constraint(equalTo: customNavBar.bottomAnchor, constant: 5),
-            infoTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            infoTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            infoTableView.topAnchor.constraint(equalTo: customNavBar.bottomAnchor, constant: 0),
+            infoTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            infoTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             infoTableView.bottomAnchor.constraint(equalTo: bottomAnchor)
             
         ])

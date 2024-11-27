@@ -17,7 +17,7 @@ class HeaderViewCell: UITableViewCell {
         $0.text = "International Band Music Concert"
         $0.numberOfLines = 0
         $0.textAlignment = .left
-        $0.textColor = .black
+         $0.textColor = UIColor.label
         $0.lineBreakMode = .byWordWrapping
          $0.font = UIFont(name: "AvenirNext-Regular", size: 35)
         return $0
@@ -51,8 +51,8 @@ class HeaderViewCell: UITableViewCell {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            eventsName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            eventsName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            eventsName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            eventsName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             eventsName.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 40),
             eventsName.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])

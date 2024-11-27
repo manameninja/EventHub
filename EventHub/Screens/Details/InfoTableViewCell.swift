@@ -71,19 +71,19 @@ class InfoTableViewCell: UITableViewCell {
     //    MARK: - Setup Constraints
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            iconView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            iconView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant:  24),
             iconView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
             iconView.heightAnchor.constraint(equalToConstant: 48),
             iconView.widthAnchor.constraint(equalToConstant: 48),
             iconView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             
             infoTitle.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 10),
-            infoTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+            infoTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -29),
             infoTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             
             infoSubTitle.topAnchor.constraint(equalTo: infoTitle.bottomAnchor, constant: 10),
             infoSubTitle.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 10),
-            infoSubTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
+            infoSubTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -29)
             
         ])
     }
