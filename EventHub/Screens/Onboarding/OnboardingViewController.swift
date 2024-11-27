@@ -19,12 +19,16 @@ class OnboardingViewController: UIPageViewController {
         return $0
     }(UIView())
     
-    private let skipButton: UIButton = {
-        $0.setTitle("Skip", for: .normal)
-        $0.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .normal)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UIButton())
+    private lazy var skipButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Skip", for: .normal)
+        button.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addAction(UIAction { _ in
+            self.nextPage(button)
+        }   , for: .touchUpInside)
+        return button
+    }()
     
     lazy var nextButton: UIButton = {
         let button = UIButton(type: .system)
@@ -33,7 +37,7 @@ class OnboardingViewController: UIPageViewController {
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         button.addAction(UIAction { _ in
-            self.nextPage()
+            self.nextPage(button)
         }   , for: .touchUpInside)
         return button
     }()
@@ -94,6 +98,7 @@ class OnboardingViewController: UIPageViewController {
         delegate = self
         
         setupUI()
+        
     }
     
     //    MARK: - Setup UI
@@ -141,7 +146,11 @@ class OnboardingViewController: UIPageViewController {
         }
     }
     
-    private func nextPage() {
+    private func nextPage(_ sender: UIButton) {
+        if sender == skipButton {
+            navigationController?.pushViewController(LoginViewController(), animated: true)
+        }
+        
         guard let currentVC = viewControllers?.first,
               let currentIndex = pages.firstIndex(of: currentVC) else { return }
         
@@ -152,6 +161,8 @@ class OnboardingViewController: UIPageViewController {
             pageControl.currentPage = nextIndex
             mainTitle.text = helperArray[nextIndex].mainTitle
             subTitle.text = helperArray[nextIndex].subTitle
+        } else {
+            navigationController?.pushViewController(LoginViewController(), animated: true)
         }
     }
     
