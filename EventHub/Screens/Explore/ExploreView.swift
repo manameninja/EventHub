@@ -66,9 +66,9 @@ final class ExploreView: UIView {
         return searchBar
     }()
     
-    // MARK: - Внести правки в код!!!!!
+#warning("message: Внести правки в код")  // MARK: - Внести правки в код!!!!!
     let dataSource = ["Sport", "Music", "Food", "Party", "Kids"]
-    
+
     private lazy var filterButton: UIButton = {
         let button = UIButton(primaryAction: nil)
         var menuChildren: [UIMenuElement] = []

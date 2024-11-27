@@ -50,6 +50,10 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(category: String) {
+        layer.shadowColor = UIColor.gray.cgColor
+        layer.shadowOpacity = 0.9
+        layer.shadowOffset = CGSize(width: 1, height: 3)
+        layer.shadowRadius = 3
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 25
         categoryLabel.text = category
@@ -57,8 +61,6 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     
     private func setContstraints() {
         NSLayoutConstraint.activate([
-            logoImageView.heightAnchor.constraint(equalToConstant: 17),
-            logoImageView.widthAnchor.constraint(equalToConstant: 17),
             logoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logoImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             

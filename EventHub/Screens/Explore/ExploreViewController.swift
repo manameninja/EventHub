@@ -199,6 +199,16 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
+extension ExploreViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if collectionView == exploreView.categoryCollectionView {
+            return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        }
+        return UIEdgeInsets()
+    }
+}
+
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

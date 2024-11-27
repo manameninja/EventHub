@@ -11,7 +11,6 @@ import Kingfisher
 class EventCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
-    
     private let mainView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -36,17 +35,35 @@ class EventCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.distribution = .fill
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
+//    Going
+    private let goingView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
-    private let avatarImage: UIImageView = {
+    private let avatarSize: CGFloat = 24
+    
+    private let topAvatarImage: UIImageView = {
        let imageView = UIImageView()
-        imageView.contentMode = .left
+//        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private let middleAvatarImage: UIImageView = {
+       let imageView = UIImageView()
+//        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private let bottomAvatarImage: UIImageView = {
+       let imageView = UIImageView()
+//        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -59,15 +76,12 @@ class EventCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-//    заменить на layout
-    private let emptyView: UIView = {
-        let view = UIView()
-        return view
-    }()
     
+    // location
     private let locationCell: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)
+        label.numberOfLines = 0
         label.textColor = .BackgroundGray
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -103,7 +117,6 @@ class EventCollectionViewCell: UICollectionViewCell {
     }()
     
 //    mark favorite
-    
     private let favoriteView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -140,10 +153,8 @@ class EventCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Init
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupUI()
         setConstraint()
         layoutIfNeeded()
@@ -154,17 +165,42 @@ class EventCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Actions
-    
     @objc private func toggleFavorite() {
         isFavorite.toggle()
     }
     
     // MARK: - Methods
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         mainView.layer.cornerRadius = mainView.bounds.width / 10
+        
+        topAvatarImage.layer.cornerRadius = avatarSize / 2
+        topAvatarImage.layer.shadowColor = UIColor.gray.cgColor
+        topAvatarImage.layer.shadowOpacity = 0.9
+        topAvatarImage.layer.shadowOffset = CGSize(width: 1, height: 3)
+        topAvatarImage.layer.shadowRadius = 3
+        
+        middleAvatarImage.layer.cornerRadius = avatarSize/2
+        middleAvatarImage.layer.shadowColor = UIColor.gray.cgColor
+        middleAvatarImage.layer.shadowOpacity = 0.9
+        middleAvatarImage.layer.shadowOffset = CGSize(width: 1, height: 3)
+        middleAvatarImage.layer.shadowRadius = 3
+        
+        bottomAvatarImage.layer.cornerRadius = avatarSize/2
+        bottomAvatarImage.layer.shadowColor = UIColor.gray.cgColor
+        bottomAvatarImage.layer.shadowOpacity = 0.9
+        bottomAvatarImage.layer.shadowOffset = CGSize(width: 1, height: 3)
+        bottomAvatarImage.layer.shadowRadius = 3
+        
         imageViewCell.layer.cornerRadius = 20
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        topAvatarImage.image = nil
+        middleAvatarImage.image = nil
+        bottomAvatarImage.image = nil
+        goingLabel.text = ""
     }
     
     private func setupUI() {
@@ -173,7 +209,7 @@ class EventCollectionViewCell: UICollectionViewCell {
             imageViewCell,
             titleCell,
             locationCell,
-            stackView
+            goingView
         ]
             .forEach {mainView.addSubview($0)}
         imageViewCell.addSubview(dateContainerView)
@@ -181,10 +217,12 @@ class EventCollectionViewCell: UICollectionViewCell {
         dateContainerView.addSubview(dateLabel)
         dateContainerView.addSubview(mounthLabel)
         favoriteView.addSubview(favoriteIcon)
-        stackView.addArrangedSubview(avatarImage)
-        stackView.addArrangedSubview(goingLabel)
-        stackView.addArrangedSubview(emptyView)
-        
+        [
+            bottomAvatarImage,
+            middleAvatarImage,
+            topAvatarImage,
+            goingLabel
+        ].forEach { goingView.addSubview($0)}
         tapedFavorite()
     }
     
@@ -200,21 +238,27 @@ class EventCollectionViewCell: UICollectionViewCell {
         }
         imageViewCell.layer.cornerRadius = 10
         titleCell.text = title
-
-        let attachment = NSTextAttachment()
-        attachment.image = UIImage(named: "map-pin")
-        attachment.bounds = CGRect(x: 0, y: -3, width: 16, height: 16)
-        let attributedString = NSMutableAttributedString(attachment: attachment)
-        let text = NSAttributedString(string: " \(location)")
-        attributedString.append(text)
-        locationCell.attributedText = attributedString
         
-        if goingCount > 1 {
-            avatarImage.image = UIImage(named: "women")
+        if !location.isEmpty {
+            let attachment = NSTextAttachment()
+            attachment.image = UIImage(named: "map-pin")
+            attachment.bounds = CGRect(x: 0, y: -3, width: 16, height: 16)
+            let attributedString = NSMutableAttributedString(attachment: attachment)
+            let text = NSAttributedString(string: " \(location)")
+            attributedString.append(text)
+            locationCell.attributedText = attributedString
         }
-        
-        if goingCount >= 0 {
+                
+        if goingCount > 1 {
+            topAvatarImage.image = UIImage(named: "woomen")
+            bottomAvatarImage.image = UIImage(named: "woomen")
+            middleAvatarImage.image = UIImage(named: "manbottom")
             goingLabel.text = "+\(goingCount) Going"
+        } else if goingCount == 1 {
+            topAvatarImage.image = UIImage(named: "woomen")
+            goingLabel.text = "+\(goingCount) Going"
+        } else {
+            goingLabel.isHidden = true
         }
     }
 }
@@ -236,16 +280,33 @@ extension EventCollectionViewCell {
             titleCell.topAnchor.constraint(equalTo: imageViewCell.bottomAnchor, constant: 5),
             titleCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             titleCell.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            
-            stackView.topAnchor.constraint(equalTo: titleCell.bottomAnchor, constant: 10),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
 
-            goingLabel.topAnchor.constraint(equalTo: stackView.topAnchor),
+            goingView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            goingView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            goingView.topAnchor.constraint(equalTo: titleCell.bottomAnchor, constant: 12),
+            goingView.heightAnchor.constraint(equalToConstant: avatarSize),
             
+            topAvatarImage.leadingAnchor.constraint(equalTo: goingView.leadingAnchor),
+            topAvatarImage.centerYAnchor.constraint(equalTo: goingView.centerYAnchor),
+            topAvatarImage.widthAnchor.constraint(equalToConstant: avatarSize),
+            topAvatarImage.heightAnchor.constraint(equalToConstant: avatarSize),
             
-            locationCell.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
-            locationCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            middleAvatarImage.leadingAnchor.constraint(equalTo: topAvatarImage.trailingAnchor, constant: -avatarSize/2.4),
+            middleAvatarImage.centerYAnchor.constraint(equalTo: goingView.centerYAnchor),
+            middleAvatarImage.widthAnchor.constraint(equalToConstant: avatarSize),
+            middleAvatarImage.heightAnchor.constraint(equalToConstant: avatarSize),
+            
+            bottomAvatarImage.leadingAnchor.constraint(equalTo: middleAvatarImage.trailingAnchor, constant: -avatarSize/2.4),
+            bottomAvatarImage.centerYAnchor.constraint(equalTo: goingView.centerYAnchor),
+            bottomAvatarImage.widthAnchor.constraint(equalToConstant: avatarSize),
+            bottomAvatarImage.heightAnchor.constraint(equalToConstant: avatarSize),
+            
+            goingLabel.leadingAnchor.constraint(equalTo: goingView.leadingAnchor, constant: avatarSize*2.4),
+            goingLabel.centerYAnchor.constraint(equalTo: goingView.centerYAnchor),
+            
+            locationCell.topAnchor.constraint(equalTo: goingView.bottomAnchor, constant: 10),
+            locationCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            locationCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             dateContainerView.topAnchor.constraint(equalTo: imageViewCell.topAnchor, constant: 8),
             dateContainerView.leadingAnchor.constraint(equalTo: imageViewCell.leadingAnchor, constant: 8),
