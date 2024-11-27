@@ -11,7 +11,7 @@ class ExploreViewController: UIViewController {
     
     // MARK: - Properties
     let exploreView = ExploreView()
-    private let sections = ListData.shared.pageData
+    private var sections: [ListSection] = []
     private var category: [CategoryItem] = []
     
     // MARK: - LifeCycle
@@ -22,10 +22,31 @@ class ExploreViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         exploreView.setDelegates(self)
+        
         DataManager.shared.getCategories { categories in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                category = categories.map {CategoryItem(from: $0)}
+                exploreView.categoryCollectionView.reloadData()
+            }
+        }
+        
+        DataManager.shared.getEvents(category: "concert") { [weak self] events in
+                    DispatchQueue.main.async {
+                        guard let self = self else { return }
+                        ListData.shared.updateEvents(with: events)
+                        self.sections = ListData.shared.pageData
+                        self.exploreView.collectionView.reloadData()
+                    }
+                }
+        
+        DataManager.shared.getEvents(category: "cinema") { [weak self] events in
             DispatchQueue.main.async {
-                self.category = categories.map {CategoryItem(from: $0)}
-                self.exploreView.categoryCollectionView.reloadData()
+                guard let self = self else { return }
+                ListData.shared.updateEvents(location: events)
+                self.sections = ListData.shared.pageData
+                self.exploreView.collectionView.reloadData()
+                
             }
         }
     }
@@ -149,7 +170,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                 else {
                     return UICollectionViewCell()
                 }
-                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title, location: event[indexPath.row].place)
+                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title, location: event[indexPath.row].place, goingCount: event[indexPath.row].goingCount)
                 
                 return cell
             case .nearby(let event):

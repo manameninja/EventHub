@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class EventCollectionViewCell: UICollectionViewCell {
     
@@ -29,15 +30,45 @@ class EventCollectionViewCell: UICollectionViewCell {
     
     private let titleCell: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.font = .systemFont(ofSize: 18, weight: .bold)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
+    private let stackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .fill
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
+    private let avatarImage: UIImageView = {
+       let imageView = UIImageView()
+        imageView.contentMode = .left
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private let goingLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .blue
+        label.font = .systemFont(ofSize: 12)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+//    заменить на layout
+    private let emptyView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
     private let locationCell: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .medium)
+        label.font = .systemFont(ofSize: 15)
+        label.textColor = .BackgroundGray
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -55,7 +86,8 @@ class EventCollectionViewCell: UICollectionViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "12"
+        label.text = "14"
+        label.font = .systemFont(ofSize: 14)
         label.textColor = .AccentOrange
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -64,6 +96,7 @@ class EventCollectionViewCell: UICollectionViewCell {
     private let mounthLabel: UILabel = {
         let label = UILabel()
         label.text = "June"
+        label.font = .systemFont(ofSize: 14)
         label.textColor = .AccentOrange
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -139,7 +172,8 @@ class EventCollectionViewCell: UICollectionViewCell {
         [
             imageViewCell,
             titleCell,
-            locationCell
+            locationCell,
+            stackView
         ]
             .forEach {mainView.addSubview($0)}
         imageViewCell.addSubview(dateContainerView)
@@ -147,6 +181,9 @@ class EventCollectionViewCell: UICollectionViewCell {
         dateContainerView.addSubview(dateLabel)
         dateContainerView.addSubview(mounthLabel)
         favoriteView.addSubview(favoriteIcon)
+        stackView.addArrangedSubview(avatarImage)
+        stackView.addArrangedSubview(goingLabel)
+        stackView.addArrangedSubview(emptyView)
         
         tapedFavorite()
     }
@@ -157,14 +194,32 @@ class EventCollectionViewCell: UICollectionViewCell {
         favoriteView.isUserInteractionEnabled = true
     }
     
-    func configureCell(imageName: String, title: String, location: String) {
-        imageViewCell.image = UIImage(named: imageName)
+    func configureCell(imageName: String, title: String, location: String, goingCount: Int) {
+        if let url = URL(string: imageName) {
+            imageViewCell.kf.setImage(with: url)
+        }
         imageViewCell.layer.cornerRadius = 10
         titleCell.text = title
-        locationCell.text = location
+
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(named: "map-pin")
+        attachment.bounds = CGRect(x: 0, y: -3, width: 16, height: 16)
+        let attributedString = NSMutableAttributedString(attachment: attachment)
+        let text = NSAttributedString(string: " \(location)")
+        attributedString.append(text)
+        locationCell.attributedText = attributedString
+        
+        if goingCount > 1 {
+            avatarImage.image = UIImage(named: "women")
+        }
+        
+        if goingCount >= 0 {
+            goingLabel.text = "+\(goingCount) Going"
+        }
     }
 }
 
+// MARK: - Constraints
 extension EventCollectionViewCell {
     func setConstraint() {
         NSLayoutConstraint.activate([
@@ -180,8 +235,16 @@ extension EventCollectionViewCell {
             
             titleCell.topAnchor.constraint(equalTo: imageViewCell.bottomAnchor, constant: 5),
             titleCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            titleCell.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             
-            locationCell.topAnchor.constraint(equalTo: titleCell.bottomAnchor, constant: 10),
+            stackView.topAnchor.constraint(equalTo: titleCell.bottomAnchor, constant: 10),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+
+            goingLabel.topAnchor.constraint(equalTo: stackView.topAnchor),
+            
+            
+            locationCell.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
             locationCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             
             dateContainerView.topAnchor.constraint(equalTo: imageViewCell.topAnchor, constant: 8),
@@ -201,7 +264,7 @@ extension EventCollectionViewCell {
             favoriteView.heightAnchor.constraint(equalToConstant: 30),
             
             favoriteIcon.centerYAnchor.constraint(equalTo: favoriteView.centerYAnchor),
-            favoriteIcon.centerXAnchor.constraint(equalTo: favoriteView.centerXAnchor)
+            favoriteIcon.centerXAnchor.constraint(equalTo: favoriteView.centerXAnchor),
         ])
     }
 }

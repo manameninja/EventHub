@@ -11,6 +11,14 @@ struct ListItem {
     let title: String
     let image: String
     let place: String
+    let goingCount: Int
+    
+    init(from event: Event) {
+        self.title = event.title ?? ""
+        self.image = event.images?[0].imageUrl ?? ""
+        self.place = event.place?.address ?? ""
+        self.goingCount = event.goingCount ?? 0
+    }
 }
 
 struct CategoryItem {

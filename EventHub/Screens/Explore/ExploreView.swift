@@ -254,8 +254,8 @@ extension ExploreView {
             bellButton.widthAnchor.constraint(equalToConstant: 36),
             
             categoryCollectionView.topAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -30),
-            categoryCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
-            categoryCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
+            categoryCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            categoryCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             categoryCollectionView.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
