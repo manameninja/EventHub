@@ -9,14 +9,34 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
+    private let logoutButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(systemName: "person")
+        config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .label
+        config.title = "press me to logout"
+        let button = UIButton(configuration: config)
+        return button
+    }()
+    
+    private func setupButton() {
+        view.addSubview(logoutButton)
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            logoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoutButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            logoutButton.heightAnchor.constraint(equalToConstant: 24),
+            logoutButton.widthAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .darkGray
-        // Do any additional setup after loading the view.
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(didTapLogout))
         
-        navigationItem.title = "Explore"
-        
+        setupButton()
+        logoutButton.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
     }
     
     @objc private func didTapLogout() {
