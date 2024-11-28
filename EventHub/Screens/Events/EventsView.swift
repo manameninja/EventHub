@@ -12,14 +12,23 @@ protocol EventsViewDelegate: AnyObject, UICollectionViewDelegate, UICollectionVi
 }
 
 final class EventsView: UIView {
-    weak var delegate: EventsViewDelegate?
-    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Events"
         label.font = .systemFont(ofSize: 24)
         return label
     }()
+    
+    private let eventsSwitch = CustomSwitch(
+        frame: .zero,
+        leftText: "UPCOMING",
+        rightText: "PAST EVENTS",
+        selectedSideColor: .primaryBlue,
+        unselectedSideColor: .typographyGray6,
+        colorForBackground: .black.withAlphaComponent(0.0287),
+        colorForThumb: .systemBackground,
+        thumbShadowColor: .black.withAlphaComponent(0.1)
+    )
     
     private let noFavoritesView: UIView = {
         let view = UIView()
@@ -78,6 +87,8 @@ final class EventsView: UIView {
         return view
     }()
     
+    weak var delegate: EventsViewDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -125,6 +136,7 @@ private extension EventsView {
             noFavoritesView,
             collectionView,
             titleLabel,
+            eventsSwitch,
             exploreButton
         ].forEach { subView in
             subView.translatesAutoresizingMaskIntoConstraints = false
@@ -162,6 +174,11 @@ private extension EventsView {
             titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 28),
+            
+            eventsSwitch.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 22),
+            eventsSwitch.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
+            eventsSwitch.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
+            eventsSwitch.heightAnchor.constraint(equalToConstant: 45),
             
             collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
