@@ -53,17 +53,17 @@ class InfoTableViewCell: UITableViewCell {
         case 1: infoTitle.text = model.nextDate
             infoSubTitle.text = model.nextDate
             iconView.image = UIImage(resource: .date)
-        case 2: infoTitle.text = model.place?.title
-            infoSubTitle.text = model.place?.address
+        case 2: infoTitle.text = model.place?.title ?? "Place unknown"
+            infoSubTitle.text = model.place?.address ?? "Adress unknown"
             iconView.image = UIImage(resource: .location)
-        case 3: infoTitle.text = model.participants?.first?.role?.name
-            infoSubTitle.text = model.participants?.first?.agent?.title
-            iconView.kf.setImage(
-                with: URL(string: model.participants?.first?.agent?.image?.first?.imageUrl ?? ""),
-                placeholder: UIImage(named: "Owner")
-            )
         default:
-            break
+            let index = row - 3
+            infoTitle.text = model.participants?[index].role?.name ?? "Participants unknown"
+                infoSubTitle.text = model.participants?.first?.agent?.title ?? ""
+                iconView.kf.setImage(
+                    with: URL(string: model.participants?.first?.agent?.image?.first?.imageUrl ?? ""),
+                    placeholder: UIImage(systemName: "person")
+                )
         }
     }
     

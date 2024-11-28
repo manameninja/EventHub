@@ -14,7 +14,7 @@ class DetailsViewController: UIViewController {
     
 //    MARK: - Properties
     private var model: Event
-   
+    private var isFavorite = false
     
 //    MARK: - Initializations
     init(model: Event) {
@@ -40,7 +40,9 @@ class DetailsViewController: UIViewController {
         setupTableView()
         customView.shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
         customView.backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        customView.bookmarkButton.addTarget(self, action: #selector(bookmarkTapped), for: .touchUpInside)
         customView.setNavBar(model: model)
+        updateBookmarkButton()
     }
     
     private func setupTableView() {
@@ -65,7 +67,11 @@ extension DetailsViewController: UITableViewDelegate {
 
 extension DetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        if model.participants == nil {
+            return 4
+        } else {
+            return 4 + model.participants!.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,6 +111,30 @@ extension DetailsViewController {
     
     @objc func backTapped() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func bookmarkTapped() {
+        if isFavorite {
+            StorageManager.shared.deleteFavorite(model)
+            isFavorite.toggle()
+        } else {
+            StorageManager.shared.addFavorite(model)
+            isFavorite = true
+        }
+        updateBookmarkButton()
+    }
+}
+
+//MARK: - Methods
+
+extension DetailsViewController {
+    private func updateBookmarkButton() {
+        if StorageManager.shared.loadFavorite().contains(where: { $0.url == model.url }) {
+            customView.bookmarkButton.setImage(UIImage(resource: .bookmarkSelect), for: .normal)
+            isFavorite = true
+        } else {
+            customView.bookmarkButton.setImage(UIImage(resource: .bookmark), for: .normal)
+        }
     }
 }
 

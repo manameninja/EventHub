@@ -53,7 +53,7 @@ class HeaderViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             eventsName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             eventsName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            eventsName.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 40),
+            eventsName.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 45),
             eventsName.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
     }
