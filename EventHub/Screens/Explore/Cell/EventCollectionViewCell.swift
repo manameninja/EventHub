@@ -231,13 +231,28 @@ class EventCollectionViewCell: UICollectionViewCell {
         favoriteView.addGestureRecognizer(tapRecognizer)
         favoriteView.isUserInteractionEnabled = true
     }
+     
+    func dateFormater(event timestamp: Int) -> (day: Int, month: String ) {
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+        let calendar = Calendar.current
+        let day = calendar.component(.day, from: date)
+        let monthIndex = calendar.component(.month, from: date)
+        let dateFormater = DateFormatter()
+        dateFormater.locale = Locale(identifier: "en_US")
+        dateFormater.dateFormat = "d MMMM"
+        let month = dateFormater.monthSymbols[monthIndex - 1]
+        return (day, month)
+    }
     
-    func configureCell(imageName: String, title: String, location: String, goingCount: Int) {
+    func configureCell(imageName: String, title: String, location: String, goingCount: Int, date: Int) {
         if let url = URL(string: imageName) {
             imageViewCell.kf.setImage(with: url)
         }
         imageViewCell.layer.cornerRadius = 10
         titleCell.text = title
+        
+        dateLabel.text = String(dateFormater(event: date).day)
+        mounthLabel.text = dateFormater(event: date).month
         
         if !location.isEmpty {
             let attachment = NSTextAttachment()
@@ -316,7 +331,8 @@ extension EventCollectionViewCell {
             dateLabel.centerXAnchor.constraint(equalTo: dateContainerView.centerXAnchor),
             dateLabel.topAnchor.constraint(equalTo: dateContainerView.topAnchor, constant: 2),
             
-            mounthLabel.centerXAnchor.constraint(equalTo: dateContainerView.centerXAnchor),
+            mounthLabel.leadingAnchor.constraint(equalTo: dateContainerView.leadingAnchor, constant: 2),
+            mounthLabel.trailingAnchor.constraint(equalTo: dateContainerView.trailingAnchor, constant: -2),
             mounthLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor),
             
             favoriteView.topAnchor.constraint(equalTo: imageViewCell.topAnchor, constant: 8),

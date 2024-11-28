@@ -12,12 +12,14 @@ struct ListItem {
     let image: String
     let place: String
     let goingCount: Int
+    let startDate: Int
     
     init(from event: Event) {
         self.title = event.title ?? ""
         self.image = event.images?[0].imageUrl ?? ""
         self.place = event.place?.address ?? ""
         self.goingCount = event.goingCount ?? 0
+        self.startDate = event.eventDate?[0].start ?? 0
     }
 }
 

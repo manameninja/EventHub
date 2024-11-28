@@ -170,7 +170,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                 else {
                     return UICollectionViewCell()
                 }
-                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title, location: event[indexPath.row].place, goingCount: event[indexPath.row].goingCount)
+                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title, location: event[indexPath.row].place, goingCount: event[indexPath.row].goingCount, date: event[indexPath.row].startDate)
                 
                 return cell
             case .nearby(let event):
