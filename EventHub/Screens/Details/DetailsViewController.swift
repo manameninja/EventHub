@@ -11,6 +11,13 @@ import Kingfisher
 class DetailsViewController: UIViewController {
     //    MARK: - UI Elements
     private let customView = DetailsView()
+    lazy var dimmingView: UIView = {
+        $0.backgroundColor = .black
+        $0.alpha = 0.5
+        $0.frame = view.bounds
+        $0.tag = 777
+        return $0
+    }(UIView())
     
 //    MARK: - Properties
     private var model: Event
@@ -103,10 +110,11 @@ extension DetailsViewController: UITableViewDataSource {
 extension DetailsViewController {
     
     @objc func shareTapped() {
-        let activityVC = UIActivityViewController(activityItems: [model.url ?? "", customView.customNavBar.image ?? UIImage(resource: .customNav)], applicationActivities: nil)
-        activityVC.popoverPresentationController?.sourceView = self.view
         
-        self.present(activityVC, animated: true)
+        let customAC = CustomActivityController()
+        customAC.modalPresentationStyle = .pageSheet
+        present(customAC, animated: true)
+        view.addSubview(dimmingView)
     }
     
     @objc func backTapped() {
