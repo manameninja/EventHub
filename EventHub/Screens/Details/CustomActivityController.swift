@@ -17,6 +17,15 @@ class CustomActivityController: UIViewController {
         return $0
     }(UIImageView())
     
+    private let shareLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = "Share with friends"
+        $0.font = UIFont.systemFont(ofSize: 24, weight: .regular)
+        $0.textColor = UIColor.label
+        $0.textAlignment = .left
+        return $0
+    }(UILabel())
+    
 //    MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +49,7 @@ class CustomActivityController: UIViewController {
     
     private func SetupUI() {
         view.backgroundColor = .systemBackground
-        view.addSubview(topLineView)
+        view.addSubviews(topLineView, shareLabel)
         setupConstraints()
     }
     
@@ -52,6 +61,9 @@ class CustomActivityController: UIViewController {
             topLineView.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
             topLineView.heightAnchor.constraint(equalToConstant: 3),
             topLineView.widthAnchor.constraint(equalToConstant: 35),
+            
+            shareLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            shareLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 35)
         ])
     }
 }
