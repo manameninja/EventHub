@@ -109,8 +109,10 @@ class EventCollectionViewCell: UICollectionViewCell {
     
     private let mounthLabel: UILabel = {
         let label = UILabel()
-        label.text = "June"
         label.font = .systemFont(ofSize: 14)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
         label.textColor = .AccentOrange
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

@@ -56,14 +56,14 @@ final class ExploreView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-    private lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "Search..."
-        searchBar.barTintColor = .ShadowBlue
-        searchBar.barStyle = .default
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        return searchBar
+//    SearchBar
+    private lazy var searchBar: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Search..."
+        textField.tintColor = .shadowBlue
+        textField.textColor = .primaryBlue
+        textField.font = .systemFont(ofSize: 24)
+        return textField
     }()
     
 #warning("message: Внести правки в код")  // MARK: - Внести правки в код!!!!!
@@ -227,10 +227,10 @@ final class ExploreView: UIView {
 extension ExploreView {
     func setConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            collectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
-            collectionView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.7),
+            collectionView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.65),
             
             mainView.topAnchor.constraint(equalTo: topAnchor),
             mainView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -239,6 +239,7 @@ extension ExploreView {
             
             searchBar.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 104),
             searchBar.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 24),
+            searchBar.heightAnchor.constraint(equalToConstant: 32),
             
             filterButton.leadingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 10),
             filterButton.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -24),
