@@ -46,6 +46,9 @@ struct Event: Codable {
     }
     
     var nextDate: String {
+        let eventDate = eventDate?.sorted(by: { lhs, rhs in
+            lhs.start ?? 0 < rhs.start ?? 0
+        })
         var nextDate: Int? = eventDate?.last?.start
         
         for date in eventDate ?? [] {
@@ -58,7 +61,7 @@ struct Event: Codable {
         if let unixTime = nextDate {
             let date = Date(timeIntervalSince1970: TimeInterval(unixTime))
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E, MMM d • h:mm a"
+            dateFormatter.dateFormat = "E, YYYY MMM d • h:mm a"
             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             return dateFormatter.string(from: date)
         } else {

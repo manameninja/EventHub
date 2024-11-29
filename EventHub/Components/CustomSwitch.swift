@@ -79,9 +79,9 @@ final class CustomSwitch: UIControl {
     }
     
     @objc func toggleSwitch() {
-        delegate?.switchDidToggle()
-        
         isLeft.toggle()
+        
+        delegate?.switchDidToggle()
         
         UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self else { return }

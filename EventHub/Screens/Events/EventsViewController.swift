@@ -15,6 +15,7 @@ final class EventsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view = eventsView
+        eventsView.setupDelegates(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -24,7 +25,34 @@ final class EventsViewController: UIViewController {
 
 //MARK: - EventsViewDelegate
 extension EventsViewController: EventsViewDelegate {
-    //MARK: - Actions
+    //MARK: - Custom Switch
+    func switchDidToggle() {
+        let startDate: Int
+        let endDate: Int
+        let sevenDays = 60 * 60 * 24 * 7
+        switch eventsView.eventsType() {
+        case .upcoming:
+            startDate = Int(Date().timeIntervalSince1970)
+            endDate = Int(Date().timeIntervalSince1970) + sevenDays
+        case .past:
+            startDate = Int(Date().timeIntervalSince1970) - sevenDays
+            endDate = Int(Date().timeIntervalSince1970)
+        }
+        
+        DataManager.shared.getEvents(
+            startTime: startDate,
+            endTime: endDate
+        ) { events in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                eventList = events
+                eventsView.collectionView.reloadData()
+                eventsView.hideNoData(!events.isEmpty)
+            }
+        }
+    }
+    
+    //MARK: - Explore Button
     func didTappedExploreButton() {
         print(#function)
     }
@@ -50,11 +78,18 @@ extension EventsViewController: EventsViewDelegate {
             title: event.title ?? "unknown",
             address: event.place?.address ?? event.place?.title ?? "unknown"
         )
-        cell.makeFavorite(true)
         
         cell.delegate = self
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: collectionView.frame.width - 24 * 2, height: 106)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigationController?.pushViewController(DetailsViewController(model: eventList[indexPath.item]), animated: true)
     }
 }
 

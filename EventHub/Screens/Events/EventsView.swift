@@ -7,7 +7,12 @@
 
 import UIKit
 
-protocol EventsViewDelegate: AnyObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+enum EventsType: String {
+    case upcoming = "UPCOMING"
+    case past = "PAST EVENTS"
+}
+
+protocol EventsViewDelegate: AnyObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, CustomSwitchDelegate {
     func didTappedExploreButton()
 }
 
@@ -21,8 +26,8 @@ final class EventsView: UIView {
     
     private let eventsSwitch = CustomSwitch(
         frame: .zero,
-        leftText: "UPCOMING",
-        rightText: "PAST EVENTS",
+        leftText: EventsType.upcoming.rawValue,
+        rightText: EventsType.past.rawValue,
         selectedSideColor: .primaryBlue,
         unselectedSideColor: .typographyGray6,
         colorForBackground: .black.withAlphaComponent(0.0287),
@@ -32,6 +37,7 @@ final class EventsView: UIView {
     
     private let noFavoritesView: UIView = {
         let view = UIView()
+        view.backgroundColor = .cyan
         return view
     }()
     
@@ -106,12 +112,16 @@ final class EventsView: UIView {
     func setupDelegates(_ vc: EventsViewDelegate) {
         collectionView.delegate = vc
         collectionView.dataSource = vc
+        eventsSwitch.delegate = vc
         delegate = vc
     }
     
     func hideNoData(_ state: Bool) {
         noFavoritesView.isHidden = state
-        noFavoritesView.isHidden = state
+    }
+    
+    func eventsType() -> EventsType {
+        eventsSwitch.isLeft ? .upcoming : .past
     }
     
     @objc func didTappedExploreButton() {
@@ -180,7 +190,7 @@ private extension EventsView {
             eventsSwitch.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
             eventsSwitch.heightAnchor.constraint(equalToConstant: 45),
             
-            collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
+            collectionView.topAnchor.constraint(equalTo: eventsSwitch.bottomAnchor, constant: 8),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
