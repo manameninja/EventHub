@@ -160,7 +160,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
                 return UICollectionViewCell() }
             cell.contentView.backgroundColor = indexPath.alternatingColor()
-            cell.configureCell(category: category[indexPath.row].name)
+            cell.configureCell(category: category[indexPath.row].name, index: indexPath.row)
             
             return cell
         } else if collectionView == exploreView.collectionView {

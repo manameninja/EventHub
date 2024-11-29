@@ -9,6 +9,8 @@ import UIKit
 
 final class CategoryCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
+    static let identifier = CategoryCollectionViewCell.description()
+    
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = CategoryImage.music
@@ -35,7 +37,6 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     private func setupUI() {
         contentView.addSubview(logoImageView)
         contentView.addSubview(categoryLabel)
-
     }
     
     override func prepareForReuse() {
@@ -43,7 +44,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         categoryLabel.text = ""
     }
     
-    func configureCell(category: String) {
+    func configureCell(category: String, index: Int) {
         layer.shadowColor = UIColor.gray.cgColor
         layer.shadowOpacity = 0.9
         layer.shadowOffset = CGSize(width: 1, height: 3)
@@ -51,6 +52,13 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 25
         categoryLabel.text = category
+        
+        let images = [
+            CategoryImage.food,
+            CategoryImage.game,
+            CategoryImage.music
+        ]
+        logoImageView.image = images[index % images.count]
     }
     
     private func setContstraints() {
