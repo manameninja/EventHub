@@ -33,7 +33,6 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    
     private func setupUI() {
         contentView.addSubview(logoImageView)
         contentView.addSubview(categoryLabel)
@@ -61,6 +60,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         logoImageView.image = images[index % images.count]
     }
     
+    // MARK: - Constraints
     private func setContstraints() {
         NSLayoutConstraint.activate([
             logoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),

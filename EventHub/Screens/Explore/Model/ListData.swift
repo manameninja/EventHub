@@ -8,7 +8,6 @@
 import Foundation
 
 struct ListData {
-    
     static var shared = ListData()
     private var eventList: [Event] = []
     private var nearbyList: [Event] = []
@@ -32,5 +31,4 @@ struct ListData {
     mutating func updateEvents(location events: [Event]) {
         self.nearbyList = events
     }
-
 }

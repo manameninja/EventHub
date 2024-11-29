@@ -9,16 +9,18 @@ import UIKit
 
 protocol CreateLayoutDelegate: AnyObject {
     func createLayout() -> UICollectionViewCompositionalLayout
+    func fetchData(categoryID: String)
 }
 
 final class ExploreView: UIView {
     
     // MARK: - Properties
     weak var delegate: CreateLayoutDelegate?
+    var categoryID: String = "concert"
     
     private let mainView: UIView = {
         let view = UIView()
-        view.backgroundColor = .PrimaryBlue
+        view.backgroundColor = .primaryBlue
         view.layer.cornerRadius = 30
         view.isUserInteractionEnabled = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +36,7 @@ final class ExploreView: UIView {
         configuration.image = icon
         configuration.imagePlacement = .trailing
         configuration.imagePadding = 8
-        configuration.baseForegroundColor = .ShadowBlue
+        configuration.baseForegroundColor = .shadowBlue
         configuration.baseBackgroundColor = .clear
         configuration.imageColorTransformer = UIConfigurationColorTransformer { _ in
                 .white
@@ -56,7 +58,7 @@ final class ExploreView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-//    SearchBar
+    //    SearchBar
     private let searchImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage.searchWhite
@@ -75,16 +77,8 @@ final class ExploreView: UIView {
         return textField
     }()
     
-#warning("message: Внести правки в код")  // MARK: - Внести правки в код!!!!!
-    let dataSource = ["Sport", "Music", "Food", "Party", "Kids"]
-
-    private lazy var filterButton: UIButton = {
+    lazy var filterButton: UIButton = {
         let button = UIButton(primaryAction: nil)
-        var menuChildren: [UIMenuElement] = []
-        for item in dataSource {
-            menuChildren.append(UIAction(title: item, handler: actionClosure))
-        }
-        button.menu = UIMenu(options: .displayInline, children: menuChildren)
         var configuration = UIButton.Configuration.bordered()
         button.showsMenuAsPrimaryAction = true
         button.changesSelectionAsPrimaryAction = false
@@ -100,14 +94,25 @@ final class ExploreView: UIView {
         return button
     }()
     
-    private let actionClosure = { (action:UIAction) in
-        print((action.title))
+    func setupFilterMenu(with categories: [CategoryItem]) {
+        var menuChildren: [UIMenuElement] = []
+        for category in categories {
+            menuChildren.append(UIAction(title: category.name, identifier: UIAction.Identifier(category.slug), handler: actionClosure))
+        }
+        filterButton.menu = UIMenu(options: .displayInline, children: menuChildren)
+    }
+    
+    private lazy var actionClosure: (UIAction) -> Void = { [weak self] action in
+        guard let self = self else { return }
+        let id = action.identifier.rawValue
+        delegate?.fetchData(categoryID: id)
+        print(action.title)
     }
     
     let collectionView: UICollectionView = {
         let collectionViewLayout = UICollectionViewLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.backgroundColor = .BackgroundGray
+        collectionView.backgroundColor = .backgroundGray
         collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -125,7 +130,6 @@ final class ExploreView: UIView {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-    
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -190,29 +194,29 @@ final class ExploreView: UIView {
     }
     
     private func setViews() {
-        backgroundColor = .BackgroundGray
+        backgroundColor = .backgroundGray
         let backgroundView = UIView()
         backgroundView.backgroundColor = backgroundColor
         [
             mainView,
             collectionView,
             categoryCollectionView
-        ].forEach {addSubview($0)}
-        
+        ]
+            .forEach {addSubview($0)}
         [
             searchImage,
             searchBar,
             filterButton,
             currentLocationButton,
             bellButton
-        ].forEach {mainView.addSubview($0)}
+        ]
+            .forEach {mainView.addSubview($0)}
         
         collectionView.register(EventCollectionViewCell.self, forCellWithReuseIdentifier: EventCollectionViewCell.identifier)
-        categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CategoryCell")
-        collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderCell")
+        categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
+        collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCell.identifier)
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
         addTableView(frames: currentLocationButton.frame)
     }
     
@@ -231,7 +235,7 @@ final class ExploreView: UIView {
     }
 }
 
-// MARK: - Extensions SetConstraints
+// MARK: - SetConstraints
 extension ExploreView {
     func setConstraints() {
         NSLayoutConstraint.activate([

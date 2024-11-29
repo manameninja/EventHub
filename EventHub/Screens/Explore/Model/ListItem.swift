@@ -24,11 +24,12 @@ struct ListItem {
 }
 
 struct CategoryItem {
-//    let id: Int
+    let slug: String
     let name: String
     
     init(from category: Category) {
         self.name = category.name ?? ""
+        self.slug = category.slug ?? ""
     }
 }
 

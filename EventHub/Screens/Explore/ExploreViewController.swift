@@ -27,11 +27,12 @@ class ExploreViewController: UIViewController {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 category = categories.map {CategoryItem(from: $0)}
+                exploreView.setupFilterMenu(with: category)
                 exploreView.categoryCollectionView.reloadData()
             }
         }
         
-        DataManager.shared.getEvents(category: "concert") { [weak self] events in
+        DataManager.shared.getEvents(category: exploreView.categoryID) { [weak self] events in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 ListData.shared.updateEvents(with: events)
@@ -46,15 +47,24 @@ class ExploreViewController: UIViewController {
                 ListData.shared.updateEvents(location: events)
                 self.sections = ListData.shared.pageData
                 self.exploreView.collectionView.reloadData()
-                
             }
         }
     }
-    
 }
 
 // MARK: - CreateLayoutDelegate
 extension ExploreViewController: CreateLayoutDelegate {
+    func fetchData(categoryID: String) {
+        DataManager.shared.getEvents(category: categoryID) { [weak self] events in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                ListData.shared.updateEvents(with: events)
+                self.sections = ListData.shared.pageData
+                self.exploreView.collectionView.reloadData()
+            }
+        }
+    }
+    
     func createLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout {[weak self] sectionIndex, _ in
             guard let self = self else { return nil }
@@ -134,7 +144,7 @@ extension ExploreViewController: CreateLayoutDelegate {
     }
 }
 
-// MARK: - CollectionView Delegate
+// MARK: - CollectionViewDelegate, UICollectionViewDataSource
 extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -157,7 +167,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == exploreView.categoryCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as? CategoryCollectionViewCell else {
                 return UICollectionViewCell() }
             cell.contentView.backgroundColor = indexPath.alternatingColor()
             cell.configureCell(category: category[indexPath.row].name, index: indexPath.row)
@@ -186,10 +196,29 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
         return UICollectionViewCell()
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == exploreView.categoryCollectionView {
+            guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+            fetchData(categoryID: category[indexPath.row].slug)
+            print("\(category[indexPath.row].slug)")
+            UIView
+                .animate(
+                    withDuration: 0.1,
+                    animations: { cell.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+                    }) {
+                        _ in UIView
+                            .animate(
+                                withDuration: 0.1,
+                                animations: { cell.transform = CGAffineTransform.identity
+                                })
+                    }
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderCell", for: indexPath) as! HeaderCell
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCell.identifier, for: indexPath) as! HeaderCell
             header.configureHeader(categoryName: sections[indexPath.section].title)
             
             return header
@@ -203,6 +232,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
 extension ExploreViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if collectionView == exploreView.categoryCollectionView {
+            
             return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         }
         return UIEdgeInsets()

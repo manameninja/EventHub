@@ -8,20 +8,14 @@
 import UIKit
 
 class HeaderCell: UICollectionReusableView {
+    // MARK: - Properties
+    static let identifier = HeaderCell.description()
     
-    private let headerLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.textAlignment = .left
-        label.textColor = .black
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
+    private let headerLabel = UILabel(fontSize: 24, color: .black, weight: .bold)
     private let seeAllButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("See All", for: .normal)
-        button.setTitleColor(.TypographyGray, for: .normal)
+        button.setTitleColor(.typographyGray, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -29,11 +23,9 @@ class HeaderCell: UICollectionReusableView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         addSubview(headerLabel)
         addSubview(seeAllButton)
         setConstraints()
-        
         seeAllButton.addTarget(self, action: #selector(tapedSeeAll), for: .touchUpInside)
     }
     
@@ -42,17 +34,16 @@ class HeaderCell: UICollectionReusableView {
     }
     
     // MARK: - Actions
-    
     @objc private func tapedSeeAll() {
         print("tap see all \(headerLabel.text!)")
     }
     
     // MARK: - Methods
-    
     func configureHeader(categoryName: String) {
         headerLabel.text = categoryName
     }
     
+    // MARK: - Constraints
     private func setConstraints() {
         NSLayoutConstraint.activate([
             headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor),

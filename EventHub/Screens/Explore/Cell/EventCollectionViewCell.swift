@@ -67,7 +67,7 @@ class EventCollectionViewCell: UICollectionViewCell {
     // location
     private let locationCell = LabelFactory.locationLabel(fontSize: 15, color: .backgroundGray)
     
-    //    дата
+    //    date event
     private let dateContainerView = UIView(background: .white, opacity: 0.7)
     private let dateLabel = UILabel(fontSize: 14, color: .accentOrange, weight: .regular)
     private let mounthLabel = LabelFactory.mounthLabel(fontSize: 14, color: .accentOrange, scale: 0.5)
@@ -91,11 +91,7 @@ class EventCollectionViewCell: UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             if isSelected {
-                layer.borderWidth = 2
-                layer.borderColor = UIColor.green.cgColor
                 print("tap on cell \(titleCell.text!)")
-            } else {
-                layer.borderWidth = 0
             }
         }
     }
@@ -156,7 +152,8 @@ class EventCollectionViewCell: UICollectionViewCell {
             middleAvatarImage,
             topAvatarImage,
             goingLabel
-        ].forEach { goingView.addSubview($0)}
+        ]
+            .forEach { goingView.addSubview($0)}
         tapedFavorite()
     }
     

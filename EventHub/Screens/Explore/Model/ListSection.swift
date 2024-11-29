@@ -23,7 +23,7 @@ enum ListSection {
         items.count
     }
     
-//    название header sections
+    //    название header sections
     var title: String {
         switch self {
         case .event(_):
