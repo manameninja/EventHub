@@ -57,12 +57,21 @@ final class ExploreView: UIView {
         return button
     }()
 //    SearchBar
-    private lazy var searchBar: UITextField = {
+    private let searchImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage.searchWhite
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private let searchBar: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Search..."
+        textField.placeholder = " Search..."
         textField.tintColor = .shadowBlue
-        textField.textColor = .primaryBlue
+        textField.textColor = .white
         textField.font = .systemFont(ofSize: 24)
+        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
@@ -191,6 +200,7 @@ final class ExploreView: UIView {
         ].forEach {addSubview($0)}
         
         [
+            searchImage,
             searchBar,
             filterButton,
             currentLocationButton,
@@ -232,21 +242,25 @@ extension ExploreView {
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
             collectionView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.65),
             
-            mainView.topAnchor.constraint(equalTo: topAnchor),
-            mainView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            mainView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            mainView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.22),
+            mainView.topAnchor.constraint(equalTo: self.topAnchor),
+            mainView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            mainView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            mainView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.22),
             
-            searchBar.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 104),
-            searchBar.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 24),
-            searchBar.heightAnchor.constraint(equalToConstant: 32),
+            searchImage.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 24),
+            searchImage.widthAnchor.constraint(equalToConstant: 24),
+            searchImage.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 110),
+            
+            searchBar.centerYAnchor.constraint(equalTo: searchImage.centerYAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: searchImage.trailingAnchor, constant: 10),
+            searchBar.widthAnchor.constraint(lessThanOrEqualTo: mainView.widthAnchor, multiplier: 0.5),
             
             filterButton.leadingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 10),
             filterButton.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -24),
             filterButton.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor),
             filterButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 32),
             
-            currentLocationButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 5),
+            currentLocationButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             currentLocationButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
             
             bellButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),
