@@ -11,19 +11,13 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "food")
+        imageView.image = CategoryImage.music
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let categoryLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 15, weight: .medium)
-        label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let categoryLabel = UILabel(fontSize: 15, color: .white, weight: .medium)
     
     // MARK: - Init
     override init(frame: CGRect) {

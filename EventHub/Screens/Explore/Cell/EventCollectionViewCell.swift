@@ -11,6 +11,8 @@ import Kingfisher
 class EventCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
+    static let identifier = EventCollectionViewCell.description()
+    
     private let mainView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -27,110 +29,54 @@ class EventCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let titleCell: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .bold)
-        label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let titleCell = UILabel(fontSize: 18, color: .black, weight: .bold)
     
-//    Going
+    //    Going
     private let goingView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    private let avatarSize: CGFloat = 24
-    
     private let topAvatarImage: UIImageView = {
-       let imageView = UIImageView()
-//        imageView.clipsToBounds = true
+        let imageView = UIImageView()
+        //        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private let middleAvatarImage: UIImageView = {
-       let imageView = UIImageView()
-//        imageView.clipsToBounds = true
+        let imageView = UIImageView()
+        //        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private let bottomAvatarImage: UIImageView = {
-       let imageView = UIImageView()
-//        imageView.clipsToBounds = true
+        let imageView = UIImageView()
+        //        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let goingLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = .blue
-        label.font = .systemFont(ofSize: 12)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let goingLabel = LabelFactory.goingLabel(fontSize: 12, color: .blue)
     
     // location
-    private let locationCell: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 15)
-        label.numberOfLines = 0
-        label.textColor = .BackgroundGray
-        label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let locationCell = LabelFactory.locationLabel(fontSize: 15, color: .backgroundGray)
     
-    //    дата на imageView
-    private let dateContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.opacity = 0.7
-        view.layer.cornerRadius = 10
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    //    дата
+    private let dateContainerView = UIView(background: .white, opacity: 0.7)
+    private let dateLabel = UILabel(fontSize: 14, color: .accentOrange, weight: .regular)
+    private let mounthLabel = LabelFactory.mounthLabel(fontSize: 14, color: .accentOrange, scale: 0.5)
     
-    private let dateLabel: UILabel = {
-        let label = UILabel()
-        label.text = "14"
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .AccentOrange
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let mounthLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
-        label.textAlignment = .center
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.5
-        label.textColor = .AccentOrange
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-//    mark favorite
-    private let favoriteView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.opacity = 0.7
-        view.layer.cornerRadius = 10
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
+    //    mark favorite
+    private let favoriteView = UIView(background: .white, opacity: 0.7)
     private let favoriteIcon: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "bookmark")
+        imageView.image = K.imageBookmark
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -138,7 +84,7 @@ class EventCollectionViewCell: UICollectionViewCell {
     
     private var isFavorite: Bool = false {
         didSet {
-            favoriteIcon.image = UIImage(named: isFavorite ? "bookmark" : "bookmarkFill")
+            favoriteIcon.image =  isFavorite ? K.imageBookmark : K.imageBookmarkFill
         }
     }
     
@@ -176,23 +122,9 @@ class EventCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
         mainView.layer.cornerRadius = mainView.bounds.width / 10
         
-        topAvatarImage.layer.cornerRadius = avatarSize / 2
-        topAvatarImage.layer.shadowColor = UIColor.gray.cgColor
-        topAvatarImage.layer.shadowOpacity = 0.9
-        topAvatarImage.layer.shadowOffset = CGSize(width: 1, height: 3)
-        topAvatarImage.layer.shadowRadius = 3
-        
-        middleAvatarImage.layer.cornerRadius = avatarSize/2
-        middleAvatarImage.layer.shadowColor = UIColor.gray.cgColor
-        middleAvatarImage.layer.shadowOpacity = 0.9
-        middleAvatarImage.layer.shadowOffset = CGSize(width: 1, height: 3)
-        middleAvatarImage.layer.shadowRadius = 3
-        
-        bottomAvatarImage.layer.cornerRadius = avatarSize/2
-        bottomAvatarImage.layer.shadowColor = UIColor.gray.cgColor
-        bottomAvatarImage.layer.shadowOpacity = 0.9
-        bottomAvatarImage.layer.shadowOffset = CGSize(width: 1, height: 3)
-        bottomAvatarImage.layer.shadowRadius = 3
+        setShadowToImage(imageView: topAvatarImage, cornerRadius: K.avatarSize/2)
+        setShadowToImage(imageView: middleAvatarImage, cornerRadius: K.avatarSize/2)
+        setShadowToImage(imageView: bottomAvatarImage, cornerRadius: K.avatarSize/2)
         
         imageViewCell.layer.cornerRadius = 20
     }
@@ -233,8 +165,16 @@ class EventCollectionViewCell: UICollectionViewCell {
         favoriteView.addGestureRecognizer(tapRecognizer)
         favoriteView.isUserInteractionEnabled = true
     }
-     
-    func dateFormater(event timestamp: Int) -> (day: Int, month: String ) {
+    
+    private func setShadowToImage(imageView: UIImageView, cornerRadius radius: CGFloat) {
+        imageView.layer.cornerRadius = radius
+        imageView.layer.shadowColor = UIColor.gray.cgColor
+        imageView.layer.shadowOpacity = 0.9
+        imageView.layer.shadowOffset = CGSize(width: 1, height: 3)
+        imageView.layer.shadowRadius = 3
+    }
+    
+    private func dateFormater(event timestamp: Int) -> (day: Int, month: String ) {
         let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
         let calendar = Calendar.current
         let day = calendar.component(.day, from: date)
@@ -258,21 +198,21 @@ class EventCollectionViewCell: UICollectionViewCell {
         
         if !location.isEmpty {
             let attachment = NSTextAttachment()
-            attachment.image = UIImage(named: "map-pin")
+            attachment.image = K.imagePin
             attachment.bounds = CGRect(x: 0, y: -3, width: 16, height: 16)
             let attributedString = NSMutableAttributedString(attachment: attachment)
             let text = NSAttributedString(string: " \(location)")
             attributedString.append(text)
             locationCell.attributedText = attributedString
         }
-                
+        
         if goingCount > 1 {
-            topAvatarImage.image = UIImage(named: "woomen")
-            bottomAvatarImage.image = UIImage(named: "woomen")
-            middleAvatarImage.image = UIImage(named: "manbottom")
+            topAvatarImage.image = K.topAvatarImage
+            bottomAvatarImage.image = K.bottomAvatarImage
+            middleAvatarImage.image = K.middleAvatarImage
             goingLabel.text = "+\(goingCount) Going"
         } else if goingCount == 1 {
-            topAvatarImage.image = UIImage(named: "woomen")
+            topAvatarImage.image = K.topAvatarImage
             goingLabel.text = "+\(goingCount) Going"
         } else {
             goingLabel.isHidden = true
@@ -297,28 +237,28 @@ extension EventCollectionViewCell {
             titleCell.topAnchor.constraint(equalTo: imageViewCell.bottomAnchor, constant: 5),
             titleCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             titleCell.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-
+            
             goingView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             goingView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             goingView.topAnchor.constraint(equalTo: titleCell.bottomAnchor, constant: 12),
-            goingView.heightAnchor.constraint(equalToConstant: avatarSize),
+            goingView.heightAnchor.constraint(equalToConstant: K.avatarSize),
             
             topAvatarImage.leadingAnchor.constraint(equalTo: goingView.leadingAnchor),
             topAvatarImage.centerYAnchor.constraint(equalTo: goingView.centerYAnchor),
-            topAvatarImage.widthAnchor.constraint(equalToConstant: avatarSize),
-            topAvatarImage.heightAnchor.constraint(equalToConstant: avatarSize),
+            topAvatarImage.widthAnchor.constraint(equalToConstant: K.avatarSize),
+            topAvatarImage.heightAnchor.constraint(equalToConstant: K.avatarSize),
             
-            middleAvatarImage.leadingAnchor.constraint(equalTo: topAvatarImage.trailingAnchor, constant: -avatarSize/2.4),
+            middleAvatarImage.leadingAnchor.constraint(equalTo: topAvatarImage.trailingAnchor, constant: -K.avatarSize/2.4),
             middleAvatarImage.centerYAnchor.constraint(equalTo: goingView.centerYAnchor),
-            middleAvatarImage.widthAnchor.constraint(equalToConstant: avatarSize),
-            middleAvatarImage.heightAnchor.constraint(equalToConstant: avatarSize),
+            middleAvatarImage.widthAnchor.constraint(equalToConstant: K.avatarSize),
+            middleAvatarImage.heightAnchor.constraint(equalToConstant: K.avatarSize),
             
-            bottomAvatarImage.leadingAnchor.constraint(equalTo: middleAvatarImage.trailingAnchor, constant: -avatarSize/2.4),
+            bottomAvatarImage.leadingAnchor.constraint(equalTo: middleAvatarImage.trailingAnchor, constant: -K.avatarSize/2.4),
             bottomAvatarImage.centerYAnchor.constraint(equalTo: goingView.centerYAnchor),
-            bottomAvatarImage.widthAnchor.constraint(equalToConstant: avatarSize),
-            bottomAvatarImage.heightAnchor.constraint(equalToConstant: avatarSize),
+            bottomAvatarImage.widthAnchor.constraint(equalToConstant: K.avatarSize),
+            bottomAvatarImage.heightAnchor.constraint(equalToConstant: K.avatarSize),
             
-            goingLabel.leadingAnchor.constraint(equalTo: goingView.leadingAnchor, constant: avatarSize*2.4),
+            goingLabel.leadingAnchor.constraint(equalTo: goingView.leadingAnchor, constant: K.avatarSize*2.4),
             goingLabel.centerYAnchor.constraint(equalTo: goingView.centerYAnchor),
             
             locationCell.topAnchor.constraint(equalTo: goingView.bottomAnchor, constant: 10),
@@ -347,4 +287,14 @@ extension EventCollectionViewCell {
         ])
     }
 }
-  
+
+// MARK: - Extension UIView
+extension UIView {
+    convenience init(background color: UIColor, opacity: Float) {
+        self.init()
+        self.backgroundColor = color
+        self.layer.opacity = opacity
+        self.layer.cornerRadius = 10
+        self.translatesAutoresizingMaskIntoConstraints = false
+    }
+}

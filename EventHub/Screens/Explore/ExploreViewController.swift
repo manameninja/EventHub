@@ -32,13 +32,13 @@ class ExploreViewController: UIViewController {
         }
         
         DataManager.shared.getEvents(category: "concert") { [weak self] events in
-                    DispatchQueue.main.async {
-                        guard let self = self else { return }
-                        ListData.shared.updateEvents(with: events)
-                        self.sections = ListData.shared.pageData
-                        self.exploreView.collectionView.reloadData()
-                    }
-                }
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                ListData.shared.updateEvents(with: events)
+                self.sections = ListData.shared.pageData
+                self.exploreView.collectionView.reloadData()
+            }
+        }
         
         DataManager.shared.getEvents(category: "cinema") { [weak self] events in
             DispatchQueue.main.async {
@@ -50,7 +50,7 @@ class ExploreViewController: UIViewController {
             }
         }
     }
-
+    
 }
 
 // MARK: - CreateLayoutDelegate
@@ -166,7 +166,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
         } else if collectionView == exploreView.collectionView {
             switch sections[indexPath.section] {
             case .event(let event):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventCell", for: indexPath) as? EventCollectionViewCell
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EventCollectionViewCell.identifier, for: indexPath) as? EventCollectionViewCell
                 else {
                     return UICollectionViewCell()
                 }
@@ -174,11 +174,11 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                 
                 return cell
             case .nearby(let event):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NearbyCell", for: indexPath) as? NearbyCollectionViewCell
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EventCollectionViewCell.identifier, for: indexPath) as? EventCollectionViewCell
                 else {
                     return UICollectionViewCell()
                 }
-                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title)
+                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title, location: event[indexPath.row].place, goingCount: event[indexPath.row].goingCount, date: event[indexPath.row].startDate)
                 
                 return cell
             }

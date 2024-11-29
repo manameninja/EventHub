@@ -207,11 +207,9 @@ final class ExploreView: UIView {
             bellButton
         ].forEach {mainView.addSubview($0)}
         
-        collectionView.register(EventCollectionViewCell.self, forCellWithReuseIdentifier: "EventCell")
-        collectionView.register(NearbyCollectionViewCell.self, forCellWithReuseIdentifier: "NearbyCell")
+        collectionView.register(EventCollectionViewCell.self, forCellWithReuseIdentifier: EventCollectionViewCell.identifier)
         categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CategoryCell")
         collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderCell")
-        
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
