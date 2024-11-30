@@ -24,8 +24,11 @@ final class CustomTextField: UITextField {
     //MARK: - Private Property
     private let authFieldType: CustomTextFieldType
     
+    private var eyeButton: UIButton?
+    
+    
     //MARK: - Init
-    init(authFieldType: CustomTextFieldType) {
+    init(authFieldType: CustomTextFieldType, isPrivate: Bool = false) {
         self.authFieldType = authFieldType
         super.init(frame: .zero)
         
@@ -36,6 +39,14 @@ final class CustomTextField: UITextField {
         self.autocorrectionType = .no
         self.autocapitalizationType = .none
         
+        
+        
+        if isPrivate {
+            isSecureTextEntry = true
+            
+            setupEyeButton()
+        }
+        
         switch authFieldType {
         case .userName:
             self.placeholder = "Full name"
@@ -45,8 +56,6 @@ final class CustomTextField: UITextField {
             self.textContentType = .emailAddress
         case .password:
             self.placeholder = "Your Password"
-            self.textContentType = .oneTimeCode
-            self.isSecureTextEntry = true
         case .confirmPassword:
             self.placeholder = "Confirm password"
         }
@@ -54,6 +63,38 @@ final class CustomTextField: UITextField {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupEyeButton() {
+        eyeButton = UIButton(type: .custom)
+        eyeButton?.setImage(
+            UIImage(named: "eyeClose"),
+            for: .normal
+        )
+        eyeButton?.setImage(
+            UIImage(named: "eyeClose"),
+            for: .selected
+        )
+        
+        eyeButton?.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
+        
+        eyeButton?.translatesAutoresizingMaskIntoConstraints = false
+        eyeButton?.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        eyeButton?.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        
+        rightView = eyeButton
+        rightViewMode = .always
+    }
+    
+    @objc private func togglePasswordVisibility() {
+        isSecureTextEntry.toggle()
+        eyeButton?.isSelected.toggle()
+    }
+    
+    override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+        var rect = super.rightViewRect(forBounds: bounds)
+        rect.origin.x -= 10
+        return rect
     }
 }
 

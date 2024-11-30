@@ -72,7 +72,6 @@ extension RessetPasswordViewController {
     }
     
     func setupTextFields() {
-       
         emailField.setUpImage(imageName: "Mail", on: .left)
     }
 }

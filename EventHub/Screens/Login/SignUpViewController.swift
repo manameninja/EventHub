@@ -12,9 +12,8 @@ final class SignUpViewController: UIViewController {
     //MARK: Private property
     private let nameField = CustomTextField(authFieldType: .userName)
     private let emailField = CustomTextField(authFieldType: .email)
-    private let passwordField = CustomTextField(authFieldType: .password)
-    private let confirmPasswordField = CustomTextField(authFieldType: .confirmPassword)
-    
+    private let passwordField = CustomTextField(authFieldType: .password, isPrivate: true)
+    private let confirmPasswordField = CustomTextField(authFieldType: .confirmPassword, isPrivate: true)
     
     private let signUpButton = CustomButton(title: "SIGN UP", hasBackground: true, fontSize: .big, hasImage: true)
     private let signInButton = CustomButton(title: "Sign In", fontSize: .med)
@@ -45,8 +44,7 @@ final class SignUpViewController: UIViewController {
     //MARK: - Methods
     @objc private func didTapSignIn() {
         print("didTapSignIn")
-        navigationController?.popToRootViewController(animated: true)
-        
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func didTapSignUp() {
@@ -90,7 +88,6 @@ final class SignUpViewController: UIViewController {
         }
     }
     
-   
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
@@ -125,9 +122,7 @@ extension SignUpViewController {
         nameField.setUpImage(imageName: "Profile", on: .left)
         emailField.setUpImage(imageName: "Mail", on: .left)
         passwordField.setUpImage(imageName: "Password", on: .left)
-        passwordField.setUpImage(imageName: "eyeClose", on: .right)
         confirmPasswordField.setUpImage(imageName: "Password", on: .left)
-        confirmPasswordField.setUpImage(imageName: "eyeClose", on: .right)
     }
     
     
@@ -148,6 +143,7 @@ extension SignUpViewController {
             passwordField,
             confirmPasswordField,
             signInButton,
+            labelQuestion,
             signUpButton,
             googleButton
         ].forEach { view in
@@ -187,7 +183,7 @@ extension SignUpViewController {
             
             stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32),
             stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stack.heightAnchor.constraint(equalToConstant: 24),
+            //stack.heightAnchor.constraint(equalToConstant: 24),
             
             googleButton.topAnchor.constraint(equalTo: labelOR.bottomAnchor, constant: 40),
             googleButton.centerXAnchor.constraint(equalTo: signUpButton.centerXAnchor),

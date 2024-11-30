@@ -16,6 +16,7 @@ class ProfileViewController: UIViewController {
         config.baseForegroundColor = .label
         config.title = "press me to logout"
         let button = UIButton(configuration: config)
+        button.backgroundColor = .white
         return button
     }()
     
@@ -26,8 +27,8 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoutButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            logoutButton.heightAnchor.constraint(equalToConstant: 24),
-            logoutButton.widthAnchor.constraint(equalToConstant: 24)
+            logoutButton.heightAnchor.constraint(equalToConstant: 100),
+            logoutButton.widthAnchor.constraint(equalToConstant: 100)
         ])
     }
     
@@ -40,6 +41,7 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapLogout() {
+        print("log out")
         AuthService.shared.signOut { [weak self] error in
             guard let self = self else {return}
             if let error = error {

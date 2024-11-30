@@ -29,7 +29,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.makeKeyAndVisible()
     }
     
-    
     public func checkAuthentication() {
         if Auth.auth().currentUser == nil {
             self.goToController(with: OnboardingViewController())
