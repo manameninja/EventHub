@@ -52,7 +52,7 @@ final class FavoritesView: UIView {
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        
+        layout.minimumLineSpacing = 12
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.register(EventCell.self, forCellWithReuseIdentifier: EventCell.description())
         view.backgroundColor = .clear
@@ -62,7 +62,7 @@ final class FavoritesView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .backgroundLightGray
+        backgroundColor = .systemBackground
         
         setupUI()
         setupConstrainst()
@@ -85,7 +85,6 @@ final class FavoritesView: UIView {
     }
     
     @objc func buttonTapped() {
-        print("test1")
         delegate?.didTappedSearchButton()
     }
 }
@@ -93,7 +92,7 @@ final class FavoritesView: UIView {
 //MARK: - Setup UI
 private extension FavoritesView {
     func setupUI() {
-        backgroundColor = .backgroundLightGray
+        backgroundColor = .systemBackground
         
         [
             titleLabel,
@@ -109,7 +108,7 @@ private extension FavoritesView {
     
     func setupConstrainst() {
         NSLayoutConstraint.activate([
-            titleLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 28),
             
@@ -127,7 +126,7 @@ private extension FavoritesView {
             noFavoritesImage.heightAnchor.constraint(equalToConstant: 150),
             noFavoritesImage.widthAnchor.constraint(equalToConstant: 150),
             
-            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 24),
+            collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
