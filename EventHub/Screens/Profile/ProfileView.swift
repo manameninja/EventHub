@@ -7,9 +7,17 @@
 
 import UIKit
 
-final class ProfileView: UIView {
+protocol ProfileViewProtocol: AnyObject {
+    func didTappedEditProfileButton()
+    func didTappedLogoutButton()
+    func didTappedBackButton()
+    func didTappedNameEditButton()
+    func didTappedAboutMeEditButton()
+}
+
+class ProfileView: UIView {
     
-//MARK: - Properties
+    weak var delegate: ProfileViewProtocol?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -18,20 +26,41 @@ final class ProfileView: UIView {
         return label
     }()
     
+    let backButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(systemName: "arrow.backward")
+        config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .label
+        let button = UIButton(configuration: config)
+        button.isHidden = true
+        return button
+    }()
+    
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person")
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius =  imageView.frame.width / 2
+        imageView.image = UIImage(named: "eric")
+        imageView.contentMode = .scaleToFill
+        imageView.layer.cornerRadius =  imageView.frame.size.height / 2
         imageView.layer.masksToBounds = true
         return imageView
     }()
     
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Ivan Ivanov"
-        label.font = .systemFont(ofSize: 24)
-        return label
+    let nameTextField: UITextField = {
+        let textField = UITextField()
+        textField.text = "Test Test"
+        textField.font = .systemFont(ofSize: 24)
+        textField.isEnabled = false
+        return textField
+    }()
+    
+    let nameEditButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(named: "edit")
+        config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .label
+        let button = UIButton(configuration: config)
+        button.isHidden = true
+        return button
     }()
     
     private let aboutMeLabel: UILabel = {
@@ -40,6 +69,16 @@ final class ProfileView: UIView {
         label.font = .systemFont(ofSize: 20)
         label.textColor = .typographyBlack2
         return label
+    }()
+    
+    let aboutMeEditButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(named: "edit")
+        config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .label
+        let button = UIButton(configuration: config)
+        button.isHidden = true
+        return button
     }()
     
     private let descriptionLabel: UILabel = {
@@ -58,7 +97,31 @@ final class ProfileView: UIView {
         return label
     }()
     
-    private let editButton: UIButton = {
+    let aboutMeTextView: UITextView = {
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.text = "Enjoy your favorite dishe and a lovely your friends and family and have a great time. Food from local food trucks will be available for purchase. Read More"
+        textView.font = .systemFont(ofSize: 18, weight: .light)
+        textView.textColor = .typographyBlack2
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 10
+        
+        if let attributedText = textView.attributedText {
+            let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)
+            mutableAttributedString.enumerateAttributes(in: NSRange(location: 0, length: mutableAttributedString.length), options: []) { (attributes, range, _) in
+                var updatedAttributes = attributes
+                if updatedAttributes[.paragraphStyle] == nil {
+                    updatedAttributes[.paragraphStyle] = paragraphStyle
+                    mutableAttributedString.setAttributes(updatedAttributes, range: range)
+                }
+            }
+            textView.attributedText = mutableAttributedString
+        }
+        return textView
+    }()
+    
+    let editButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
         button.layer.borderColor = UIColor.primaryBlue.cgColor
@@ -78,16 +141,13 @@ final class ProfileView: UIView {
         let label = UILabel()
         label.text = "Edit Profile"
         label.textColor = .primaryBlue
-        label.font = .systemFont(ofSize: 18, weight: .light)
+        label.font = .systemFont(ofSize: 18, weight: .regular)
         return label
     }()
     
     private let logoutButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .red
         button.backgroundColor = .clear
-        button.layer.borderColor = UIColor.primaryBlue.cgColor
-        button.layer.borderWidth = 1.5
         button.layer.cornerRadius = 10
         return button
     }()
@@ -104,21 +164,45 @@ final class ProfileView: UIView {
         label.font = .systemFont(ofSize: 18, weight: .light)
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .systemBackground
-        
         setupUI()
         setupConstraints()
-//        setupTargets()
+        setupTargets()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    func setupDelegates(_ vc: ProfileViewProtocol) {
+        delegate = vc
+    }
+    
+    //MARK: - OBJC Methods
+    @objc func editButtonTapped() {
+        delegate?.didTappedEditProfileButton()
+    }
+    
+    @objc func backButtonTapped() {
+        delegate?.didTappedBackButton()
+    }
+    
+    @objc func logoutButtonTapped() {
+        delegate?.didTappedLogoutButton()
+    }
+    
+    @objc func nameEditButtonTapped() {
+        delegate?.didTappedNameEditButton()
+    }
+    
+    @objc func aboutMeEditButtonTapped() {
+        delegate?.didTappedAboutMeEditButton()
+    }
+    
+    
 }
 
 //MARK: - SetupUI
@@ -129,11 +213,14 @@ extension ProfileView {
         backgroundColor = .systemBackground
         [
             titleLabel,
+            backButton,
             profileImageView,
-            nameLabel,
             editButton,
+            nameTextField,
+            nameEditButton,
             aboutMeLabel,
-            descriptionLabel,
+            aboutMeEditButton,
+            aboutMeTextView,
             logoutButton
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -160,15 +247,26 @@ extension ProfileView {
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 28),
             
+            backButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            backButton.heightAnchor.constraint(equalToConstant: 24),
+            backButton.widthAnchor.constraint(equalToConstant: 24),
+            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            
             profileImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
             profileImageView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             profileImageView.widthAnchor.constraint(equalToConstant: (superview?.frame.width ?? 375) * 0.27),
             profileImageView.heightAnchor.constraint(equalToConstant: (superview?.frame.width ?? 375) * 0.27),
             
-            nameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 30),
-            nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            nameTextField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 30),
+            nameTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
+            nameTextField.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: -40),
             
-            editButton.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 30),
+            nameEditButton.leadingAnchor.constraint(equalTo: nameTextField.trailingAnchor, constant: 10),
+            nameEditButton.centerYAnchor.constraint(equalTo: nameTextField.centerYAnchor),
+            nameEditButton.heightAnchor.constraint(equalToConstant: 24),
+            nameEditButton.widthAnchor.constraint(equalToConstant: 24),
+            
+            editButton.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 30),
             editButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             
             editImageView.leadingAnchor.constraint(equalTo: editButton.leadingAnchor, constant: 20),
@@ -184,9 +282,15 @@ extension ProfileView {
             aboutMeLabel.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: 50),
             aboutMeLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             
-            descriptionLabel.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 50),
-            descriptionLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            descriptionLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            aboutMeEditButton.leadingAnchor.constraint(equalTo: aboutMeLabel.trailingAnchor, constant: 10),
+            aboutMeEditButton.centerYAnchor.constraint(equalTo: aboutMeLabel.centerYAnchor),
+            aboutMeEditButton.heightAnchor.constraint(equalToConstant: 24),
+            aboutMeEditButton.widthAnchor.constraint(equalToConstant: 24),
+            
+            aboutMeTextView.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 50),
+            aboutMeTextView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            aboutMeTextView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            aboutMeTextView.bottomAnchor.constraint(equalTo: logoutButton.topAnchor, constant: -40),
             
             logoutButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -50),
             logoutButton.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -201,5 +305,13 @@ extension ProfileView {
             logoutLabel.trailingAnchor.constraint(equalTo: logoutButton.trailingAnchor),
             logoutLabel.centerYAnchor.constraint(equalTo: logoutButton.centerYAnchor),
         ])
+    }
+    
+    func setupTargets() {
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        nameEditButton.addTarget(self, action: #selector(nameEditButtonTapped), for: .touchUpInside)
+        aboutMeEditButton.addTarget(self, action: #selector(aboutMeEditButtonTapped), for: .touchUpInside)
     }
 }

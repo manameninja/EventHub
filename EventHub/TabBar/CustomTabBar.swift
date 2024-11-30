@@ -41,9 +41,9 @@ extension CustomTabBar {
         shape.fillColor = UIColor.systemBackground.cgColor
         
         shape.shadowColor = UIColor.black.cgColor
-        shape.shadowOpacity = 0.3
-        shape.shadowRadius = 5
-        shape.shadowOffset = CGSize(width: 0, height: 5)
+        shape.shadowOpacity = 0.1
+        shape.shadowRadius = 8
+        shape.shadowOffset = CGSize(width: 0, height: -3)
         layer.insertSublayer(shape, at: 0)
         
     }
