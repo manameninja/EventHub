@@ -17,6 +17,12 @@ final class ProfileViewController: UIViewController, UITextFieldDelegate, UIText
         profileView.nameTextField.delegate = self
         profileView.aboutMeTextView.delegate = self
         profileView.setupDelegates(self)
+        hideKeyboard()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        print(123)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,6 +33,7 @@ final class ProfileViewController: UIViewController, UITextFieldDelegate, UIText
 extension ProfileViewController: ProfileViewProtocol {
     func didTappedAboutMeEditButton() {
         profileView.aboutMeTextView.isEditable = true
+        profileView.aboutMeTextView.becomeFirstResponder()
     }
     
     func didTappedNameEditButton() {
@@ -62,18 +69,41 @@ extension ProfileViewController: ProfileViewProtocol {
         }
         
     }
-    
+}
+
+//MARK: - Keyboard methods
+extension ProfileViewController {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         profileView.nameTextField.resignFirstResponder()
         profileView.nameTextField.isEnabled = false
         return true
     }
     
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            if text == "\n" { // Check if the user pressed the Return key
-                textView.resignFirstResponder() // Dismiss the keyboard
-                return false // Prevent the newline character from being added
-            }
-            return true // Allow other text changes
+    func hideKeyboard() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardFromView))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func hideKeyboardFromView() {
+        view.endEditing(true)
+        view.frame.origin.y = 0
+        profileView.nameTextField.isEnabled = false
+        profileView.aboutMeTextView.isEditable = false
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if !profileView.nameTextField.isEnabled {
+            let userInfo = notification.userInfo
+            let keyboardFrame = userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+            let keyboardHeight = keyboardFrame?.size.height ?? 0
+            let emptySpaceHeight = view.frame.size.height - profileView.aboutMeTextView.frame.origin.y - profileView.aboutMeTextView.frame.size.height
+            let coveredContentHeight = keyboardHeight - emptySpaceHeight + 24
+            view.frame.origin.y = -coveredContentHeight
         }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        view.frame.origin.y = 0
+    }
 }

@@ -40,7 +40,7 @@ class ProfileView: UIView {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "eric")
         imageView.contentMode = .scaleToFill
-        imageView.layer.cornerRadius =  imageView.frame.size.height / 2
+        imageView.layer.cornerRadius =  50
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -79,22 +79,6 @@ class ProfileView: UIView {
         let button = UIButton(configuration: config)
         button.isHidden = true
         return button
-    }()
-    
-    private let descriptionLabel: UILabel = {
-        let label = UILabel()
-        let text = "Enjoy your favorite dishe and a lovely your friends and family and have a great time. Food from local food trucks will be available for purchase. Read More"
-        label.font = .systemFont(ofSize: 18, weight: .light)
-        label.textColor = .typographyBlack2
-        label.numberOfLines = 0
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.2
-        let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: text.count))
-        label.attributedText = attributedString
-        
-        return label
     }()
     
     let aboutMeTextView: UITextView = {
@@ -242,6 +226,8 @@ extension ProfileView {
     }
     
     func setupConstraints() {
+        let screenHeight = superview?.frame.size.height ?? 812
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -257,7 +243,7 @@ extension ProfileView {
             profileImageView.widthAnchor.constraint(equalToConstant: (superview?.frame.width ?? 375) * 0.27),
             profileImageView.heightAnchor.constraint(equalToConstant: (superview?.frame.width ?? 375) * 0.27),
             
-            nameTextField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 30),
+            nameTextField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 15),
             nameTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
             nameTextField.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: -40),
             
@@ -266,7 +252,7 @@ extension ProfileView {
             nameEditButton.heightAnchor.constraint(equalToConstant: 24),
             nameEditButton.widthAnchor.constraint(equalToConstant: 24),
             
-            editButton.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 30),
+            editButton.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 15),
             editButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             
             editImageView.leadingAnchor.constraint(equalTo: editButton.leadingAnchor, constant: 20),
@@ -279,7 +265,7 @@ extension ProfileView {
             editLabel.trailingAnchor.constraint(equalTo: editButton.trailingAnchor, constant: -20),
             editLabel.centerYAnchor.constraint(equalTo: editButton.centerYAnchor),
             
-            aboutMeLabel.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: 50),
+            aboutMeLabel.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: screenHeight * 0.05),
             aboutMeLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             
             aboutMeEditButton.leadingAnchor.constraint(equalTo: aboutMeLabel.trailingAnchor, constant: 10),
@@ -287,10 +273,10 @@ extension ProfileView {
             aboutMeEditButton.heightAnchor.constraint(equalToConstant: 24),
             aboutMeEditButton.widthAnchor.constraint(equalToConstant: 24),
             
-            aboutMeTextView.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 50),
+            aboutMeTextView.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: screenHeight * 0.05),
             aboutMeTextView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             aboutMeTextView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            aboutMeTextView.bottomAnchor.constraint(equalTo: logoutButton.topAnchor, constant: -40),
+            aboutMeTextView.bottomAnchor.constraint(equalTo: logoutButton.topAnchor, constant: -20),
             
             logoutButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -50),
             logoutButton.centerXAnchor.constraint(equalTo: centerXAnchor),
