@@ -138,7 +138,8 @@ class ProfileView: UIView {
     
     private let logoutImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "logout")
+        imageView.image = UIImage(systemName: "iphone.and.arrow.forward.inward")
+        imageView.tintColor = .typographyGray
         return imageView
     }()
     
@@ -281,8 +282,8 @@ extension ProfileView {
             logoutButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -50),
             logoutButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            logoutImageView.heightAnchor.constraint(equalToConstant: 28),
-            logoutImageView.widthAnchor.constraint(equalToConstant: 28),
+            logoutImageView.heightAnchor.constraint(equalToConstant: 22),
+            logoutImageView.widthAnchor.constraint(equalToConstant: 22),
             logoutImageView.leadingAnchor.constraint(equalTo: logoutButton.leadingAnchor),
             logoutImageView.topAnchor.constraint(equalTo: logoutButton.topAnchor),
             logoutImageView.centerYAnchor.constraint(equalTo: logoutButton.centerYAnchor),
