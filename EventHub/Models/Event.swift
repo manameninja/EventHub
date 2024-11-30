@@ -44,30 +44,6 @@ struct Event: Codable {
             .map{ Int($0) ?? 0}
             .min() ?? 0
     }
-    
-    var nextDate: String {
-        let eventDate = eventDate?.sorted(by: { lhs, rhs in
-            lhs.start ?? 0 < rhs.start ?? 0
-        })
-        var nextDate: Int? = eventDate?.last?.start
-        
-        for date in eventDate ?? [] {
-            if date.start ?? 0 > Int(Date().timeIntervalSince1970) {
-                nextDate = date.start
-                break
-            }
-        }
-        
-        if let unixTime = nextDate {
-            let date = Date(timeIntervalSince1970: TimeInterval(unixTime))
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E, YYYY MMM d • h:mm a"
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            return dateFormatter.string(from: date)
-        } else {
-            return "Date and time unknown"
-        }
-    }
 }
 
 struct EventImage: Codable {

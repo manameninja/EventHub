@@ -35,11 +35,13 @@ final class EventsView: UIView {
         thumbShadowColor: .black.withAlphaComponent(0.1)
     )
     
-    private let noFavoritesView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .cyan
-        return view
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        return indicator
     }()
+    
+    private let noFavoritesView = UIView()
     
     private let noFavoritesImage: UIImageView = {
         let view = UIImageView()
@@ -116,6 +118,10 @@ final class EventsView: UIView {
         delegate = vc
     }
     
+    func indicate(_ state: Bool) {
+        state ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
+    }
+    
     func hideNoData(_ state: Bool) {
         noFavoritesView.isHidden = state
     }
@@ -143,6 +149,7 @@ private extension EventsView {
         }
         
         [
+            activityIndicator,
             noFavoritesView,
             collectionView,
             titleLabel,
@@ -157,6 +164,9 @@ private extension EventsView {
     func setupConstrainst() {
         //MARK: - No data constraint
         NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
             noFavoritesView.centerXAnchor.constraint(equalTo: centerXAnchor),
             noFavoritesView.centerYAnchor.constraint(equalTo: centerYAnchor),
             noFavoritesView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -190,15 +200,15 @@ private extension EventsView {
             eventsSwitch.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
             eventsSwitch.heightAnchor.constraint(equalToConstant: 45),
             
-            collectionView.topAnchor.constraint(equalTo: eventsSwitch.bottomAnchor, constant: 8),
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
             exploreButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -40),
             exploreButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             exploreButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 271.0/375.0),
-            exploreButton.heightAnchor.constraint(equalToConstant: 58)
+            exploreButton.heightAnchor.constraint(equalToConstant: 58),
+            
+            collectionView.topAnchor.constraint(equalTo: eventsSwitch.bottomAnchor, constant: 8),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: exploreButton.topAnchor, constant: -8)
         ])
     }
     
