@@ -106,12 +106,14 @@ class CustomActivityController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let sheet = sheetPresentationController {
-            let screenHeight = UIScreen.main.bounds.height
-            if screenHeight <= 667 {
-                sheet.detents = [.custom { _ in return screenHeight / 1.8 }]
-            } else {
-                sheet.detents = [.custom { _ in return screenHeight / 2.5 }]
+        if #available(iOS 16.0, *) {
+            if let sheet = sheetPresentationController {
+                let screenHeight = UIScreen.main.bounds.height
+                if screenHeight <= 667 {
+                    sheet.detents = [.custom { _ in return screenHeight / 1.8 }]
+                } else {
+                    sheet.detents = [.custom { _ in return screenHeight / 2.5 }]
+                }
             }
         }
     }
@@ -178,6 +180,3 @@ extension CustomActivityController {
     }
 }
 
-#Preview {
-    CustomActivityController()
-}
