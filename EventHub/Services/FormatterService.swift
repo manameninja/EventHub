@@ -16,22 +16,16 @@ final class FormatterService {
         let eventDate = dates?.sorted(by: { lhs, rhs in
             lhs.start ?? 0 < rhs.start ?? 0
         })
-        var nextDate: Int? = eventDate?.last?.end
+        let nextDate: EventDate? = eventDate?.last
         
-        for date in eventDate ?? [] {
-            if date.end ?? 0 > Int(Date().timeIntervalSince1970) {
-                nextDate = date.end
-                break
-            }
-        }
-        
-        if let unixTime = nextDate {
-            let date = Date(timeIntervalSince1970: TimeInterval(unixTime))
+        if let startDate = nextDate?.start, let endDate = nextDate?.end {
+            let startDateUnix = Date(timeIntervalSince1970: TimeInterval(startDate))
+            let endDateUnix = Date(timeIntervalSince1970: TimeInterval(endDate))
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E, YYYY MMM d • h:mm a"
+            dateFormatter.dateFormat = format
             dateFormatter.locale = Locale.current
             dateFormatter.timeZone = TimeZone.current
-            return dateFormatter.string(from: date)
+            return (dateFormatter.string(from: startDateUnix), dateFormatter.string(from: endDateUnix))
         } else {
             return ("Date and time unknown", "Date and time unknown")
         }
