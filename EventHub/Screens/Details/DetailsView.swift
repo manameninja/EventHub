@@ -18,7 +18,7 @@ class DetailsView: UIView {
         return $0
     }(UIImageView())
     
-    private let backButton: UIButton = {
+    let backButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setImage(UIImage(resource: .back), for: .normal)
         return $0
@@ -32,7 +32,7 @@ class DetailsView: UIView {
         return $0
     }(UILabel())
     
-    private let bookmarkButton: UIButton = {
+    let bookmarkButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setImage(UIImage(resource: .bookmark), for: .normal)
         return $0
@@ -107,9 +107,9 @@ class DetailsView: UIView {
             shareButton.heightAnchor.constraint(equalToConstant: 50),
             shareButton.widthAnchor.constraint(equalToConstant: 50),
             
-            infoTableView.topAnchor.constraint(equalTo: customNavBar.bottomAnchor, constant: 5),
-            infoTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            infoTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            infoTableView.topAnchor.constraint(equalTo: customNavBar.bottomAnchor),
+            infoTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            infoTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             infoTableView.bottomAnchor.constraint(equalTo: bottomAnchor)
             
         ])

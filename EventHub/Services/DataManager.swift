@@ -49,6 +49,7 @@ final class DataManager {
         category: String = "",
         location: String = "",
         startTime: Int = Int(Date().timeIntervalSince1970),
+        endTime: Int? = nil,
         lat: Double? = nil,
         lon: Double? = nil,
         radius: Int? = nil, //in meters
@@ -59,11 +60,13 @@ final class DataManager {
         let lat = lat == nil ? "" : String(lat ?? 0.0)
         let lon = lon == nil ? "" : String(lon ?? 0.0)
         let radius = radius == nil ? "" : String(radius ?? 0)
+        let endTime = endTime == nil ? "" : "&actual_until=" + String(endTime ?? 0)
         
         let url = Link.events.rawValue
                 + "&categories=\(category)"
                 + "&location=\(location)"
                 + "&actual_since=\(startTime)"
+                + endTime
                 + "&lon=" + lon
                 + "&lat=" + lat
                 + "&radius=" + radius

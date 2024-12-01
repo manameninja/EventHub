@@ -68,13 +68,13 @@ class FooterViewCell: UITableViewCell {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleEvent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleEvent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            titleEvent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            titleEvent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             titleEvent.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 20),
             
             descriptionEvent.topAnchor.constraint(equalTo: titleEvent.bottomAnchor, constant: 20),
-            descriptionEvent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            descriptionEvent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            descriptionEvent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            descriptionEvent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             descriptionEvent.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }

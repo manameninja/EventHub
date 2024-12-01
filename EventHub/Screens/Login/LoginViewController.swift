@@ -146,7 +146,7 @@ final class LoginViewController: UIViewController {
         // Start the sign in flow!
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [unowned self] result, error in
             guard error == nil else {
-                print("Ошибка при авторизации через Google: \(error?.localizedDescription)")
+                print("Ошибка при авторизации через Google: \(error?.localizedDescription ?? "")")
                 return
             }
             guard let user = result?.user,
