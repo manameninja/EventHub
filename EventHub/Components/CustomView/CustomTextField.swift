@@ -32,18 +32,17 @@ final class CustomTextField: UITextField {
         self.authFieldType = authFieldType
         super.init(frame: .zero)
         
-        self.backgroundColor = .secondarySystemBackground
+        self.backgroundColor = .color
         self.layer.cornerRadius = 10
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.typographyGray3.cgColor
         
         self.returnKeyType = .done
         self.autocorrectionType = .no
         self.autocapitalizationType = .none
         
-        
-        
         if isPrivate {
             isSecureTextEntry = true
-            
             setupEyeButton()
         }
         
@@ -66,23 +65,18 @@ final class CustomTextField: UITextField {
     }
     
     private func setupEyeButton() {
-        eyeButton = UIButton(type: .custom)
-        eyeButton?.setImage(
-            UIImage(named: "eyeClose"),
-            for: .normal
-        )
-        eyeButton?.setImage(
-            UIImage(named: "eyeClose"),
-            for: .selected
-        )
+        let buttonSize: CGFloat = 24
         
+        eyeButton = UIButton(type: .custom)
+        eyeButton?.setImage(UIImage(named: "eyeClose"), for: .normal)
+        eyeButton?.setImage(UIImage(named: "eyeOpen"), for: .selected)
         eyeButton?.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
         
-        eyeButton?.translatesAutoresizingMaskIntoConstraints = false
-        eyeButton?.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        eyeButton?.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        let buttonContainer = UIView(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
+        eyeButton?.frame = buttonContainer.bounds
+        buttonContainer.addSubview(eyeButton!)
         
-        rightView = eyeButton
+        rightView = buttonContainer
         rightViewMode = .always
     }
     
@@ -104,7 +98,7 @@ extension CustomTextField {
         let imageView = UIImageView(frame: CGRect(x: 10, y: 10, width: 22, height: 22))
         if let imageWithSystemName = UIImage(systemName: imageName) {
             imageView.image = imageWithSystemName
-            imageView.tintColor = .gray
+            imageView.tintColor = .typographyGray
         } else {
             imageView.image = UIImage(named: imageName)
         }

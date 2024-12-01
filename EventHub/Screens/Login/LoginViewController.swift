@@ -18,13 +18,13 @@ final class LoginViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    private let labelTitle = UILabel.makeLabel(text: "Sign In", font: .boldSystemFont(ofSize: 24), textColor: .black)
+    private let labelTitle = UILabel.makeLabel(text: "Sign In", font: .boldSystemFont(ofSize: 24), textColor: .typographyBlack)
     private let imageView = UIImageView()
-    private let labelOR = UILabel.makeLabel(text: "OR", font: .systemFont(ofSize: 16), textColor: .systemGray)
-    private let labelQuestion = UILabel.makeLabel(text: "Don't have an account?", font: .systemFont(ofSize: 14), textColor: .black)
+    private let labelOR = UILabel.makeLabel(text: "OR", font: .systemFont(ofSize: 16), textColor: .typographyGray)
+    private let labelQuestion = UILabel.makeLabel(text: "Don't have an account?", font: .systemFont(ofSize: 14), textColor: .typographyBlack)
     private let stackBottomLabel = UIStackView()
     
-    private let rememberMeLabel = UILabel.makeLabel(text: "Remember me" ,font: .systemFont(ofSize: 14), textColor: .black)
+    private let rememberMeLabel = UILabel.makeLabel(text: "Remember me" ,font: .systemFont(ofSize: 14), textColor: .typographyBlack)
     private let switchRemember = UISwitch()
     private let stackRemember = UIStackView()
     
@@ -179,7 +179,7 @@ final class LoginViewController: UIViewController {
 //MARK: - Settings
 extension LoginViewController {
     func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .color
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -314,9 +314,10 @@ extension LoginViewController {
             googleButton.heightAnchor.constraint(equalToConstant: 58),
             googleButton.widthAnchor.constraint(equalToConstant: 271),
             
-            stackBottomLabel.topAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 40),
+            stackBottomLabel.topAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 100),
             stackBottomLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            stackBottomLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            stackBottomLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            
         ])
     }
 }

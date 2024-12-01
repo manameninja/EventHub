@@ -12,7 +12,7 @@ final class RessetPasswordViewController: UIViewController {
     //MARK: - Private Property
     private let emailField = CustomTextField(authFieldType: .email)
     private let sendButton = CustomButton(title: "SEND", hasBackground: true, fontSize: .big, hasImage: true)
-    private let labelTitle = UILabel.makeLabel(text: "Please enter your address to request a password reset", font: .systemFont(ofSize: 16), textColor: .black)
+    private let labelTitle = UILabel.makeLabel(text: "Please enter your address to request a password reset", font: .systemFont(ofSize: 16), textColor: .typographyBlack)
     
     
     //MARK: - Life cycle
@@ -58,7 +58,7 @@ final class RessetPasswordViewController: UIViewController {
 //MARK: - Settings
 extension RessetPasswordViewController {
     func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .color
         addSubviews()
         setupTextFields()
     }

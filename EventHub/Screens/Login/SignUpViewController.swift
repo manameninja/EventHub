@@ -20,8 +20,8 @@ final class SignUpViewController: UIViewController {
     
     private let googleButton = ButtonGoogle(title: "Login with Google")
     
-    private let labelOR = UILabel.makeLabel(text: "OR", font: .systemFont(ofSize: 16), textColor: .systemGray)
-    private let labelQuestion = UILabel.makeLabel(text: "Already have an account?", font: .systemFont(ofSize: 14), textColor: .black)
+    private let labelOR = UILabel.makeLabel(text: "OR", font: .systemFont(ofSize: 16), textColor: .typographyGray)
+    private let labelQuestion = UILabel.makeLabel(text: "Already have an account?", font: .systemFont(ofSize: 14), textColor: .typographyBlack)
     private let stack = UIStackView()
     
     //MARK: - Life cycle
@@ -97,7 +97,7 @@ final class SignUpViewController: UIViewController {
 //MARK: - Settings
 extension SignUpViewController {
     func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .color
         stack.addArrangedSubview(labelQuestion)
         stack.addArrangedSubview(signInButton)
         setupTextFields()
@@ -183,7 +183,7 @@ extension SignUpViewController {
             
             stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32),
             stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            //stack.heightAnchor.constraint(equalToConstant: 24),
+            stack.heightAnchor.constraint(equalToConstant: 24),
             
             googleButton.topAnchor.constraint(equalTo: labelOR.bottomAnchor, constant: 40),
             googleButton.centerXAnchor.constraint(equalTo: signUpButton.centerXAnchor),
