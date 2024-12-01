@@ -34,7 +34,7 @@ final class FavoritesButton: UIButton {
     
     func configure() {
         layer.zPosition = 1
-        adjustsImageWhenHighlighted = false
+        //adjustsImageWhenHighlighted = false
         
         translatesAutoresizingMaskIntoConstraints = false
         setImage(UIImage(systemName: "bookmark"), for: .normal)

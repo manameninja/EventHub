@@ -29,48 +29,56 @@ class CustomActivityController: UIViewController {
     private let copyLinkButton = CustomButtonAC(
         image: UIImage(resource: .copyLink),
         title: "CopyLink",
-        colorShadow: "#9B9CA8"
+        colorShadow: "#9B9CA8",
+        link: "https://kudago.com"
     )
     private let watsappButton = CustomButtonAC(
         image: UIImage(resource: .watsapp),
         title: "Watsapp",
-        colorShadow: "#3DC04F"
+        colorShadow: "#3DC04F",
+        link: "https://web.whatsapp.com"
     )
     private let facebookButton = CustomButtonAC(
         image: UIImage(
             resource: .facebook
         ),
         title: "Facebook",
-        colorShadow: "#0672E7"
+        colorShadow: "#0672E7",
+        link: "https://www.facebook.com"
     )
     private let messengerButton = CustomButtonAC(
         image: UIImage(
             resource: .messenger
         ),
         title: "Messenger",
-        colorShadow: "7B48FF"
+        colorShadow: "7B48FF",
+        link: "https://www.messenger.com"
     )
     private let twitterButton = CustomButtonAC(
         image: UIImage(
             resource: .twitter
         ),
         title: "Twitter",
-        colorShadow: "10A1FF"
+        colorShadow: "10A1FF",
+        link: "https://x.com"
     )
     private let instagramButton = CustomButtonAC(
         image: UIImage(resource: .instagram),
         title: "Instagram",
-        colorShadow: "406ADC"
+        colorShadow: "406ADC",
+        link: "https://www.instagram.com"
     )
     private let skypeButton = CustomButtonAC(
         image: UIImage(resource: .skype),
         title: "Skype",
-        colorShadow: "1D7FD8"
+        colorShadow: "1D7FD8",
+        link: "https://www.skype.com"
     )
     private let messageButton = CustomButtonAC(
         image: UIImage(resource: .message),
         title: "Message",
-        colorShadow: "1DC536"
+        colorShadow: "1DC536",
+        link: "sms:"
     )
     
     private let cancelButton: UIButton = {

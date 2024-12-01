@@ -19,7 +19,7 @@ final class AuthService {
         let username = userRequest.userName
         let email = userRequest.email
         let password = userRequest.password
-        let confirmPassword = userRequest.confirmPassword
+        let _ = userRequest.confirmPassword
         
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {

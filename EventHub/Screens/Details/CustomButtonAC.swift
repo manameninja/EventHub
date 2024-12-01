@@ -8,8 +8,10 @@
 import UIKit
 
 class CustomButtonAC: UIButton {
+    let link: String
     
-    init(image: UIImage, title: String, colorShadow: String) {
+    init(image: UIImage, title: String, colorShadow: String, link: String) {
+        self.link = link
         super.init(frame: .zero)
         setupStyle()
         self.setImage(image, for: .normal)
@@ -53,6 +55,11 @@ class CustomButtonAC: UIButton {
                     self.transform = CGAffineTransform.identity 
                 })
             }
+            
+            if let url = URL(string: self.link) {
+                UIApplication.shared.open(url, options: [:])
+            }
+            
         }, for: .touchUpInside)
     }
     
