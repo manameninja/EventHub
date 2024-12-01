@@ -88,7 +88,7 @@ extension SearchViewController: SearchViewProtocol {
             title: event.title ?? "unknown",
             address: event.place?.address ?? event.place?.title ?? "unknown"
         )
-        cell.makeFavorite(true)
+        
         cell.delegate = self
         
         return cell

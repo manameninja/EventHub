@@ -24,6 +24,7 @@ final class EventsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
+        eventsView.collectionView.reloadData()
     }
     
     private func fetchEvents(_ type: EventsType) {
@@ -41,12 +42,19 @@ final class EventsViewController: UIViewController {
         
         DataManager.shared.getEvents(
             startTime: startDate,
-            endTime: endDate,
-            pageSize: 10
+            endTime: endDate
         ) { events in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
-                eventList = events
+                eventList = events.filter{ event in
+                    let date = event.lastDate
+                    switch type {
+                    case .upcoming:
+                        return date > startDate && date < endDate
+                    case .past:
+                        return date > startDate && date < endDate
+                    }
+                }
                 eventsView.indicate(false)
                 eventsView.collectionView.reloadData()
                 eventsView.hideNoData(!events.isEmpty)
@@ -67,7 +75,10 @@ extension EventsViewController: EventsViewDelegate {
     
     //MARK: - Explore Button
     func didTappedExploreButton() {
-        print(#function)
+        let sortedEvents = eventList.sorted { lhs, rhs in
+            lhs.lastDate < rhs.lastDate
+        }
+        navigationController?.pushViewController(SearchViewController(eventList: sortedEvents), animated: true)
     }
     
     //MARK: - Collection View Delegate

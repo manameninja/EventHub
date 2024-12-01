@@ -44,6 +44,12 @@ struct Event: Codable {
             .map{ Int($0) ?? 0}
             .min() ?? 0
     }
+    
+    var lastDate: Int {
+        eventDate?.sorted(by: { lhs, rhs in
+            lhs.start ?? 0 < rhs.start ?? 0
+        }).last?.end ?? 0
+    }
 }
 
 struct EventImage: Codable {
