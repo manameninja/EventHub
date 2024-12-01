@@ -223,8 +223,6 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
             fetchData(categoryID: category[indexPath.row].slug ?? "")
             print("\(category[indexPath.row].slug!)")
             
-//            SearchViewController(eventList: ListData.shared.eventList)
-            
             UIView
                 .animate(
                     withDuration: 0.1,
@@ -243,8 +241,9 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCell.identifier, for: indexPath) as! HeaderCell
-            header.configureHeader(categoryName: filteredSections[indexPath.section].title)
-            
+            let section = filteredSections[indexPath.section]
+            header.configureHeader(categoryName: section.title, sectionType: section)
+            header.delegate = self
             return header
         default:
             return UICollectionReusableView()
@@ -334,6 +333,22 @@ extension IndexPath {
             return .accentDarkCyan
         default:
             return .accentPurple
+        }
+    }
+}
+
+// MARK: - HeaderCellDelegate
+extension ExploreViewController: HeaderCellDelegate {
+    func presentSearchVC(for sectionType: ListSection) {
+        switch sectionType {
+        case .event(_):
+            let searchVC = SearchViewController(eventList: ListData.shared.eventList)
+            searchVC.modalPresentationStyle = .fullScreen
+            present(searchVC, animated: true)
+        case .nearby(_):
+            let searchVC = SearchViewController(eventList: ListData.shared.nearbyList)
+            searchVC.modalPresentationStyle = .fullScreen
+            present(searchVC, animated: true)
         }
     }
 }

@@ -175,11 +175,12 @@ class EventCollectionViewCell: UICollectionViewCell {
         let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
         let calendar = Calendar.current
         let day = calendar.component(.day, from: date)
-        let monthIndex = calendar.component(.month, from: date)
+//        let monthIndex = calendar.component(.month, from: date)
         let dateFormater = DateFormatter()
         dateFormater.locale = Locale(identifier: "en_US")
-        dateFormater.dateFormat = "d MMMM"
-        let month = dateFormater.monthSymbols[monthIndex - 1]
+        dateFormater.dateFormat = "MMM"
+//        let month = dateFormater.monthSymbols[monthIndex - 1]
+        let month = dateFormater.string(from: date)
         return (day, month)
     }
     
@@ -191,7 +192,7 @@ class EventCollectionViewCell: UICollectionViewCell {
         titleCell.text = title
         
         dateLabel.text = String(dateFormater(event: date).day)
-        mounthLabel.text = dateFormater(event: date).month
+        mounthLabel.text = dateFormater(event: date).month.uppercased()
         
         if !location.isEmpty {
             let attachment = NSTextAttachment()

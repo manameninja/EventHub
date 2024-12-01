@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol HeaderCellDelegate: AnyObject {
+    func presentSearchVC(for sectionType: ListSection)
+}
+
 class HeaderCell: UICollectionReusableView {
     // MARK: - Properties
     static let identifier = HeaderCell.description()
+    weak var delegate: HeaderCellDelegate?
+    private var sectionType: ListSection?
     
     private let headerLabel = UILabel(fontSize: 24, color: .black, weight: .bold)
     private let seeAllButton: UIButton = {
@@ -35,12 +41,15 @@ class HeaderCell: UICollectionReusableView {
     
     // MARK: - Actions
     @objc private func tapedSeeAll() {
+        guard let sectionType = sectionType else { return }
+        delegate?.presentSearchVC(for: sectionType)
         print("tap see all \(headerLabel.text!)")
     }
     
     // MARK: - Methods
-    func configureHeader(categoryName: String) {
+    func configureHeader(categoryName: String, sectionType: ListSection) {
         headerLabel.text = categoryName
+        self.sectionType = sectionType
     }
     
     // MARK: - Constraints
