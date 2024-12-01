@@ -24,7 +24,7 @@ final class ProfileViewController: UIViewController {
         
         let user = StorageManager.shared.loadUser()
         profileView.updateUserData(
-            photo: UIImage(data: user?.photo ?? Data()) ?? UIImage(systemName: "person") ?? UIImage(),
+            photo: UIImage(data: user?.photo ?? Data()) ?? UIImage(named: "eric") ?? UIImage(),
             name: user?.name ?? "Unknown",
             description: user?.description ?? "Empty"
         )

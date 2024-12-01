@@ -139,7 +139,7 @@ class ProfileView: UIView {
     
     private let logoutImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "iphone.and.arrow.forward.inward")
+        imageView.image = UIImage(named: "logout")
         imageView.tintColor = .typographyGray
         return imageView
     }()
