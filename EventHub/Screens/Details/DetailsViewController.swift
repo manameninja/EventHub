@@ -40,6 +40,11 @@ class DetailsViewController: UIViewController {
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    
     //    MARK: - SetupUI
     private func setupUI() {
         navigationController?.setNavigationBarHidden(true, animated: false)

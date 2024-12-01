@@ -31,7 +31,7 @@ final class SignUpViewController: UIViewController {
         signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
         
-        let imageBack = UIImage(systemName: "arrow.backward")?.withTintColor(.black, renderingMode: .alwaysOriginal)
+        let imageBack = UIImage(systemName: "arrow.backward")?.withTintColor(.label, renderingMode: .alwaysOriginal)
         let backButton = UIBarButtonItem(image: imageBack, style: .plain, target: self, action: #selector(didTapBackButton))
         backButton.tintColor = .black
         navigationItem.leftBarButtonItem = backButton
@@ -39,6 +39,13 @@ final class SignUpViewController: UIViewController {
         
         setupView()
         setupLayout()
+        
+        hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
     }
     
     //MARK: - Methods
@@ -97,7 +104,7 @@ final class SignUpViewController: UIViewController {
 //MARK: - Settings
 extension SignUpViewController {
     func setupView() {
-        view.backgroundColor = .color
+        view.backgroundColor = .systemBackground
         stack.addArrangedSubview(labelQuestion)
         stack.addArrangedSubview(signInButton)
         setupTextFields()

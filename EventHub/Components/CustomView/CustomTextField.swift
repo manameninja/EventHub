@@ -32,7 +32,7 @@ final class CustomTextField: UITextField {
         self.authFieldType = authFieldType
         super.init(frame: .zero)
         
-        self.backgroundColor = .color
+        self.backgroundColor = .systemBackground
         self.layer.cornerRadius = 10
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.typographyGray3.cgColor

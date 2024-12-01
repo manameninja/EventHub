@@ -51,10 +51,13 @@ final class LoginViewController: UIViewController {
         signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
         googleButton.addTarget(self, action: #selector(didTapLoginGoogle), for: .touchUpInside)
         forgotPasswordButton.addTarget(self, action: #selector(didTapForgotPassword), for: .touchUpInside)
+        
+        hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
         
         if defaults.bool(forKey: "rememberMe") {
             emailField.text = defaults.string(forKey: "savedEmail")
@@ -179,7 +182,7 @@ final class LoginViewController: UIViewController {
 //MARK: - Settings
 extension LoginViewController {
     func setupView() {
-        view.backgroundColor = .color
+        view.backgroundColor = .systemBackground
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
