@@ -12,17 +12,16 @@ final class SignUpViewController: UIViewController {
     //MARK: Private property
     private let nameField = CustomTextField(authFieldType: .userName)
     private let emailField = CustomTextField(authFieldType: .email)
-    private let passwordField = CustomTextField(authFieldType: .password)
-    private let confirmPasswordField = CustomTextField(authFieldType: .confirmPassword)
-    
+    private let passwordField = CustomTextField(authFieldType: .password, isPrivate: true)
+    private let confirmPasswordField = CustomTextField(authFieldType: .confirmPassword, isPrivate: true)
     
     private let signUpButton = CustomButton(title: "SIGN UP", hasBackground: true, fontSize: .big, hasImage: true)
     private let signInButton = CustomButton(title: "Sign In", fontSize: .med)
     
     private let googleButton = ButtonGoogle(title: "Login with Google")
     
-    private let labelOR = UILabel.makeLabel(text: "OR", font: .systemFont(ofSize: 16), textColor: .systemGray)
-    private let labelQuestion = UILabel.makeLabel(text: "Already have an account?", font: .systemFont(ofSize: 14), textColor: .black)
+    private let labelOR = UILabel.makeLabel(text: "OR", font: .systemFont(ofSize: 16), textColor: .typographyGray)
+    private let labelQuestion = UILabel.makeLabel(text: "Already have an account?", font: .systemFont(ofSize: 14), textColor: .typographyBlack)
     private let stack = UIStackView()
     
     //MARK: - Life cycle
@@ -32,7 +31,7 @@ final class SignUpViewController: UIViewController {
         signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
         
-        let imageBack = UIImage(systemName: "arrow.backward")?.withTintColor(.black, renderingMode: .alwaysOriginal)
+        let imageBack = UIImage(systemName: "arrow.backward")?.withTintColor(.label, renderingMode: .alwaysOriginal)
         let backButton = UIBarButtonItem(image: imageBack, style: .plain, target: self, action: #selector(didTapBackButton))
         backButton.tintColor = .black
         navigationItem.leftBarButtonItem = backButton
@@ -40,13 +39,19 @@ final class SignUpViewController: UIViewController {
         
         setupView()
         setupLayout()
+        
+        hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
     }
     
     //MARK: - Methods
     @objc private func didTapSignIn() {
         print("didTapSignIn")
-        navigationController?.popToRootViewController(animated: true)
-        
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func didTapSignUp() {
@@ -90,7 +95,6 @@ final class SignUpViewController: UIViewController {
         }
     }
     
-   
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
@@ -100,7 +104,7 @@ final class SignUpViewController: UIViewController {
 //MARK: - Settings
 extension SignUpViewController {
     func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         stack.addArrangedSubview(labelQuestion)
         stack.addArrangedSubview(signInButton)
         setupTextFields()
@@ -125,9 +129,7 @@ extension SignUpViewController {
         nameField.setUpImage(imageName: "Profile", on: .left)
         emailField.setUpImage(imageName: "Mail", on: .left)
         passwordField.setUpImage(imageName: "Password", on: .left)
-        passwordField.setUpImage(imageName: "eyeClose", on: .right)
         confirmPasswordField.setUpImage(imageName: "Password", on: .left)
-        confirmPasswordField.setUpImage(imageName: "eyeClose", on: .right)
     }
     
     
@@ -148,6 +150,7 @@ extension SignUpViewController {
             passwordField,
             confirmPasswordField,
             signInButton,
+            labelQuestion,
             signUpButton,
             googleButton
         ].forEach { view in

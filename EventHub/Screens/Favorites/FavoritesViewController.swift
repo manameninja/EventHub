@@ -20,9 +20,10 @@ final class FavoritesViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
         eventList = StorageManager.shared.loadFavorite()
         favoritesView.collectionView.reloadData()
-        navigationController?.navigationBar.isHidden = true
     }
 }
 

@@ -36,11 +36,11 @@ extension AlertManager {
 //MARK: - Registration Errors
 extension AlertManager {
     public static func showRegistrationErrorAlert(on vc: UIViewController) {
-        showBasicAlert(on: vc, title: "Unknown Registration Error Password", massage: nil)
+        showBasicAlert(on: vc, title: "Registration Error Password", massage: nil)
     }
     
     public static func showRegistrationErrorAlert(on vc: UIViewController, with error: Error) {
-        showBasicAlert(on: vc, title: "Unknown Registration Error Password", massage: "\(error.localizedDescription)")
+        showBasicAlert(on: vc, title: "Registration Error Password", massage: "\(error.localizedDescription)")
     }
     
 }
@@ -48,11 +48,11 @@ extension AlertManager {
 //MARK: - Log In Error
 extension AlertManager {
     public static func showSignInErrorAlert(on vc: UIViewController) {
-        showBasicAlert(on: vc, title: "Unknown Sign In Error", massage: nil)
+        showBasicAlert(on: vc, title: "Sign In Error", massage: nil)
     }
     
     public static func showSignInAlert(on vc: UIViewController, with error: Error) {
-        showBasicAlert(on: vc, title: "Unknown Sign In Error", massage: "\(error.localizedDescription)")
+        showBasicAlert(on: vc, title: "Sign In Error", massage: "\(error.localizedDescription)")
     }
 }
 
@@ -67,7 +67,7 @@ extension AlertManager {
 //MARK: - Forgot Password
 extension AlertManager {
     public static func showForgotPasswordAlert(on vc: UIViewController, with error: Error) {
-        showBasicAlert(on: vc, title: "Unknown Forgot Password Error", massage: "\(error.localizedDescription)")
+        showBasicAlert(on: vc, title: "Forgot Password Error", massage: "\(error.localizedDescription)")
     }
     
     public static func showPasswordResetSend(on vc: UIViewController) {
