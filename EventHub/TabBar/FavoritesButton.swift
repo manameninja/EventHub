@@ -25,6 +25,13 @@ final class FavoritesButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            configure()
+        }
+    }
+    
     func configure() {
         layer.zPosition = 1
         adjustsImageWhenHighlighted = false
@@ -34,7 +41,7 @@ final class FavoritesButton: UIButton {
         tintColor = .white
         backgroundColor = .primaryBlue
         
-        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowColor = traitCollection.userInterfaceStyle == .dark ? UIColor.white.cgColor : UIColor.black.cgColor
         layer.shadowOpacity = 0.3
         layer.shadowOffset = CGSize(width: 0, height: 5)
     }
