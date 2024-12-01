@@ -45,7 +45,7 @@ extension CustomTabBar {
         let path = getTabBarPath()
         shapeLayer.path = path.cgPath // Обновляем существующий слой
         shapeLayer.fillColor = UIColor.systemBackground.cgColor
-        shapeLayer.shadowColor = UIColor.black.cgColor
+        shapeLayer.shadowColor = traitCollection.userInterfaceStyle == .dark ? UIColor.white.cgColor : UIColor.black.cgColor
         shapeLayer.shadowOpacity = 0.1
         shapeLayer.shadowRadius = 8
         shapeLayer.shadowOffset = CGSize(width: 0, height: -3)
