@@ -115,8 +115,8 @@ final class ExploreView: UIView {
     }
     
     let collectionView: UICollectionView = {
-        let collectionViewLayout = UICollectionViewLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        let layout = UICollectionViewLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .backgroundGray
         collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
@@ -249,14 +249,14 @@ extension ExploreView {
     func setConstraints() {
         NSLayoutConstraint.activate([
             collectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
-            collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
-            collectionView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.65),
+            collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            collectionView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.66),
             
             mainView.topAnchor.constraint(equalTo: self.topAnchor),
             mainView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             mainView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            mainView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.22),
+            mainView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.20),
             
             searchImage.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 24),
             searchImage.widthAnchor.constraint(equalToConstant: 24),
@@ -271,7 +271,7 @@ extension ExploreView {
             filterButton.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor),
             filterButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 32),
             
-            currentLocationButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            currentLocationButton.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 60),
             currentLocationButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
             
             bellButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),

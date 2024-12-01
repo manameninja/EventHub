@@ -59,7 +59,6 @@ class ExploreViewController: UIViewController {
             DispatchQueue.main.async {
                 guard let self = self else {return}
                 self.locations = location
-                print("Location \(location.first?.name!)")
             }
         }
     }
@@ -124,7 +123,7 @@ extension ExploreViewController: CreateLayoutDelegate {
             behavior: .groupPaging,
             interGroupSpacing: 16,
             supplementaryItems: [supplementaryHeaderItem()],
-            contentInsets: .init(top: 0, leading: 0, bottom: 20, trailing: 0)
+            contentInsets: .init(top: 0, leading: 16, bottom: 20, trailing: 16)
         )
         
         return section
@@ -145,7 +144,7 @@ extension ExploreViewController: CreateLayoutDelegate {
             behavior: .groupPaging,
             interGroupSpacing: 16,
             supplementaryItems: [supplementaryHeaderItem()],
-            contentInsets: .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+            contentInsets: .init(top: 0, leading: 16, bottom: 20, trailing: 16)
         )
         
         return section
@@ -274,11 +273,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
 // MARK: - UICollectionViewDelegateFlowLayout
 extension ExploreViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        if collectionView == exploreView.categoryCollectionView {
-            
             return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        }
-        return UIEdgeInsets()
     }
 }
 
