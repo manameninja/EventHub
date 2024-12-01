@@ -243,6 +243,17 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                                 animations: { cell.transform = CGAffineTransform.identity
                                 })
                     }
+        } else {
+            switch filteredSections[indexPath.section] {
+            case .event(let detailEvent) :
+                let detailEvent = detailEvent[indexPath.row]
+                present(DetailsViewController(model: detailEvent), animated: true)
+                print(detailEvent)
+            case .nearby(let detailEvent) :
+                let detailEvent = detailEvent[indexPath.row]
+                present(DetailsViewController(model: detailEvent), animated: true)
+                print(detailEvent)
+            }
         }
     }
     

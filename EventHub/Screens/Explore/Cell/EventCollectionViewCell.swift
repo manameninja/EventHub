@@ -88,13 +88,13 @@ class EventCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    override var isSelected: Bool {
-        didSet {
-            if isSelected {
-                print("tap on cell \(titleCell.text!)")
-            }
-        }
-    }
+//    override var isSelected: Bool {
+//        didSet {
+//            if isSelected {
+//                print("tap on cell \(titleCell.text!)")
+//            }
+//        }
+//    }
     
     // MARK: - Init
     override init(frame: CGRect) {
