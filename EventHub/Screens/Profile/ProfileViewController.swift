@@ -21,6 +21,13 @@ final class ProfileViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let user = StorageManager.shared.loadUser()
+        profileView.updateUserData(
+            photo: UIImage(data: user?.photo ?? Data()) ?? UIImage(systemName: "person") ?? UIImage(),
+            name: user?.name ?? "Unknown",
+            description: user?.description ?? "Empty"
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +107,8 @@ extension ProfileViewController: UITextFieldDelegate, UITextViewDelegate {
         view.frame.origin.y = 0
         profileView.nameTextField.isEnabled = false
         profileView.aboutMeTextView.isEditable = false
+        
+        saveUserInfo()
     }
     
     @objc private func keyboardWillShow(notification: NSNotification) {
@@ -123,15 +132,25 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let image = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerEditedImage")] as? UIImage {
-            print("yes")
             profileView.profileImageView.image = image
-        } else {
-            print("no")
         }
         picker.dismiss(animated: true)
+        
+        saveUserInfo()
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
+    }
+    
+    func saveUserInfo() {
+        StorageManager.shared.saveUser(
+            UserData(
+                id: 0,
+                photo: profileView.profileImageView.image?.pngData() ?? Data(),
+                name: profileView.nameTextField.text ?? "Unknown",
+                description: profileView.aboutMeTextView.text
+            )
+        )
     }
 }

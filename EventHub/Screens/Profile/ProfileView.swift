@@ -48,7 +48,7 @@ class ProfileView: UIView {
     
     let nameTextField: UITextField = {
         let textField = UITextField()
-        textField.text = "Test Test"
+        textField.text = "Text Text"
         textField.font = .systemFont(ofSize: 24)
         textField.isEnabled = false
         return textField
@@ -161,6 +161,12 @@ class ProfileView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func updateUserData(photo: UIImage, name: String, description: String) {
+        profileImageView.image = photo
+        nameTextField.text = name
+        aboutMeTextView.text = description
     }
     
     func setupDelegates(_ vc: ProfileViewProtocol) {
