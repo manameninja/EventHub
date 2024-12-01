@@ -12,7 +12,7 @@ final class RessetPasswordViewController: UIViewController {
     //MARK: - Private Property
     private let emailField = CustomTextField(authFieldType: .email)
     private let sendButton = CustomButton(title: "SEND", hasBackground: true, fontSize: .big, hasImage: true)
-    private let labelTitle = UILabel.makeLabel(text: "Please enter your address to request a password reset", font: .systemFont(ofSize: 16), textColor: .black)
+    private let labelTitle = UILabel.makeLabel(text: "Please enter your address to request a password reset", font: .systemFont(ofSize: 16), textColor: .typographyBlack)
     
     
     //MARK: - Life cycle
@@ -21,13 +21,20 @@ final class RessetPasswordViewController: UIViewController {
         setupView()
         setupLayout()
         
-        let imageBack = UIImage(systemName: "arrow.backward")?.withTintColor(.black, renderingMode: .alwaysOriginal)
+        let imageBack = UIImage(systemName: "arrow.backward")?.withTintColor(.label, renderingMode: .alwaysOriginal)
         let backButton = UIBarButtonItem(image: imageBack, style: .plain, target: self, action: #selector(didTapBackButton))
         backButton.tintColor = .black
         navigationItem.leftBarButtonItem = backButton
         navigationItem.title = "Resset Password"
         
         sendButton.addTarget(self, action: #selector(didTapButtonSend), for: .touchUpInside)
+        
+        hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
     }
     
    //MARK: - Methods
@@ -58,7 +65,7 @@ final class RessetPasswordViewController: UIViewController {
 //MARK: - Settings
 extension RessetPasswordViewController {
     func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         addSubviews()
         setupTextFields()
     }
@@ -72,7 +79,6 @@ extension RessetPasswordViewController {
     }
     
     func setupTextFields() {
-       
         emailField.setUpImage(imageName: "Mail", on: .left)
     }
 }

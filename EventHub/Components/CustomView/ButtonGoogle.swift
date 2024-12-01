@@ -27,7 +27,7 @@ extension ButtonGoogle {
         layer.cornerRadius = 12
         layer.masksToBounds = false
         setTitleColor(.black, for: .normal)
-        backgroundColor = .white
+        backgroundColor = .color
         
         let buttonImage = UIImageView(image: UIImage(named: "googleIcon"))
         buttonImage.translatesAutoresizingMaskIntoConstraints = false

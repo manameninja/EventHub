@@ -27,7 +27,6 @@ final class CustomButton: UIButton {
     }
 }
 
-
 extension CustomButton {
     private func setupButton(_ title: String, _ hasBackground: Bool, _ fontSize: FontSize, _ hasImage: Bool) {
         
@@ -53,13 +52,11 @@ extension CustomButton {
                 buttonImage.widthAnchor.constraint(equalToConstant: 30),
                 buttonImage.heightAnchor.constraint(equalToConstant: 30)
             ])
-            
         }
         
+        backgroundColor = hasBackground ? .primaryBlue : .clear
         
-        backgroundColor = hasBackground ? .systemBlue : .clear
-        
-        let titleColor: UIColor = hasBackground ? .white : .systemBlue
+        let titleColor: UIColor = hasBackground ? .color : .primaryBlue
         setTitleColor(titleColor, for: .normal)
         
         switch fontSize {
