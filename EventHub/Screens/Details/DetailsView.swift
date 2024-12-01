@@ -8,16 +8,11 @@
 import UIKit
 import Kingfisher
 
-protocol DetailsViewProtocol: AnyObject {
-    func backButtonTapped()
-}
-
 final class DetailsView: UIView {
-    weak var delegate: DetailsViewProtocol?
     
-//    MARK: UI Elements
+    //    MARK: UI Elements
     
-     let customNavBar: UIImageView = {
+    let customNavBar: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = UIImage(resource: .customNav)
         return $0
@@ -29,11 +24,11 @@ final class DetailsView: UIView {
         return $0
     }(UIButton())
     
-      let navBarLabel: UILabel = {
+    let navBarLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Event Details"
         $0.textColor = .white
-          $0.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        $0.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         return $0
     }(UILabel())
     
@@ -54,7 +49,7 @@ final class DetailsView: UIView {
         return $0
     }(UITableView())
     
-//    MARK: -Initializations
+    //    MARK: -Initializations
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,11 +60,7 @@ final class DetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func backButtonTapped() {
-        delegate?.backButtonTapped()
-    }
-    
-//MARK: - SetupUI
+    //MARK: - SetupUI
     private func setupUI() {
         self.backgroundColor = .white
         addSubviews(
@@ -81,7 +72,6 @@ final class DetailsView: UIView {
             infoTableView
         )
         setupConstraints()
-        setupTargets()
     }
     
     func setNavBar(model: Event) {
@@ -123,9 +113,5 @@ final class DetailsView: UIView {
             infoTableView.bottomAnchor.constraint(equalTo: bottomAnchor)
             
         ])
-    }
-    
-    func setupTargets() {
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
     }
 }

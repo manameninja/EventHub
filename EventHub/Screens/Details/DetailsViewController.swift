@@ -31,20 +31,6 @@ class DetailsViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-        
-        //DEBUG
-        let sortedDates = model.eventDate?.sorted(by: { lhs, rhs in
-            lhs.start ?? 0 < rhs.start ?? 0
-        })
-        
-        sortedDates?.forEach({ eventDate in
-            print("-------")
-            print("start:", Date(timeIntervalSince1970: TimeInterval(eventDate.start ?? 0)))
-            print("end  :", Date(timeIntervalSince1970: TimeInterval(eventDate.end ?? 0)))
-        })
-        
-        //DEBUG
-        customView.delegate = self
     }
     
     //    MARK: - SetupUI
@@ -113,12 +99,6 @@ extension DetailsViewController {
         activityVC.popoverPresentationController?.sourceView = self.view
         
         self.present(activityVC, animated: true)
-    }
-}
-
-extension DetailsViewController: DetailsViewProtocol {
-    func backButtonTapped() {
-        navigationController?.popViewController(animated: true)
     }
 }
 
