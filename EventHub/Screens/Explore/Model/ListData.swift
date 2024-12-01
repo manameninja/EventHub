@@ -9,26 +9,18 @@ import Foundation
 
 struct ListData {
     static var shared = ListData()
-    private var eventList: [Event] = []
-    private var nearbyList: [Event] = []
+    var eventList: [Event] = []
+    var nearbyList: [Event] = []
     
-    private var event: ListSection {
-        return .event( eventList.map { ListItem(from: $0) })
+     var event: ListSection {
+        return .event( eventList )
     }
     
-    private var nearby: ListSection {
-        return .nearby( nearbyList.map { ListItem(from: $0)})
+     var nearby: ListSection {
+        return .nearby( nearbyList )
     }
     
     var pageData: [ListSection] {
         [event, nearby]
-    }
-    
-    mutating func updateEvents(with events: [Event]) {
-        self.eventList = events
-    }
-    
-    mutating func updateEvents(location events: [Event]) {
-        self.nearbyList = events
     }
 }

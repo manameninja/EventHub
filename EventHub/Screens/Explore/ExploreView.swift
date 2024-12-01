@@ -16,7 +16,6 @@ final class ExploreView: UIView {
     
     // MARK: - Properties
     weak var delegate: CreateLayoutDelegate?
-    var categoryID: String = "concert"
     
     private let mainView: UIView = {
         let view = UIView()
@@ -94,10 +93,16 @@ final class ExploreView: UIView {
         return button
     }()
     
-    func setupFilterMenu(with categories: [CategoryItem]) {
+    func setupFilterMenu(with categories: [Category]) {
         var menuChildren: [UIMenuElement] = []
         for category in categories {
-            menuChildren.append(UIAction(title: category.name, identifier: UIAction.Identifier(category.slug), handler: actionClosure))
+            menuChildren.append(
+                UIAction(
+                    title: category.name ?? "",
+                    identifier: UIAction.Identifier(category.slug ?? ""),
+                    handler: actionClosure
+                )
+            )
         }
         filterButton.menu = UIMenu(options: .displayInline, children: menuChildren)
     }
@@ -228,6 +233,7 @@ final class ExploreView: UIView {
         categoryCollectionView.dataSource = value
         tableView.delegate = value
         tableView.dataSource = value
+        searchBar.delegate = value
         //        после делегата!!! а то будет nil
         if let layout = delegate?.createLayout() {
             collectionView.collectionViewLayout = layout

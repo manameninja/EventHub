@@ -10,9 +10,11 @@ import UIKit
 class ExploreViewController: UIViewController {
     
     // MARK: - Properties
-    let exploreView = ExploreView()
+    private let exploreView = ExploreView()
     private var sections: [ListSection] = []
-    private var category: [CategoryItem] = []
+    private var category: [Category] = []
+    private var filteredSections: [ListSection] = []
+    private var categoryID: String = "exhibition"
     
     // MARK: - LifeCycle
     override func loadView() {
@@ -26,16 +28,16 @@ class ExploreViewController: UIViewController {
         DataManager.shared.getCategories { categories in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                category = categories.map {CategoryItem(from: $0)}
+                category = categories
                 exploreView.setupFilterMenu(with: category)
                 exploreView.categoryCollectionView.reloadData()
             }
         }
         
-        DataManager.shared.getEvents(category: exploreView.categoryID) { [weak self] events in
+        DataManager.shared.getEvents(category: categoryID) { [weak self] events in
             DispatchQueue.main.async {
                 guard let self = self else { return }
-                ListData.shared.updateEvents(with: events)
+                ListData.shared.eventList = events
                 self.sections = ListData.shared.pageData
                 self.exploreView.collectionView.reloadData()
             }
@@ -44,7 +46,7 @@ class ExploreViewController: UIViewController {
         DataManager.shared.getEvents(category: "cinema") { [weak self] events in
             DispatchQueue.main.async {
                 guard let self = self else { return }
-                ListData.shared.updateEvents(location: events)
+                ListData.shared.nearbyList = events
                 self.sections = ListData.shared.pageData
                 self.exploreView.collectionView.reloadData()
             }
@@ -54,11 +56,12 @@ class ExploreViewController: UIViewController {
 
 // MARK: - CreateLayoutDelegate
 extension ExploreViewController: CreateLayoutDelegate {
+    
     func fetchData(categoryID: String) {
         DataManager.shared.getEvents(category: categoryID) { [weak self] events in
             DispatchQueue.main.async {
                 guard let self = self else { return }
-                ListData.shared.updateEvents(with: events)
+                ListData.shared.eventList = events
                 self.sections = ListData.shared.pageData
                 self.exploreView.collectionView.reloadData()
             }
@@ -170,7 +173,10 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as? CategoryCollectionViewCell else {
                 return UICollectionViewCell() }
             cell.contentView.backgroundColor = indexPath.alternatingColor()
-            cell.configureCell(category: category[indexPath.row].name, index: indexPath.row)
+            cell.configureCell(
+                category: category[indexPath.row].name ?? "",
+                index: indexPath.row
+            )
             
             return cell
         } else if collectionView == exploreView.collectionView {
@@ -180,7 +186,13 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                 else {
                     return UICollectionViewCell()
                 }
-                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title, location: event[indexPath.row].place, goingCount: event[indexPath.row].goingCount, date: event[indexPath.row].startDate)
+                cell.configureCell(
+                    imageName: event[indexPath.row].images![0].imageUrl!,
+                    title: event[indexPath.row].title!,
+                    location: event[indexPath.row].place?.address ?? "",
+                    goingCount: event[indexPath.row].goingCount ?? 0,
+                    date: event[indexPath.row].eventDate?[0].start ?? 0
+                )
                 
                 return cell
             case .nearby(let event):
@@ -188,7 +200,13 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                 else {
                     return UICollectionViewCell()
                 }
-                cell.configureCell(imageName: event[indexPath.row].image, title: event[indexPath.row].title, location: event[indexPath.row].place, goingCount: event[indexPath.row].goingCount, date: event[indexPath.row].startDate)
+                cell.configureCell(
+                    imageName: event[indexPath.row].images?[0].imageUrl ?? "",
+                    title: event[indexPath.row].title!,
+                    location: event[indexPath.row].place?.address ?? "",
+                    goingCount: event[indexPath.row].goingCount ?? 0,
+                    date: event[indexPath.row].eventDate?[0].start ?? 0
+                )
                 
                 return cell
             }
@@ -199,8 +217,8 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == exploreView.categoryCollectionView {
             guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-            fetchData(categoryID: category[indexPath.row].slug)
-            print("\(category[indexPath.row].slug)")
+            fetchData(categoryID: category[indexPath.row].slug ?? "")
+            print("\(category[indexPath.row].slug!)")
             UIView
                 .animate(
                     withDuration: 0.1,
@@ -252,8 +270,11 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
         content.textProperties.color = .white
         content.textProperties.font = .systemFont(ofSize: 12)
         cell.contentConfiguration = content
-        cell.backgroundColor = .PrimaryBlue
+        cell.backgroundColor = .primaryBlue
         cell.selectionStyle = .none
+        
+//        let search =  SearchViewController(eventList: [Event])
+        
         return cell
     }
     
@@ -265,6 +286,22 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
         exploreView.currentLocationButton.setTitle(category[indexPath.row].name, for: .normal)
         exploreView.hideTableView()
     }
+}
+
+// MARK: - UITextFieldDelegate
+extension ExploreViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        textField.resignFirstResponder()
+//        return false
+        textField.endEditing(true)
+        return true
+    }
+    
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+////        let newText = (textField.text as NS)
+//    }
+   
+    
 }
 
 // MARK: - Extension IndexPath

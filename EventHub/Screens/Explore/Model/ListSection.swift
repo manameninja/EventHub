@@ -8,10 +8,10 @@
 import Foundation
 
 enum ListSection {
-    case event([ListItem])
-    case nearby([ListItem])
+    case event([Event])
+    case nearby([Event])
     
-    var items: [ListItem] {
+    var items: [Event] {
         switch self {
         case .event(let items),
                 .nearby(let items):
