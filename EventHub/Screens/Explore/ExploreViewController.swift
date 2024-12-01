@@ -246,12 +246,14 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
             switch filteredSections[indexPath.section] {
             case .event(let detailEvent) :
                 let detailEvent = detailEvent[indexPath.row]
-                present(DetailsViewController(model: detailEvent), animated: true)
-                print(detailEvent)
+                navigationController?.pushViewController(DetailsViewController(model: detailEvent), animated: true)
+                //                present(DetailsViewController(model: detailEvent), animated: true)
+                //                print(detailEvent)
             case .nearby(let detailEvent) :
                 let detailEvent = detailEvent[indexPath.row]
-                present(DetailsViewController(model: detailEvent), animated: true)
-                print(detailEvent)
+                navigationController?.pushViewController(DetailsViewController(model: detailEvent), animated: true)
+                //                present(DetailsViewController(model: detailEvent), animated: true)
+                //                print(detailEvent)
             }
         }
     }
@@ -273,7 +275,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
 // MARK: - UICollectionViewDelegateFlowLayout
 extension ExploreViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-            return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 }
 
@@ -366,14 +368,16 @@ extension IndexPath {
 extension ExploreViewController: HeaderCellDelegate {
     func presentSearchVC(for sectionType: ListSection) {
         switch sectionType {
-        case .event(_):
-            let searchVC = SearchViewController(eventList: ListData.shared.eventList)
-            searchVC.modalPresentationStyle = .fullScreen
-            present(searchVC, animated: true)
-        case .nearby(_):
-            let searchVC = SearchViewController(eventList: ListData.shared.nearbyList)
-            searchVC.modalPresentationStyle = .fullScreen
-            present(searchVC, animated: true)
+        case .event(let event):
+            let searchVC = SearchViewController(eventList: event)
+            navigationController?.pushViewController(searchVC, animated: true)
+            //            searchVC.modalPresentationStyle = .fullScreen
+            //            present(searchVC, animated: true)
+        case .nearby(let event):
+            let searchVC = SearchViewController(eventList: event)
+            navigationController?.pushViewController(searchVC, animated: true)
+            //            searchVC.modalPresentationStyle = .fullScreen
+            //            present(searchVC, animated: true)
         }
     }
 }
