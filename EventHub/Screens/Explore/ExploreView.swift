@@ -50,7 +50,7 @@ final class ExploreView: UIView {
     
     private let bellButton: UIButton = {
         let button = UIButton(type: .system)
-        let image = UIImage(systemName: "bell.badge")?.withRenderingMode(.alwaysOriginal)
+        let image = K.bell?.withRenderingMode(.alwaysOriginal)
         button.setImage(image, for: .normal)
         button.tintColor = .white
         button.backgroundColor = .LightBlue
@@ -149,14 +149,17 @@ final class ExploreView: UIView {
     }
     
     // MARK: - Actions
-    @objc private func tapedButton(_ sender: UIButton) {
-        print("Taped \(sender.currentTitle ?? "bell")")
+    @objc private func tapedLocationButton(_ sender: UIButton) {
         showTableView(frames: sender.frame)
     }
     
     @objc func hideTableView() {
         tableView.isHidden = true
         transparentView.isHidden = true
+    }
+    
+    @objc private func tapedBellButton(_ sender: UIButton) {
+        print("Taped bell button")
     }
     
     // MARK: - Methods
@@ -167,8 +170,8 @@ final class ExploreView: UIView {
     }
     
     private func tapedButtons() {
-        //        bellButton.addTarget(self, action: #selector(tapedButton), for: .touchUpInside)
-        currentLocationButton.addTarget(self, action: #selector(tapedButton), for: .touchUpInside)
+        bellButton.addTarget(self, action: #selector(tapedBellButton), for: .touchUpInside)
+        currentLocationButton.addTarget(self, action: #selector(tapedLocationButton), for: .touchUpInside)
     }
     
     func addTableView(frames: CGRect) {
@@ -194,7 +197,7 @@ final class ExploreView: UIView {
     }
     
     func showTableView(frames: CGRect) {
-        tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: 100, height: tableView.frame.height)
+        tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: 150, height: tableView.frame.height)
         tableView.isHidden = false
     }
     

@@ -21,4 +21,5 @@ enum K {
     static let topAvatarImage = UIImage(named: "woomen")
     static let middleAvatarImage = UIImage(named: "woomen")
     static let bottomAvatarImage = UIImage(named: "manbottom")
+    static let bell = UIImage(named: "bell")
 }

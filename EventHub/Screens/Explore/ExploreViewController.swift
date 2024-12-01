@@ -15,6 +15,7 @@ class ExploreViewController: UIViewController {
     private var category: [Category] = []
     private var filteredSections: [ListSection] = []
     private var categoryID: String = "exhibition"
+    private var locations: [Location] = []
     
     // MARK: - LifeCycle
     override func loadView() {
@@ -51,6 +52,14 @@ class ExploreViewController: UIViewController {
                 self.sections = ListData.shared.pageData
                 self.filteredSections = self.sections
                 self.exploreView.collectionView.reloadData()
+            }
+        }
+        
+        DataManager.shared.getLocations {[weak self] location in
+            DispatchQueue.main.async {
+                guard let self = self else {return}
+                self.locations = location
+                print("Location \(location.first?.name!)")
             }
         }
     }
@@ -265,13 +274,17 @@ extension ExploreViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return category.count
+        return locations.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        content.text = category[indexPath.row].name
+        if indexPath.row == 0 {
+            content.text = "Current Location"
+        } else {
+            content.text = locations[indexPath.row-1].name
+        }
         content.textProperties.color = .white
         content.textProperties.font = .systemFont(ofSize: 12)
         cell.contentConfiguration = content
@@ -285,7 +298,13 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        exploreView.currentLocationButton.setTitle(category[indexPath.row].name, for: .normal)
+        if indexPath.row == 0 {
+            exploreView.currentLocationButton.setTitle("Current Location", for: .normal)
+            print("Current Location selected")
+        } else {
+            exploreView.currentLocationButton.setTitle(locations[indexPath.row-1].name, for: .normal)
+            print("Location \(locations[indexPath.row-1].name!) selected")
+        }
         exploreView.hideTableView()
     }
 }
