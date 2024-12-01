@@ -36,22 +36,22 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         
         let exploreVC = ExploreViewController()
         exploreVC.tabBarItem.title = "Explore"
-        exploreVC.tabBarItem.image = UIImage(systemName: "safari.fill")
+        exploreVC.tabBarItem.image = UIImage(named: "compasTabBar")
         
         let eventsVC = EventsViewController()
         eventsVC.tabBarItem.title = "Events"
-        eventsVC.tabBarItem.image = UIImage(systemName: "calendar")
+        eventsVC.tabBarItem.image = UIImage(named: "calendarTabBar")
         
         let favoritesVC = FavoritesViewController()
         favoritesVC.tabBarItem.title = ""
         
         let mapsVC = OnboardingViewController()
         mapsVC.tabBarItem.title = "Map"
-        mapsVC.tabBarItem.image = UIImage(systemName: "mappin.circle.fill")
+        mapsVC.tabBarItem.image = UIImage(named: "mapTabBar")
         
         let profileVC = ProfileViewController()
         profileVC.tabBarItem.title = "Profile"
-        profileVC.tabBarItem.image = UIImage(systemName: "person.fill")
+        profileVC.tabBarItem.image = UIImage(named: "profileTabBar")
         
         setViewControllers([exploreVC, eventsVC, favoritesVC, mapsVC, profileVC], animated: true)
     }
