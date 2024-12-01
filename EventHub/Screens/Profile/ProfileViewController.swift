@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+final class ProfileViewController: UIViewController {
     
     private let profileView = ProfileView()
     
@@ -21,8 +21,6 @@ final class ProfileViewController: UIViewController, UITextFieldDelegate, UIText
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        print(123)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,6 +29,18 @@ final class ProfileViewController: UIViewController, UITextFieldDelegate, UIText
 }
 
 extension ProfileViewController: ProfileViewProtocol {
+    func didTappedProfileImageButton() {
+        if profileView.editButton.isHidden {
+            let vc = UIImagePickerController()
+            vc.sourceType = .photoLibrary
+            vc.delegate = self
+            vc.allowsEditing = true
+            present(vc, animated: true)
+        } else {
+            print("lock")
+        }
+    }
+    
     func didTappedAboutMeEditButton() {
         profileView.aboutMeTextView.isEditable = true
         profileView.aboutMeTextView.becomeFirstResponder()
@@ -72,7 +82,7 @@ extension ProfileViewController: ProfileViewProtocol {
 }
 
 //MARK: - Keyboard methods
-extension ProfileViewController {
+extension ProfileViewController: UITextFieldDelegate, UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         profileView.nameTextField.resignFirstResponder()
         profileView.nameTextField.isEnabled = false
@@ -105,5 +115,23 @@ extension ProfileViewController {
     
     @objc private func keyboardWillHide(notification: NSNotification) {
         view.frame.origin.y = 0
+    }
+}
+
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let image = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerEditedImage")] as? UIImage {
+            print("yes")
+            profileView.profileImageView.image = image
+        } else {
+            print("no")
+        }
+        picker.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
     }
 }

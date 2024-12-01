@@ -10,6 +10,7 @@ import UIKit
 class CustomTabBar: UITabBar {
     
     public let favoritesButton = FavoritesButton()
+    private let shapeLayer = CAShapeLayer()
     
     override func draw(_ rect: CGRect) {
         configureShape()
@@ -29,23 +30,30 @@ class CustomTabBar: UITabBar {
         tintColor = .primaryBlue
         unselectedItemTintColor = .typographyGray3
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            configureShape()
+        }
+    }
 }
 
 extension CustomTabBar {
     
     private func configureShape() {
         let path = getTabBarPath()
-        let shape = CAShapeLayer()
+        shapeLayer.path = path.cgPath // Обновляем существующий слой
+        shapeLayer.fillColor = UIColor.systemBackground.cgColor
+        shapeLayer.shadowColor = UIColor.black.cgColor
+        shapeLayer.shadowOpacity = 0.1
+        shapeLayer.shadowRadius = 8
+        shapeLayer.shadowOffset = CGSize(width: 0, height: -3)
         
-        shape.path = path.cgPath
-        shape.fillColor = UIColor.systemBackground.cgColor
-        
-        shape.shadowColor = UIColor.black.cgColor
-        shape.shadowOpacity = 0.1
-        shape.shadowRadius = 8
-        shape.shadowOffset = CGSize(width: 0, height: -3)
-        layer.insertSublayer(shape, at: 0)
-        
+        // Добавляем или заменяем подслой только один раз
+        if layer.sublayers?.contains(shapeLayer) == false {
+            layer.insertSublayer(shapeLayer, at: 0)
+        }
     }
     
     private func getTabBarPath() -> UIBezierPath {
@@ -55,7 +63,7 @@ extension CustomTabBar {
         path.addLine(to: CGPoint(x: frame.width, y: 0))
         path.addLine(to: CGPoint(x: frame.width, y: frame.height))
         path.addLine(to: CGPoint(x: 0, y: frame.height))
-        
+        path.close()
         
         return path
     }

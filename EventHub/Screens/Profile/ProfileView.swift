@@ -13,6 +13,7 @@ protocol ProfileViewProtocol: AnyObject {
     func didTappedBackButton()
     func didTappedNameEditButton()
     func didTappedAboutMeEditButton()
+    func didTappedProfileImageButton()
 }
 
 class ProfileView: UIView {
@@ -36,7 +37,7 @@ class ProfileView: UIView {
         return button
     }()
     
-    private let profileImageView: UIImageView = {
+    let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "eric")
         imageView.contentMode = .scaleToFill
@@ -187,6 +188,11 @@ class ProfileView: UIView {
         delegate?.didTappedAboutMeEditButton()
     }
     
+    @objc func profileImageButtonTapped(gestureRecognizer: UITapGestureRecognizer) {
+        if gestureRecognizer.view is UIImageView {
+            delegate?.didTappedProfileImageButton()
+        }
+    }
     
 }
 
@@ -300,5 +306,9 @@ extension ProfileView {
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         nameEditButton.addTarget(self, action: #selector(nameEditButtonTapped), for: .touchUpInside)
         aboutMeEditButton.addTarget(self, action: #selector(aboutMeEditButtonTapped), for: .touchUpInside)
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageButtonTapped(gestureRecognizer:)))
+        profileImageView.addGestureRecognizer(tapGestureRecognizer)
+        profileImageView.isUserInteractionEnabled = true
     }
 }
