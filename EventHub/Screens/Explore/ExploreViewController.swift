@@ -39,6 +39,7 @@ class ExploreViewController: UIViewController {
                 guard let self = self else { return }
                 ListData.shared.eventList = events
                 self.sections = ListData.shared.pageData
+                self.filteredSections = self.sections
                 self.exploreView.collectionView.reloadData()
             }
         }
@@ -48,6 +49,7 @@ class ExploreViewController: UIViewController {
                 guard let self = self else { return }
                 ListData.shared.nearbyList = events
                 self.sections = ListData.shared.pageData
+                self.filteredSections = self.sections
                 self.exploreView.collectionView.reloadData()
             }
         }
@@ -63,6 +65,7 @@ extension ExploreViewController: CreateLayoutDelegate {
                 guard let self = self else { return }
                 ListData.shared.eventList = events
                 self.sections = ListData.shared.pageData
+                self.filteredSections = self.sections
                 self.exploreView.collectionView.reloadData()
             }
         }
@@ -71,7 +74,7 @@ extension ExploreViewController: CreateLayoutDelegate {
     func createLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout {[weak self] sectionIndex, _ in
             guard let self = self else { return nil }
-            let section = self.sections[sectionIndex]
+            let section = self.filteredSections[sectionIndex]
             switch section {
             case .event(_):
                 return createEventsSection()
@@ -154,7 +157,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
         if collectionView == exploreView.categoryCollectionView {
             return 1
         } else if collectionView == exploreView.collectionView {
-            return sections.count
+            return filteredSections.count
         }
         return 0
     }
@@ -163,7 +166,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
         if collectionView == exploreView.categoryCollectionView {
             return category.count
         } else if collectionView == exploreView.collectionView {
-            return sections[section].count
+            return filteredSections[section].count
         }
         return 0
     }
@@ -180,15 +183,15 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
             
             return cell
         } else if collectionView == exploreView.collectionView {
-            switch sections[indexPath.section] {
+            switch filteredSections[indexPath.section] {
             case .event(let event):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EventCollectionViewCell.identifier, for: indexPath) as? EventCollectionViewCell
                 else {
                     return UICollectionViewCell()
                 }
                 cell.configureCell(
-                    imageName: event[indexPath.row].images![0].imageUrl!,
-                    title: event[indexPath.row].title!,
+                    imageName: event[indexPath.row].images?.first?.imageUrl ?? "",
+                    title: event[indexPath.row].title ?? "unknown",
                     location: event[indexPath.row].place?.address ?? "",
                     goingCount: event[indexPath.row].goingCount ?? 0,
                     date: event[indexPath.row].eventDate?[0].start ?? 0
@@ -201,8 +204,8 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                     return UICollectionViewCell()
                 }
                 cell.configureCell(
-                    imageName: event[indexPath.row].images?[0].imageUrl ?? "",
-                    title: event[indexPath.row].title!,
+                    imageName: event[indexPath.row].images?.first?.imageUrl ?? "",
+                    title: event[indexPath.row].title ?? "unknown",
                     location: event[indexPath.row].place?.address ?? "",
                     goingCount: event[indexPath.row].goingCount ?? 0,
                     date: event[indexPath.row].eventDate?[0].start ?? 0
@@ -219,6 +222,9 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
             guard let cell = collectionView.cellForItem(at: indexPath) else { return }
             fetchData(categoryID: category[indexPath.row].slug ?? "")
             print("\(category[indexPath.row].slug!)")
+            
+//            SearchViewController(eventList: ListData.shared.eventList)
+            
             UIView
                 .animate(
                     withDuration: 0.1,
@@ -237,7 +243,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCell.identifier, for: indexPath) as! HeaderCell
-            header.configureHeader(categoryName: sections[indexPath.section].title)
+            header.configureHeader(categoryName: filteredSections[indexPath.section].title)
             
             return header
         default:
@@ -272,9 +278,6 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
         cell.contentConfiguration = content
         cell.backgroundColor = .primaryBlue
         cell.selectionStyle = .none
-        
-//        let search =  SearchViewController(eventList: [Event])
-        
         return cell
     }
     
@@ -291,17 +294,32 @@ extension ExploreViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: - UITextFieldDelegate
 extension ExploreViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        return false
         textField.endEditing(true)
         return true
     }
     
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-////        let newText = (textField.text as NS)
-//    }
-   
-    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let currentText = textField.text as NSString? else { return true }
+        let newText = currentText.replacingCharacters(in: range, with: string)
+        if newText.isEmpty {
+            filteredSections = sections
+        } else {
+            let filteredEventList = ListData.shared.eventList.filter {
+                $0.title?.lowercased().contains(newText.lowercased()) == true
+            }
+            let filteredNearbyList = ListData.shared.nearbyList.filter {
+                $0.title?.lowercased().contains(newText.lowercased()) == true
+            }
+            
+            filteredSections = [
+                .event(filteredEventList),
+                .nearby(filteredNearbyList)
+            ]
+        }
+        exploreView.collectionView.reloadData()
+        
+        return true
+    }
 }
 
 // MARK: - Extension IndexPath
