@@ -4,34 +4,33 @@
 //
 //  Created by Олег Дербин on 22.11.2024.
 //
+ import UIKit
+ import Kingfisher
 
-import UIKit
-import Kingfisher
+ class DetailsView: UIView {
 
-final class DetailsView: UIView {
-    
-    //    MARK: UI Elements
-    
-    let customNavBar: UIImageView = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.image = UIImage(resource: .customNav)
-        return $0
+ //    MARK: UI Elements
+
+      let customNavBar: UIImageView = {
+         $0.translatesAutoresizingMaskIntoConstraints = false
+         $0.image = UIImage(resource: .customNav)
+         return $0
     }(UIImageView())
     
     private let backButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setImage(UIImage(resource: .back), for: .normal)
-        return $0
-    }(UIButton())
-    
-    let navBarLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.text = "Event Details"
-        $0.textColor = .white
-        $0.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
-        return $0
-    }(UILabel())
-    
+         return $0
+     }(UIButton())
+
+       let navBarLabel: UILabel = {
+         $0.translatesAutoresizingMaskIntoConstraints = false
+         $0.text = "Event Details"
+         $0.textColor = .white
+           $0.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+         return $0
+     }(UILabel())
+
     private let bookmarkButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setImage(UIImage(resource: .bookmark), for: .normal)
@@ -46,24 +45,24 @@ final class DetailsView: UIView {
     
     let infoTableView: UITableView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UITableView())
-    
-    //    MARK: -Initializations
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+         return $0
+     }(UITableView())
+
+ //    MARK: -Initializations
+
+     override init(frame: CGRect) {
+         super.init(frame: frame)
         setupUI()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - SetupUI
-    private func setupUI() {
-        self.backgroundColor = .white
-        addSubviews(
+         fatalError("init(coder:) has not been implemented")
+     }
+
+ //MARK: - SetupUI
+     private func setupUI() {
+         self.backgroundColor = .white
+         addSubviews(
             customNavBar,
             backButton,
             navBarLabel,
