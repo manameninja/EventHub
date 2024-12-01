@@ -18,7 +18,7 @@ class InfoTableViewCell: UITableViewCell {
     }(UIImageView())
     
     private let infoTitle: UILabel = {
-        $0.text = "14 December, 2021"
+        $0.text = "Date unknown"
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = UIFont.systemFont(ofSize: 16)
         return $0
@@ -26,7 +26,7 @@ class InfoTableViewCell: UITableViewCell {
     
     private let infoSubTitle: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.text = "Tuesday, 4:00PM - 9:00PM"
+        $0.text = "time unknown"
         $0.font = UIFont.systemFont(ofSize: 12)
         $0.textColor = .gray
         return $0
@@ -50,13 +50,22 @@ class InfoTableViewCell: UITableViewCell {
     
     func setInfoCell(model: Event, _ row: Int) {
         switch row {
-        case 1: infoTitle.text = model.nextDate
-            infoSubTitle.text = model.nextDate
+        case 1:
+            infoTitle.text = FormatterService.shared.dateToString(
+                model.eventDate,
+                "d MMMM, YYYY"
+            ).end
+            infoSubTitle.text = FormatterService.shared.dateToString(
+                model.eventDate,
+                "EEEE, h:mma"
+            ).end
             iconView.image = UIImage(resource: .date)
-        case 2: infoTitle.text = model.place?.title
+        case 2:
+            infoTitle.text = model.place?.title
             infoSubTitle.text = model.place?.address
             iconView.image = UIImage(resource: .location)
-        case 3: infoTitle.text = model.participants?.first?.role?.name
+        case 3:
+            infoTitle.text = model.participants?.first?.role?.name
             infoSubTitle.text = model.participants?.first?.agent?.title
             iconView.kf.setImage(
                 with: URL(string: model.participants?.first?.agent?.image?.first?.imageUrl ?? ""),
