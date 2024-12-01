@@ -48,7 +48,7 @@ extension FavoritesViewController: FavoritesViewProtocol {
         cell.configure(
             imageURL: URL(string: event.images?.first?.imageUrl ?? ""),
             isFavorite: favorite,
-            date: event.nextDate,
+            date: FormatterService.shared.dateToString(event.eventDate, "E, YYYY MMM d • h:mm a").end,
             title: event.title ?? "unknown",
             address: event.place?.address ?? event.place?.title ?? "unknown"
         )
