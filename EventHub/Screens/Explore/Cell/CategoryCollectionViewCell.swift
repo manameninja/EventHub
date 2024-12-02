@@ -13,7 +13,6 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = CategoryImage.music
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -43,7 +42,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         categoryLabel.text = ""
     }
     
-    func configureCell(category: String, index: Int) {
+    func configureCell(category: String, imageName: String) {
         layer.shadowColor = UIColor(hexString: "2E2E4F", alpha: 1.0)?.cgColor
         layer.shadowOpacity = 0.02
         layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -51,13 +50,52 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 25
         categoryLabel.text = category
-        
-        let images = [
-            CategoryImage.food,
-            CategoryImage.game,
-            CategoryImage.music
-        ]
-        logoImageView.image = images[index % images.count]
+
+        logoImageView.image = getCategoryImage(from: imageName)
+        logoImageView.tintColor = .white
+    }
+    
+    func getCategoryImage(from slug: String) -> UIImage? {
+        switch slug.lowercased() {
+        case "cinema":
+            return CategoryImage.cinema.image
+        case "concert":
+            return CategoryImage.concert.image
+        case "education":
+            return CategoryImage.education.image
+        case "entertainment":
+            return CategoryImage.entertainment.image
+        case "exhibition":
+            return CategoryImage.exhibition.image
+        case "fashion":
+            return CategoryImage.fashion.image
+        case "festival":
+            return CategoryImage.festival.image
+        case "holiday":
+            return CategoryImage.holiday.image
+        case "kids":
+            return CategoryImage.kids.image
+        case "other":
+            return CategoryImage.other.image
+        case "party":
+            return CategoryImage.party.image
+        case "photo":
+            return CategoryImage.photo.image
+        case "quest":
+            return CategoryImage.quest.image
+        case "recreation":
+            return CategoryImage.recreation.image
+        case "shopping":
+            return CategoryImage.shopping.image
+        case "stock":
+            return CategoryImage.stock.image
+        case "theater":
+            return CategoryImage.theater.image
+        case "tour":
+            return CategoryImage.tour.image
+        default:
+            return UIImage(named: "game")
+        }
     }
     
     // MARK: - Constraints
