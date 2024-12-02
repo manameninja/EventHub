@@ -2,9 +2,8 @@
 
 ![iOS](https://img.shields.io/badge/iOS-15.0-lightblue)  ![Swift](https://img.shields.io/badge/Swift-blue)  ![UIKit](https://img.shields.io/badge/UIKit-mediumpurple) ![MVC](https://img.shields.io/badge/MVC-hotpink) ![Firebase](https://img.shields.io/badge/Firebase-blue) ![UIKit](https://img.shields.io/badge/Kingfisher-mediumpurple)
 
-  <img src="EventHub/Resources/appReadMe.png" weight=50>
-</kbd>
 
+  ![](EventHub/Resources/eventGif.gif)
 
 ### Project created by:
 <p align="left"> 
@@ -19,7 +18,7 @@
 <a href="https://github.com/Bokhulenkov">
 <img src="https://img.shields.io/badge/Alexander-cadetblue"/></a>
 
-This is an iOS app for finding events, concerts and exhibitions. They can also choose the categories they are interested in and save any articles they like to bookmarks.
+This is an iOS app for finding events, concerts and exhibitions. They can also choose the categories they are interested in and save any events they like to bookmarks.
 
 ## Features:
 - Implemented a search bar and query search from the API.
