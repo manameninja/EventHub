@@ -42,7 +42,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         categoryLabel.text = ""
     }
     
-    func configureCell(category: String, index: Int) {
+    func configureCell(category: String, imageName: String) {
         layer.shadowColor = UIColor(hexString: "2E2E4F", alpha: 1.0)?.cgColor
         layer.shadowOpacity = 0.02
         layer.shadowOffset = CGSize(width: 0, height: 2)
