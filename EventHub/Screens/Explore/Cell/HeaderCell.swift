@@ -17,7 +17,7 @@ class HeaderCell: UICollectionReusableView {
     weak var delegate: HeaderCellDelegate?
     private var sectionType: ListSection?
     
-    private let headerLabel = UILabel(fontSize: 24, color: .black, weight: .bold)
+    private let headerLabel = UILabel(fontSize: 24, color: .label, weight: .bold)
     private let seeAllButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("See All", for: .normal)

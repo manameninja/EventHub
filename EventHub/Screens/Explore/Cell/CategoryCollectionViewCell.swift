@@ -44,10 +44,10 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(category: String, index: Int) {
-        layer.shadowColor = UIColor.gray.cgColor
-        layer.shadowOpacity = 0.9
-        layer.shadowOffset = CGSize(width: 1, height: 3)
-        layer.shadowRadius = 3
+        layer.shadowColor = UIColor(hexString: "2E2E4F", alpha: 1.0)?.cgColor
+        layer.shadowOpacity = 0.02
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowRadius = 20
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 25
         categoryLabel.text = category

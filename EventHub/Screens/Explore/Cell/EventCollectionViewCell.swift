@@ -15,7 +15,7 @@ class EventCollectionViewCell: UICollectionViewCell {
     
     private let mainView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -65,7 +65,10 @@ class EventCollectionViewCell: UICollectionViewCell {
     private let goingLabel = LabelFactory.goingLabel(fontSize: 12, color: .blue)
     
     // location
-    private let locationCell = LabelFactory.locationLabel(fontSize: 15, color: .backgroundGray)
+    private let locationCell = LabelFactory.locationLabel(
+        fontSize: 15,
+        color: UIColor(hexString: "716E90", alpha: 1.0) ?? .label
+    )
     
     //    date event
     private let dateContainerView = UIView(background: .white, opacity: 0.7)
@@ -122,7 +125,7 @@ class EventCollectionViewCell: UICollectionViewCell {
         topAvatarImage.image = nil
         middleAvatarImage.image = nil
         bottomAvatarImage.image = nil
-        goingLabel.text = ""
+        goingLabel.text = "..."
     }
     
     private func setupUI() {
@@ -147,6 +150,12 @@ class EventCollectionViewCell: UICollectionViewCell {
         ]
             .forEach { goingView.addSubview($0)}
         tapedFavorite()
+        
+        layer.shadowColor = UIColor(hexString: "505588", alpha: 1.0)?.cgColor
+        layer.shadowOpacity = 0.06
+        layer.shadowOffset = CGSize(width: 0, height: 8)
+        layer.shadowRadius = 30
+        layer.masksToBounds = false
     }
     
     private func tapedFavorite() {
@@ -158,9 +167,10 @@ class EventCollectionViewCell: UICollectionViewCell {
     private func setShadowToImage(imageView: UIImageView, cornerRadius radius: CGFloat) {
         imageView.layer.cornerRadius = radius
         imageView.layer.shadowColor = UIColor.gray.cgColor
-        imageView.layer.shadowOpacity = 0.9
-        imageView.layer.shadowOffset = CGSize(width: 1, height: 3)
+        imageView.layer.shadowOpacity = 0.1
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 3)
         imageView.layer.shadowRadius = 3
+        
     }
     
     private func dateFormater(event timestamp: Int) -> (day: Int, month: String ) {
@@ -248,7 +258,7 @@ extension EventCollectionViewCell {
             bottomAvatarImage.widthAnchor.constraint(equalToConstant: K.avatarSize),
             bottomAvatarImage.heightAnchor.constraint(equalToConstant: K.avatarSize),
             
-            goingLabel.leadingAnchor.constraint(equalTo: goingView.leadingAnchor, constant: K.avatarSize*2.4),
+            goingLabel.leadingAnchor.constraint(equalTo: goingView.leadingAnchor, constant: 60),
             goingLabel.centerYAnchor.constraint(equalTo: goingView.centerYAnchor),
             
             locationCell.topAnchor.constraint(equalTo: goingView.bottomAnchor, constant: 10),

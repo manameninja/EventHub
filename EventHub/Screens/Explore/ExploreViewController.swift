@@ -35,8 +35,8 @@ class ExploreViewController: UIViewController {
             }
         }
         
-        DataManager.shared.getEvents(category: categoryID) { [weak self] events in
-            DispatchQueue.main.async {
+        DataManager.shared.getEvents(category: categoryID) { events in
+            DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 ListData.shared.eventList = events
                 self.sections = ListData.shared.pageData
@@ -45,8 +45,8 @@ class ExploreViewController: UIViewController {
             }
         }
         
-        DataManager.shared.getEvents(category: "cinema") { [weak self] events in
-            DispatchQueue.main.async {
+        DataManager.shared.getEvents(category: "cinema") { events in
+            DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 ListData.shared.nearbyList = events
                 self.sections = ListData.shared.pageData
@@ -55,12 +55,18 @@ class ExploreViewController: UIViewController {
             }
         }
         
-        DataManager.shared.getLocations {[weak self] location in
-            DispatchQueue.main.async {
-                guard let self = self else {return}
+        DataManager.shared.getLocations { location in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else {return}
                 self.locations = location
+                self.exploreView.tableView.reloadData()
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
     }
 }
 
