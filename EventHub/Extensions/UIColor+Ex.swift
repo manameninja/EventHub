@@ -10,6 +10,8 @@ import UIKit
 extension UIColor {
     
     static let PrimaryBlue = UIColor(named: "PrimaryBlue")
+    static let LightBlue = UIColor(named: "LightBlue")
+    static let ShadowBlue = UIColor(named: "ShadowBlue")
     static let SecondaryCyan = UIColor(named: "SecondaryCyan")
     
     static let AccentDarkCyan = UIColor(named: "AccentDarkCyan")
