@@ -208,7 +208,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                     title: event[indexPath.row].title ?? "unknown",
                     location: event[indexPath.row].place?.address ?? "",
                     goingCount: event[indexPath.row].goingCount ?? 0,
-                    date: event[indexPath.row].eventDate?[0].start ?? 0,
+                    date: event[indexPath.row].lastDate,
                     makeFavorite: StorageManager.shared.loadFavorite().contains(where: { current in
                         current.id != event[indexPath.row].id
                     })
@@ -226,7 +226,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                     title: event[indexPath.row].title ?? "unknown",
                     location: event[indexPath.row].place?.address ?? "",
                     goingCount: event[indexPath.row].goingCount ?? 0,
-                    date: event[indexPath.row].eventDate?[0].start ?? 0,
+                    date: event[indexPath.row].lastDate,
                     makeFavorite: StorageManager.shared.loadFavorite().contains(where: { current in
                         current.id != event[indexPath.row].id
                     })
