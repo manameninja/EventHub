@@ -19,7 +19,7 @@ final class ExploreView: UIView {
     
     private let mainView: UIView = {
         let view = UIView()
-        view.backgroundColor = .primaryBlue
+        view.backgroundColor = .exploreBackground
         view.layer.cornerRadius = 30
         view.isUserInteractionEnabled = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -28,24 +28,20 @@ final class ExploreView: UIView {
     
     let currentLocationButton: UIButton = {
         let button = UIButton(type: .system)
-        let title = "Current Location"
-        let icon = UIImage(named: "arrowtriangle")?.withRenderingMode(.alwaysTemplate)
         var configuration = UIButton.Configuration.plain()
-        configuration.title = title
-        configuration.image = icon
+        configuration.title = "Current Location"
+        configuration.image = UIImage(named: "arrowtriangle")?.withRenderingMode(.alwaysTemplate)
         configuration.imagePlacement = .trailing
         configuration.imagePadding = 8
-        configuration.baseForegroundColor = .shadowBlue
+        configuration.baseForegroundColor = .systemBackground
         configuration.baseBackgroundColor = .clear
-        configuration.imageColorTransformer = UIConfigurationColorTransformer { _ in
-                .white
-        }
         button.configuration = configuration
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private let tableView = UITableView()
+    let tableView = UITableView()
+    
     private let transparentView = UIView()
     
     private let bellButton: UIButton = {
@@ -61,17 +57,20 @@ final class ExploreView: UIView {
     private let searchImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage.searchWhite
-        imageView.contentMode = .scaleAspectFit
+        //imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private let searchBar: UITextField = {
         let textField = UITextField()
-        textField.placeholder = " Search..."
-        textField.tintColor = .shadowBlue
-        textField.textColor = .white
-        textField.font = .systemFont(ofSize: 24)
+        textField.attributedPlaceholder = NSAttributedString(
+            string: " Search...",
+            attributes: [.foregroundColor: UIColor.typographyPurple]
+        )
+        textField.tintColor = .typographyPurple
+        textField.textColor = .systemBackground
+        textField.font = .systemFont(ofSize: 20)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -117,7 +116,7 @@ final class ExploreView: UIView {
     let collectionView: UICollectionView = {
         let layout = UICollectionViewLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .backgroundGray
+        collectionView.backgroundColor = .clear
         collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -188,6 +187,7 @@ final class ExploreView: UIView {
         tableView.separatorStyle = .none
         tableView.tintColor = .blue
         tableView.layer.borderWidth = 0
+        tableView.backgroundColor = .primaryBlue
         
         let tapgesture = UITapGestureRecognizer(target: self, action: #selector(hideTableView))
         transparentView.addGestureRecognizer(tapgesture)
@@ -202,9 +202,9 @@ final class ExploreView: UIView {
     }
     
     private func setViews() {
-        backgroundColor = .backgroundGray
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = backgroundColor
+        backgroundColor = .systemBackground
+        //let backgroundView = UIView()
+        //backgroundView.backgroundColor = backgroundColor
         [
             mainView,
             collectionView,
@@ -256,7 +256,7 @@ extension ExploreView {
             mainView.topAnchor.constraint(equalTo: self.topAnchor),
             mainView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             mainView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            mainView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.20),
+            mainView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 179.0/812.0),
             
             searchImage.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 24),
             searchImage.widthAnchor.constraint(equalToConstant: 24),
