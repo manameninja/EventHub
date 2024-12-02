@@ -120,7 +120,7 @@ extension ExploreViewController: CreateLayoutDelegate {
                               heightDimension: .fractionalHeight(1.0))
         )
         let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: .init(widthDimension: .fractionalWidth(0.8),
+            layoutSize: .init(widthDimension: .fractionalWidth(237.0/375.0),
                               heightDimension: .fractionalHeight(0.5)),
             subitems: [item]
         )
@@ -141,7 +141,7 @@ extension ExploreViewController: CreateLayoutDelegate {
                               heightDimension: .fractionalHeight(1.0))
         )
         let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: .init(widthDimension: .fractionalWidth(0.8),
+            layoutSize: .init(widthDimension: .fractionalWidth(237.0/375.0),
                               heightDimension: .fractionalHeight(0.5)),
             subitems: [item]
         )
@@ -208,8 +208,12 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                     title: event[indexPath.row].title ?? "unknown",
                     location: event[indexPath.row].place?.address ?? "",
                     goingCount: event[indexPath.row].goingCount ?? 0,
-                    date: event[indexPath.row].eventDate?[0].start ?? 0
+                    date: event[indexPath.row].eventDate?[0].start ?? 0,
+                    makeFavorite: StorageManager.shared.loadFavorite().contains(where: { current in
+                        current.id != event[indexPath.row].id
+                    })
                 )
+                cell.delegate = self
                 
                 return cell
             case .nearby(let event):
@@ -222,8 +226,12 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
                     title: event[indexPath.row].title ?? "unknown",
                     location: event[indexPath.row].place?.address ?? "",
                     goingCount: event[indexPath.row].goingCount ?? 0,
-                    date: event[indexPath.row].eventDate?[0].start ?? 0
+                    date: event[indexPath.row].eventDate?[0].start ?? 0,
+                    makeFavorite: StorageManager.shared.loadFavorite().contains(where: { current in
+                        current.id != event[indexPath.row].id
+                    })
                 )
+                cell.delegate = self
                 
                 return cell
             }
@@ -384,6 +392,37 @@ extension ExploreViewController: HeaderCellDelegate {
             navigationController?.pushViewController(searchVC, animated: true)
             //            searchVC.modalPresentationStyle = .fullScreen
             //            present(searchVC, animated: true)
+        }
+    }
+}
+
+//MARK: - EventCollectionViewCellDelegate
+extension ExploreViewController: EventCollectionViewCellDelegate {
+    func didTapButton(in cell: EventCollectionViewCell) {
+        if let indexPath = exploreView.collectionView.indexPath(for: cell) {
+            switch filteredSections[indexPath.section] {
+            case .event(let events):
+                let event = events[indexPath.row]
+                
+                if StorageManager.shared.loadFavorite().contains(where: {
+                    $0.id == event.id
+                }) {
+                    StorageManager.shared.deleteFavorite(event)
+                } else {
+                    StorageManager.shared.addFavorite(event)
+                }
+                
+            case .nearby(let events):
+                let event = events[indexPath.row]
+                
+                if StorageManager.shared.loadFavorite().contains(where: {
+                    $0.id == event.id
+                }) {
+                    StorageManager.shared.deleteFavorite(event)
+                } else {
+                    StorageManager.shared.addFavorite(event)
+                }
+            }
         }
     }
 }

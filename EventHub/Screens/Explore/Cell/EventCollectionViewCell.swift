@@ -8,7 +8,12 @@
 import UIKit
 import Kingfisher
 
-class EventCollectionViewCell: UICollectionViewCell {
+protocol EventCollectionViewCellDelegate: AnyObject {
+    func didTapButton(in cell: EventCollectionViewCell)
+}
+
+final class EventCollectionViewCell: UICollectionViewCell {
+    weak var delegate: EventCollectionViewCellDelegate?
     
     // MARK: - Properties
     static let identifier = EventCollectionViewCell.description()
@@ -22,7 +27,7 @@ class EventCollectionViewCell: UICollectionViewCell {
     
     private let imageViewCell: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -106,6 +111,7 @@ class EventCollectionViewCell: UICollectionViewCell {
     // MARK: - Actions
     @objc private func toggleFavorite() {
         isFavorite.toggle()
+        delegate?.didTapButton(in: self)
     }
     
     // MARK: - Methods
@@ -186,7 +192,7 @@ class EventCollectionViewCell: UICollectionViewCell {
         return (day, month)
     }
     
-    func configureCell(imageName: String, title: String, location: String, goingCount: Int, date: Int) {
+    func configureCell(imageName: String, title: String, location: String, goingCount: Int, date: Int, makeFavorite: Bool) {
         if let url = URL(string: imageName) {
             imageViewCell.kf.setImage(with: url)
         }
@@ -217,6 +223,8 @@ class EventCollectionViewCell: UICollectionViewCell {
         } else {
             goingLabel.isHidden = true
         }
+        
+        isFavorite = makeFavorite
     }
 }
 
