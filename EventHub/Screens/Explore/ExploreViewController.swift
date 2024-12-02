@@ -186,7 +186,7 @@ extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataS
             cell.contentView.backgroundColor = indexPath.alternatingColor()
             cell.configureCell(
                 category: category[indexPath.row].name ?? "",
-                index: indexPath.row
+                imageName: category[indexPath.row].slug ?? ""
             )
             
             return cell
