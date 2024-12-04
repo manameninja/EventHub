@@ -8,8 +8,6 @@
 import UIKit
 
 class OnboardingViewController: UIPageViewController {
-    
-    
     //    MARK: - UI Elements
     private let bottomView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -81,29 +79,23 @@ class OnboardingViewController: UIPageViewController {
         return $0
     }(UIPageControl())
     
-//    MARK: - Variables
-    
+    //    MARK: - Variables
     var helperArray = [OnboardingHelper()]
     var pages = [UIViewController]()
     let initialPage = 0
     
-    
-//    MARK: - Life Cycle
-    
+    //    MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
         dataSource = self
         delegate = self
-        
         setupUI()
-        
     }
     
     //    MARK: - Setup UI
-    
     private func setupUI() {
+        setup()
         view.addSubview(bottomView)
         bottomView.addSubview(stackViewV)
         stackViewV.addArrangedSubview(mainTitle)
@@ -113,13 +105,11 @@ class OnboardingViewController: UIPageViewController {
         stackViewH.addArrangedSubview(pageControl)
         stackViewH.addArrangedSubview(nextButton)
         SetupConstraints()
-        setup()
         style()
         animateBottomViewAppearance()
     }
     
     //    MARK: - SetupConstraints
-    
     private func SetupConstraints() {
         
         bottomView.transform = CGAffineTransform(translationX: 0, y: 200)
@@ -132,13 +122,11 @@ class OnboardingViewController: UIPageViewController {
             stackViewV.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 20),
             stackViewV.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -20),
             stackViewV.heightAnchor.constraint(equalTo: bottomView.heightAnchor, multiplier: 0.85),
-            stackViewV.centerYAnchor.constraint(equalTo: bottomView.centerYAnchor),
-            
-            
+            stackViewV.centerYAnchor.constraint(equalTo: bottomView.centerYAnchor)
         ])
     }
     
-//    MARK: - Methods
+    //    MARK: - Methods
     
     private func animateBottomViewAppearance() {
         UIView.animate(withDuration: 1) {
@@ -165,17 +153,12 @@ class OnboardingViewController: UIPageViewController {
             navigationController?.pushViewController(LoginViewController(), animated: true)
         }
     }
-    
 }
 
 //MARK: - UIPageViewControllerDataSource, UIPageViewControllerDelegate
-
 extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    
-    
     func setup() {
-        
         let firstScreen = OnboardingHelper(
             image: UIImage(
                 resource: .onbordingFirst
@@ -237,6 +220,4 @@ extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewCo
         mainTitle.text = helperArray[currentIndex].mainTitle
         subTitle.text = helperArray[currentIndex].subTitle
     }
-    
-    
 }
